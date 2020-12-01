@@ -4,13 +4,18 @@ const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const { UserInputError } = require('apollo-server');
 const { registerValidator, loginValidator } = require('../../utils/validators');
+const authChecker = require('../../utils/authChecker');
 const { JWT_SECRET } = require('../../utils/config');
 
 module.exports = {
   Query: {
-    getAllUsers: async () => {
+    getAllUsers: async (_, __, context) => {
+      const loggedUser = authChecker(context);
+
       try {
-        const users = await User.findAll();
+        const users = await User.findAll({
+          where: { id: { [Op.ne]: loggedUser.id } },
+        });
         return users;
       } catch (err) {
         throw new UserInputError(err);
@@ -26,38 +31,35 @@ module.exports = {
         throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
-      const existingUser = await User.findOne({
-        where: { username: { [Op.iLike]: username } },
-      });
+      try {
+        const existingUser = await User.findOne({
+          where: { username: { [Op.iLike]: username } },
+        });
 
-      if (existingUser) {
-        throw new UserInputError(`Username '${username}' is already taken.`);
-      }
+        if (existingUser) {
+          throw new UserInputError(`Username '${username}' is already taken.`);
+        }
 
-      console.log(username, password);
+        const saltRounds = 10;
+        const passwordHash = await bcrypt.hash(password, saltRounds);
 
-      const saltRounds = 10;
-      const passwordHash = await bcrypt.hash(password, saltRounds);
+        const user = new User({
+          username,
+          passwordHash,
+        });
 
-      const user = new User({
-        username,
-        passwordHash,
-      });
+        const savedUser = await user.save();
 
-      const savedUser = await user.save();
+        const token = jwt.sign({ id: savedUser.id }, JWT_SECRET);
 
-      const token = jwt.sign(
-        {
+        return {
           id: savedUser.id,
-        },
-        JWT_SECRET
-      );
-
-      return {
-        id: savedUser.id,
-        username: savedUser.username,
-        token,
-      };
+          username: savedUser.username,
+          token,
+        };
+      } catch (err) {
+        throw new UserInputError(err);
+      }
     },
 
     login: async (_, args) => {
@@ -68,35 +70,34 @@ module.exports = {
         throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
-      const user = await User.findOne({
-        where: { username: { [Op.iLike]: username } },
-      });
+      try {
+        const user = await User.findOne({
+          where: { username: { [Op.iLike]: username } },
+        });
 
-      if (!user) {
-        throw new UserInputError(`User: '${username}' not found.`);
-      }
+        if (!user) {
+          throw new UserInputError(`User: '${username}' not found.`);
+        }
 
-      const credentialsValid = await bcrypt.compare(
-        password,
-        user.passwordHash
-      );
+        const credentialsValid = await bcrypt.compare(
+          password,
+          user.passwordHash
+        );
 
-      if (!credentialsValid) {
-        throw new UserInputError('Invalid credentials.');
-      }
+        if (!credentialsValid) {
+          throw new UserInputError('Invalid credentials.');
+        }
 
-      const token = jwt.sign(
-        {
+        const token = jwt.sign({ id: user.id }, JWT_SECRET);
+
+        return {
           id: user.id,
-        },
-        JWT_SECRET
-      );
-
-      return {
-        id: user.id,
-        username: user.username,
-        token,
-      };
+          username: user.username,
+          token,
+        };
+      } catch (err) {
+        throw new UserInputError(err);
+      }
     },
   },
 };

@@ -7,6 +7,7 @@ const { PORT } = require('./utils/config');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: (context) => context,
 });
 
 server.listen({ port: PORT }).then(({ url }) => {

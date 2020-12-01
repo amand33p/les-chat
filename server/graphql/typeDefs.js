@@ -4,6 +4,7 @@ module.exports = gql`
   type User {
     id: ID!
     username: String!
+    createdAt: String!
   }
 
   type LoggedUser {
