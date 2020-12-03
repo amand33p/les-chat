@@ -20,6 +20,15 @@ module.exports = gql`
     senderId: ID!
   }
 
+  type Group {
+    id: ID!
+    name: String!
+    admin: ID!
+    type: String!
+    participants: [ID!]!
+    createdAt: String!
+  }
+
   type Query {
     getAllUsers: [User]!
   }
@@ -29,5 +38,11 @@ module.exports = gql`
     login(username: String!, password: String!): LoggedUser!
 
     sendPrivateMessage(receiverId: ID!, body: String!): Message!
+    sendGroupMessage(conversationId: ID!, body: String!): Message!
+
+    createGroup(name: String!): Group!
+    addUserToGroup(conversationId: ID!, userId: ID!): Group!
+    EditGroupName(conversationId: ID!, newName: String!): Group!
+    deleteGroup(conversationId: ID!): Group!
   }
 `;
