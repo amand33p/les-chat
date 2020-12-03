@@ -1,6 +1,11 @@
 const { gql } = require('apollo-server');
 
 module.exports = gql`
+  enum AddOrDelete {
+    ADD
+    DELETE
+  }
+
   type User {
     id: ID!
     username: String!
@@ -42,7 +47,11 @@ module.exports = gql`
     sendGlobalMessage(body: String): Message!
 
     createGroup(name: String!): Group!
-    addUserToGroup(conversationId: ID!, userToAddId: ID!): Group!
+    addRemoveGroupUser(
+      conversationId: ID!
+      userId: ID!
+      addOrDel: AddOrDelete!
+    ): Group!
     EditGroupName(conversationId: ID!, newName: String!): Group!
     deleteGroup(conversationId: ID!): Group!
   }

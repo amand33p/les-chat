@@ -28,9 +28,9 @@ module.exports = {
       return group;
     },
 
-    addUserToGroup: async (_, args, context) => {
+    addRemoveGroupUser: async (_, args, context) => {
       const loggedUser = authChecker(context);
-      const { conversationId, userToAddId } = args;
+      const { conversationId, userId, addOrDel } = args;
 
       const groupConversation = await Conversation.findOne({
         where: { id: conversationId },
@@ -42,25 +42,35 @@ module.exports = {
         );
       }
 
-      if (groupConversation.admin !== loggedUser.id) {
+      if (groupConversation.admin != loggedUser.id) {
         throw new UserInputError('Access is denied.');
       }
 
-      const userToAdd = await User.findOne({ where: { id: userToAddId } });
+      const userToAdd = await User.findOne({ where: { id: userId } });
 
       if (!userToAdd) {
         throw new UserInputError(
-          `User with id: ${userToAddId} does not exist in DB.`
+          `User with id: ${userId} does not exist in DB.`
         );
       }
 
-      if (groupConversation.participants.find((p) => p == userToAddId)) {
-        throw new UserInputError('User is already a member of the group.');
+      if (addOrDel === 'ADD') {
+        if (groupConversation.participants.find((p) => p == userId)) {
+          throw new UserInputError('User is already a member of the group.');
+        } else {
+          groupConversation.participants = [
+            ...groupConversation.participants,
+            userId,
+          ];
+        }
       } else {
-        groupConversation.participants = [
-          ...groupConversation.participants,
-          userToAddId,
-        ];
+        if (!groupConversation.participants.find((p) => p == userId)) {
+          throw new UserInputError('User is not a member of the group.');
+        } else {
+          groupConversation.participants = groupConversation.participants.filter(
+            (p) => p != userId
+          );
+        }
       }
 
       const savedConversation = await groupConversation.save();
