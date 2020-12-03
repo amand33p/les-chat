@@ -60,15 +60,9 @@ module.exports = {
         where: { id: conversationId },
       });
 
-      if (!groupConversation) {
+      if (!groupConversation || groupConversation.type !== 'group') {
         throw new UserInputError(
-          `Conversation with id: ${conversationId} does not exist in DB.`
-        );
-      }
-
-      if (groupConversation.type !== 'group') {
-        throw new UserInputError(
-          `Conversation with id: ${conversationId} is not of group type.`
+          `Invalid Group ID, or conversation isn't of type group.`
         );
       }
 
