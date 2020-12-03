@@ -1,20 +1,25 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('conversations', {
       id: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      username: {
+      name: {
         type: Sequelize.STRING,
+      },
+      admin: {
+        type: Sequelize.INTEGER,
+      },
+      type: {
+        type: Sequelize.ENUM('public', 'private', 'group'),
         allowNull: false,
-        unique: true,
       },
-      passwordHash: {
-        type: Sequelize.STRING,
+      participants: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
         allowNull: false,
       },
       createdAt: {
@@ -28,6 +33,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('conversations');
   },
 };
