@@ -20,7 +20,6 @@ module.exports = {
       },
       participants: {
         type: Sequelize.ARRAY(Sequelize.INTEGER),
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,

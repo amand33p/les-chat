@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       participants: {
         type: DataTypes.ARRAY(DataTypes.INTEGER),
-        allowNull: false,
       },
     },
     {

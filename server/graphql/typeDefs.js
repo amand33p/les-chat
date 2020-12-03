@@ -39,6 +39,7 @@ module.exports = gql`
 
     sendPrivateMessage(receiverId: ID!, body: String!): Message!
     sendGroupMessage(conversationId: ID!, body: String!): Message!
+    sendGlobalMessage(body: String): Message!
 
     createGroup(name: String!): Group!
     addUserToGroup(conversationId: ID!, userId: ID!): Group!

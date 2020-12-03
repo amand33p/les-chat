@@ -9,16 +9,16 @@ module.exports = {
       const loggedUser = authChecker(context);
       const { receiverId, body } = args;
 
+      if (body.trim() === '') {
+        throw new UserInputError('Body field must not be empty.');
+      }
+
       const receivingUser = await User.findOne({ where: { id: receiverId } });
 
       if (!receivingUser) {
         throw new UserInputError(
           `User with id: ${receiverId} does not exist in DB.`
         );
-      }
-
-      if (body.trim() === '') {
-        throw new UserInputError('Body field must not be empty.');
       }
 
       let conversation = await Conversation.findOne({
@@ -41,6 +41,70 @@ module.exports = {
 
       const newMessage = await Message.create({
         conversationId: conversation.id,
+        senderId: loggedUser.id,
+        body,
+      });
+
+      return newMessage;
+    },
+
+    sendGroupMessage: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { conversationId, body } = args;
+
+      if (body.trim() === '') {
+        throw new UserInputError('Body field must not be empty.');
+      }
+
+      const groupConversation = await Conversation.findOne({
+        where: { id: conversationId },
+      });
+
+      if (!groupConversation) {
+        throw new UserInputError(
+          `Conversation with id: ${conversationId} does not exist in DB.`
+        );
+      }
+
+      if (groupConversation.type !== 'group') {
+        throw new UserInputError(
+          `Conversation with id: ${conversationId} is not of group type.`
+        );
+      }
+
+      if (!groupConversation.participants.includes(loggedUser.id)) {
+        throw new UserInputError(
+          'Access is denied. Only members of the group can send messages.'
+        );
+      }
+
+      const newMessage = await Message.create({
+        conversationId,
+        senderId: loggedUser.id,
+        body,
+      });
+
+      return newMessage;
+    },
+
+    sendGlobalMessage: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { body } = args;
+
+      if (body.trim() === '') {
+        throw new UserInputError('Body field must not be empty.');
+      }
+
+      const globalConversation = await Conversation.findOne({
+        where: { type: 'public' },
+      });
+
+      if (!globalConversation) {
+        throw new UserInputError(`Global Chat group does not exist in DB.`);
+      }
+
+      const newMessage = await Message.create({
+        conversationId: globalConversation.id,
         senderId: loggedUser.id,
         body,
       });
