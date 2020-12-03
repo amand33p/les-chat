@@ -13,6 +13,13 @@ module.exports = gql`
     token: String!
   }
 
+  type Message {
+    id: ID!
+    body: String!
+    conversationId: ID!
+    senderId: ID!
+  }
+
   type Query {
     getAllUsers: [User]!
   }
@@ -20,5 +27,7 @@ module.exports = gql`
   type Mutation {
     register(username: String!, password: String!): LoggedUser!
     login(username: String!, password: String!): LoggedUser!
+
+    sendPrivateMessage(receiverId: ID!, body: String!): Message!
   }
 `;
