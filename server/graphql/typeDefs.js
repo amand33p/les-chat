@@ -23,6 +23,7 @@ module.exports = gql`
     body: String!
     conversationId: ID!
     senderId: ID!
+    createdAt: String!
   }
 
   type Group {
@@ -36,6 +37,7 @@ module.exports = gql`
 
   type Query {
     getAllUsers: [User]!
+    getPrivateMessages(userId: ID!): [Message]!
   }
 
   type Mutation {
@@ -47,12 +49,12 @@ module.exports = gql`
     sendGlobalMessage(body: String): Message!
 
     createGroup(name: String!): Group!
+    EditGroupName(conversationId: ID!, name: String!): Group!
+    deleteGroup(conversationId: ID!): ID!
     addRemoveGroupUser(
       conversationId: ID!
       userId: ID!
       addOrDel: AddOrDelete!
     ): Group!
-    EditGroupName(conversationId: ID!, name: String!): Group!
-    deleteGroup(conversationId: ID!): ID!
   }
 `;

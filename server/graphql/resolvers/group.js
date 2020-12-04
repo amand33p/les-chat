@@ -24,6 +24,7 @@ module.exports = {
         type: 'group',
         participants: [loggedUser.id],
       });
+
       return group;
     },
 
@@ -43,6 +44,10 @@ module.exports = {
 
       if (groupConversation.admin !== loggedUser.id) {
         throw new UserInputError('Access is denied.');
+      }
+
+      if (groupConversation.admin === userId) {
+        throw new UserInputError("You can't remove/add admin.");
       }
 
       const userToAdd = await User.findOne({ where: { id: userId } });

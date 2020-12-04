@@ -4,6 +4,40 @@ const { UserInputError } = require('apollo-server');
 const authChecker = require('../../utils/authChecker');
 
 module.exports = {
+  Query: {
+    getPrivateMessages: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { userId } = args;
+
+      const user = await User.findOne({ where: { id: userId } });
+
+      if (!user) {
+        throw new UserInputError(
+          `User with id: ${userId} does not exist in DB.`
+        );
+      }
+
+      const messages = await Message.findAll({
+        include: [
+          {
+            model: Conversation,
+            as: 'conversation',
+            where: {
+              [Op.and]: [
+                { type: 'private' },
+                {
+                  participants: { [Op.contains]: [loggedUser.id, userId] },
+                },
+              ],
+            },
+          },
+        ],
+        order: [['createdAt', 'ASC']],
+      });
+
+      return messages;
+    },
+  },
   Mutation: {
     sendPrivateMessage: async (_, args, context) => {
       const loggedUser = authChecker(context);
@@ -19,6 +53,10 @@ module.exports = {
         throw new UserInputError(
           `User with id: ${receiverId} does not exist in DB.`
         );
+      }
+
+      if (receiverId == loggedUser.id) {
+        throw new UserInputError("You can't send private message to yourself.");
       }
 
       let conversation = await Conversation.findOne({
@@ -94,7 +132,7 @@ module.exports = {
       });
 
       if (!globalConversation) {
-        throw new UserInputError(`Global Chat group does not exist in DB.`);
+        throw new UserInputError(`Global Chat group does not exist.`);
       }
 
       const newMessage = await Message.create({
