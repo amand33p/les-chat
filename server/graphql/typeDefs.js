@@ -52,7 +52,7 @@ module.exports = gql`
       userId: ID!
       addOrDel: AddOrDelete!
     ): Group!
-    EditGroupName(conversationId: ID!, newName: String!): Group!
-    deleteGroup(conversationId: ID!): Group!
+    EditGroupName(conversationId: ID!, name: String!): Group!
+    deleteGroup(conversationId: ID!): ID!
   }
 `;

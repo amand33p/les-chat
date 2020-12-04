@@ -1,5 +1,4 @@
 const { Conversation, User } = require('../../models');
-const { Op } = require('sequelize');
 const { UserInputError } = require('apollo-server');
 const authChecker = require('../../utils/authChecker');
 
@@ -38,11 +37,11 @@ module.exports = {
 
       if (!groupConversation || groupConversation.type !== 'group') {
         throw new UserInputError(
-          `Invalid Group ID, or conversation isn't of type group.`
+          `Invalid conversation ID, or conversation isn't of group type.`
         );
       }
 
-      if (groupConversation.admin != loggedUser.id) {
+      if (groupConversation.admin !== loggedUser.id) {
         throw new UserInputError('Access is denied.');
       }
 
@@ -75,6 +74,54 @@ module.exports = {
 
       const savedConversation = await groupConversation.save();
       return savedConversation;
+    },
+
+    EditGroupName: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { conversationId, name } = args;
+
+      if (name.trim() === '') {
+        throw new UserInputError('Name field must not be empty.');
+      }
+
+      const groupConversation = await Conversation.findOne({
+        where: { id: conversationId },
+      });
+
+      if (!groupConversation || groupConversation.type !== 'group') {
+        throw new UserInputError(
+          `Invalid conversation ID, or conversation isn't of group type.`
+        );
+      }
+
+      if (groupConversation.admin !== loggedUser.id) {
+        throw new UserInputError('Access is denied.');
+      }
+
+      groupConversation.name = name;
+      const updatedConversation = await groupConversation.save();
+      return updatedConversation;
+    },
+    deleteGroup: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { conversationId } = args;
+
+      const groupConversation = await Conversation.findOne({
+        where: { id: conversationId },
+      });
+
+      if (!groupConversation || groupConversation.type !== 'group') {
+        throw new UserInputError(
+          `Invalid conversation ID, or conversation isn't of group type.`
+        );
+      }
+
+      if (groupConversation.admin !== loggedUser.id) {
+        throw new UserInputError('Access is denied.');
+      }
+
+      await Conversation.destroy({ where: { id: conversationId } });
+      return conversationId;
     },
   },
 };
