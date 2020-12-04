@@ -37,7 +37,10 @@ module.exports = gql`
 
   type Query {
     getAllUsers: [User]!
+
     getPrivateMessages(userId: ID!): [Message]!
+    getGroupMessages(conversationId: ID!): [Message]!
+    getGlobalMessages: [Message]!
   }
 
   type Mutation {

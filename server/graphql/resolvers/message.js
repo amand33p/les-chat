@@ -37,6 +37,67 @@ module.exports = {
 
       return messages;
     },
+
+    getGroupMessages: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { conversationId } = args;
+
+      const groupConversation = await Conversation.findOne({
+        where: { id: conversationId },
+      });
+
+      if (!groupConversation || groupConversation.type !== 'group') {
+        throw new UserInputError(
+          `Invalid conversation ID, or conversation isn't of group type.`
+        );
+      }
+
+      if (!groupConversation.participants.includes(loggedUser.id)) {
+        throw new UserInputError(
+          'Access is denied. Only members of the group can view messages.'
+        );
+      }
+
+      const messages = await Message.findAll({
+        include: [
+          {
+            model: Conversation,
+            as: 'conversation',
+            where: {
+              id: conversationId,
+            },
+          },
+        ],
+        order: [['createdAt', 'ASC']],
+      });
+
+      return messages;
+    },
+
+    getGlobalMessages: async () => {
+      const globalConversation = await Conversation.findOne({
+        where: { type: 'public' },
+      });
+
+      if (!globalConversation) {
+        throw new UserInputError(`Global Chat group does not exist.`);
+      }
+
+      const messages = await Message.findAll({
+        include: [
+          {
+            model: Conversation,
+            as: 'conversation',
+            where: {
+              type: 'public',
+            },
+          },
+        ],
+        order: [['createdAt', 'ASC']],
+      });
+
+      return messages;
+    },
   },
   Mutation: {
     sendPrivateMessage: async (_, args, context) => {
