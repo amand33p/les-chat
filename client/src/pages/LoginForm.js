@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../graphql/mutations';
-//import { useAuthContext } from '../context/auth';
+import { useAuthContext } from '../context/auth';
 //import { useStateContext } from '../context/state';
 //import ErrorMessage from './ErrorMessage';
 import * as yup from 'yup';
@@ -35,7 +35,7 @@ const LoginForm = () => {
   const [showPass, setShowPass] = useState(false);
   //const [errorMsg, setErrorMsg] = useState(null);
   const classes = useAuthFormStyles();
-  //const { setUser } = useAuthContext();
+  const { setUser } = useAuthContext();
   //const { notify } = useStateContext();
   const { register, handleSubmit, reset, errors } = useForm({
     mode: 'onTouched',
@@ -54,7 +54,7 @@ const LoginForm = () => {
       variables: { username, password },
       update: (_, { data }) => {
         console.log(data);
-        //setUser(data.login);
+        setUser(data.login);
         //notify(`Welcome, ${data.login.username}! You're logged in.`);
         reset();
       },
@@ -76,7 +76,6 @@ const LoginForm = () => {
               type="text"
               label="Username"
               variant="outlined"
-              size="small"
               error={'username' in errors}
               helperText={'username' in errors ? errors.username.message : ''}
               InputProps={{
@@ -97,7 +96,6 @@ const LoginForm = () => {
               type={showPass ? 'text' : 'password'}
               label="Password"
               variant="outlined"
-              size="small"
               error={'password' in errors}
               helperText={'password' in errors ? errors.password.message : ''}
               InputProps={{
@@ -131,6 +129,7 @@ const LoginForm = () => {
             startIcon={<ExitToAppIcon />}
             type="submit"
             disabled={loading}
+            className={classes.submitButton}
           >
             Log In
           </Button>

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../graphql/mutations';
-//import { useAuthContext } from '../context/auth';
+import { useAuthContext } from '../context/auth';
 //import { useStateContext } from '../context/state';
 //import ErrorMessage from './ErrorMessage';
 import * as yup from 'yup';
@@ -52,7 +52,7 @@ const RegisterForm = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [showConfPass, setShowConfPass] = useState(false);
   const classes = useAuthFormStyles();
-  //const { setUser } = useAuthContext();
+  const { setUser } = useAuthContext();
   //const { notify } = useStateContext();
   const { register, handleSubmit, reset, errors } = useForm({
     mode: 'onTouched',
@@ -73,7 +73,7 @@ const RegisterForm = () => {
       variables: { username, password },
       update: (_, { data }) => {
         console.log(data);
-        //setUser(data.register);
+        setUser(data.register);
         /*notify(
           `Welcome, ${data.register.username}! You've successfully registered.`
         );*/
@@ -98,7 +98,6 @@ const RegisterForm = () => {
               type="text"
               label="Username"
               variant="outlined"
-              size="small"
               error={'username' in errors}
               helperText={'username' in errors ? errors.username.message : ''}
               InputProps={{
@@ -119,7 +118,6 @@ const RegisterForm = () => {
               type={showPass ? 'text' : 'password'}
               label="Password"
               variant="outlined"
-              size="small"
               error={'password' in errors}
               helperText={'password' in errors ? errors.password.message : ''}
               InputProps={{
@@ -154,7 +152,6 @@ const RegisterForm = () => {
               type={showConfPass ? 'text' : 'password'}
               label="Confirm Password"
               variant="outlined"
-              size="small"
               error={'confirmPassword' in errors}
               helperText={
                 'confirmPassword' in errors
@@ -192,6 +189,7 @@ const RegisterForm = () => {
             startIcon={<PersonAddIcon />}
             type="submit"
             disabled={loading}
+            className={classes.submitButton}
           >
             Sign Up
           </Button>

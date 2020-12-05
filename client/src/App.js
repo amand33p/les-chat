@@ -1,3 +1,4 @@
+import NavBar from './components/NavBar';
 import Routes from './pages/Routes';
 
 import customTheme from './styles/customTheme';
@@ -11,6 +12,7 @@ const App = () => {
   return (
     <ThemeProvider theme={customTheme()}>
       <Paper className={classes.root} elevation={0}>
+        <NavBar />
         <Routes />
       </Paper>
     </ThemeProvider>
