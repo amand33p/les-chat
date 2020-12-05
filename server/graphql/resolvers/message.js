@@ -31,6 +31,7 @@ module.exports = {
                   },
                 ],
               },
+              attributes: [],
             },
           ],
           order: [['createdAt', 'ASC']],
@@ -71,6 +72,7 @@ module.exports = {
               where: {
                 id: conversationId,
               },
+              attributes: [],
             },
           ],
           order: [['createdAt', 'ASC']],
@@ -100,6 +102,7 @@ module.exports = {
               where: {
                 type: 'public',
               },
+              attributes: [],
             },
           ],
           order: [['createdAt', 'ASC']],
