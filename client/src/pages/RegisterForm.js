@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
-//import { useMutation } from '@apollo/client';
-//import { REGISTER_USER } from '../graphql/mutations';
+import { useMutation } from '@apollo/client';
+import { REGISTER_USER } from '../graphql/mutations';
 //import { useAuthContext } from '../context/auth';
 //import { useStateContext } from '../context/state';
 //import ErrorMessage from './ErrorMessage';
@@ -59,36 +59,34 @@ const RegisterForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  /*const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     onError: (err) => {
-      setErrorMsg(getErrorMsg(err));
+      //setErrorMsg(getErrorMsg(err));
     },
-  });*/
+  });
 
   const onRegister = ({ username, password, confirmPassword }) => {
     if (password !== confirmPassword)
       return setErrorMsg('Both passwords need to match.');
 
-    /*registerUser({
+    registerUser({
       variables: { username, password },
       update: (_, { data }) => {
-        setUser(data.register);
-        notify(
+        console.log(data);
+        //setUser(data.register);
+        /*notify(
           `Welcome, ${data.register.username}! You've successfully registered.`
-        );
+        );*/
         reset();
-        closeModal();
       },
-    });*/
-
-    console.log(username, password, confirmPassword);
+    });
   };
 
   return (
     <Container>
       <div className={classes.root}>
         <Typography variant="h4" color="secondary" className={classes.title}>
-          Welcome to LesChat!
+          Welcome to <strong>LesChat!</strong>
         </Typography>
         <form onSubmit={handleSubmit(onRegister)} className={classes.form}>
           <div className={classes.inputField}>
@@ -193,7 +191,7 @@ const RegisterForm = () => {
             fullWidth
             startIcon={<PersonAddIcon />}
             type="submit"
-            disabled={false}
+            disabled={loading}
           >
             Sign Up
           </Button>

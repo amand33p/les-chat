@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
-//import { useMutation } from '@apollo/client';
-//import { LOGIN_USER } from '../graphql/mutations';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../graphql/mutations';
 //import { useAuthContext } from '../context/auth';
 //import { useStateContext } from '../context/state';
 //import ErrorMessage from './ErrorMessage';
@@ -42,29 +42,30 @@ const LoginForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  /*const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     onError: (err) => {
-      setErrorMsg(getErrorMsg(err));
+      //setErrorMsg(getErrorMsg(err));
+      console.log(err);
     },
-  });*/
+  });
 
   const onLogin = ({ username, password }) => {
-    /*loginUser({
+    loginUser({
       variables: { username, password },
       update: (_, { data }) => {
-        setUser(data.login);
-        notify(`Welcome, ${data.login.username}! You're logged in.`);
+        console.log(data);
+        //setUser(data.login);
+        //notify(`Welcome, ${data.login.username}! You're logged in.`);
         reset();
       },
-    });*/
-    console.log(username, password);
+    });
   };
 
   return (
     <Container>
       <div className={classes.root}>
         <Typography variant="h4" color="secondary" className={classes.title}>
-          Login to your LesChat! account
+          Login to your <strong>LesChat!</strong> account
         </Typography>
         <form onSubmit={handleSubmit(onLogin)} className={classes.form}>
           <div className={classes.inputField}>
@@ -129,7 +130,7 @@ const LoginForm = () => {
             fullWidth
             startIcon={<ExitToAppIcon />}
             type="submit"
-            disabled={false}
+            disabled={loading}
           >
             Log In
           </Button>
