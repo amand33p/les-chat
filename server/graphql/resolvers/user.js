@@ -30,6 +30,7 @@ module.exports = {
                   },
                 ],
               },
+              attributes: ['participants'],
             },
           ],
           order: [['createdAt', 'DESC']],

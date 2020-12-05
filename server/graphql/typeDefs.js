@@ -28,6 +28,15 @@ module.exports = gql`
     type: String!
     participants: [ID!]!
     createdAt: String!
+    latestMessage: Message
+  }
+
+  type GlobalGroup {
+    id: ID!
+    name: String!
+    type: String!
+    createdAt: String!
+    latestMessage: Message
   }
 
   type LoggedUser {
@@ -38,7 +47,8 @@ module.exports = gql`
 
   type Query {
     getAllUsers: [User]!
-
+    getGroups: [Group]!
+    getGlobalGroup: GlobalGroup
     getPrivateMessages(userId: ID!): [Message]!
     getGroupMessages(conversationId: ID!): [Message]!
     getGlobalMessages: [Message]!
