@@ -1,4 +1,4 @@
-const { User } = require('../../models');
+const { User, Message, Conversation } = require('../../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
@@ -13,9 +13,36 @@ module.exports = {
       const loggedUser = authChecker(context);
 
       try {
-        const users = await User.findAll({
+        let users = await User.findAll({
           where: { id: { [Op.ne]: loggedUser.id } },
         });
+
+        const privateMessages = await Message.findAll({
+          include: [
+            {
+              model: Conversation,
+              as: 'conversation',
+              where: {
+                [Op.and]: [
+                  { type: 'private' },
+                  {
+                    participants: { [Op.contains]: [loggedUser.id] },
+                  },
+                ],
+              },
+            },
+          ],
+          order: [['createdAt', 'DESC']],
+        });
+
+        users = users.map((user) => {
+          const latestMessage = privateMessages.find((p) =>
+            p.conversation.participants.includes(user.id)
+          );
+          user.latestMessage = latestMessage;
+          return user;
+        });
+
         return users;
       } catch (err) {
         throw new UserInputError(err);
