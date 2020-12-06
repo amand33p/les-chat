@@ -34,7 +34,26 @@ export const useNavStyles = makeStyles(
       marginRight: '0.3em',
     },
     appBar: {
-      borderBottom: `3px solid ${theme.palette.secondary.main}98`,
+      borderBottom: `3px solid ${theme.palette.primary.main}98`,
+    },
+    rightBtnWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    lastBtn: {
+      marginLeft: '0.7em',
+    },
+    userInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      borderRight: `1px solid ${theme.palette.primary.main}50`,
+      paddingRight: '0.8em',
+    },
+    avatar: {
+      width: theme.spacing(3.8),
+      height: theme.spacing(3.8),
+      marginRight: '0.4em',
+      borderRadius: 2,
     },
   }),
   { index: 1 }

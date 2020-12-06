@@ -38,7 +38,7 @@ const LoginForm = () => {
   const { setUser } = useAuthContext();
   //const { notify } = useStateContext();
   const { register, handleSubmit, reset, errors } = useForm({
-    mode: 'onTouched',
+    mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
 

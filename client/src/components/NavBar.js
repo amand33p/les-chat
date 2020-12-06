@@ -1,4 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useAuthContext } from '../context/auth';
 import UserButtonsDesktop from './UserButtonsDesktop';
 import ChatIcon from '../svg/chat.svg';
@@ -18,11 +18,15 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const NavBar = () => {
   const { user, logoutUser } = useAuthContext();
+  const history = useHistory();
   const classes = useNavStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    logoutUser();
+    history.push('/login');
+  };
 
   return (
     <AppBar
@@ -60,7 +64,7 @@ const NavBar = () => {
               </Button>
             )}
             <Typography variant="caption" color="secondary">
-              | Made with{' '}
+              Made with{' '}
               <FavoriteIcon style={{ fontSize: 10, color: '#f4649f' }} /> by
               <Link
                 href={'https://github.com/amand33p'}
