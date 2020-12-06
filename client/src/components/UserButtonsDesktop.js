@@ -1,6 +1,8 @@
 import { Link as RouterLink } from 'react-router-dom';
+
 import { Button, Typography, Avatar } from '@material-ui/core';
 import { useNavStyles } from '../styles/muiStyles';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 const UserButtonsDesktop = ({ user, handleLogout, isMobile }) => {
   const classes = useNavStyles();

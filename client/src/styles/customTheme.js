@@ -21,6 +21,7 @@ const customTheme = (darkMode) =>
         root: {
           borderRadius: 4,
           textTransform: 'none',
+          fontSize: '0.95em',
         },
       },
     },

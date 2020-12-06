@@ -27,14 +27,24 @@ export const useNavStyles = makeStyles(
         alignItems: 'center',
       },
     },
-    logo: {
+    logoBtn: {
       textTransform: 'none',
-      fontSize: '1.3em',
+      fontSize: '1.2em',
       padding: '0.1em',
       marginRight: '0.3em',
+      [theme.breakpoints.down('xs')]: {
+        fontSize: '1em',
+      },
     },
     appBar: {
       borderBottom: `3px solid ${theme.palette.primary.main}98`,
+    },
+    svgImage: {
+      width: '28px',
+      marginRight: '5px',
+      [theme.breakpoints.down('xs')]: {
+        width: '20px',
+      },
     },
     rightBtnWrapper: {
       display: 'flex',
