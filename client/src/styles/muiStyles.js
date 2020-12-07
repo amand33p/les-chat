@@ -34,6 +34,7 @@ export const useNavStyles = makeStyles(
       marginRight: '0.3em',
       [theme.breakpoints.down('xs')]: {
         fontSize: '1em',
+        marginLeft: '0.6em',
       },
     },
     appBar: {
@@ -64,6 +65,26 @@ export const useNavStyles = makeStyles(
       height: theme.spacing(3.8),
       marginRight: '0.4em',
       borderRadius: 2,
+    },
+  }),
+  { index: 1 }
+);
+
+export const useMenuStyles = makeStyles(
+  (theme) => ({
+    avatar: {
+      marginRight: '0.2em',
+      width: theme.spacing(2.8),
+      height: theme.spacing(2.8),
+    },
+    moreBtn: {
+      padding: '0.35em',
+    },
+    userBtnMob: {
+      padding: '0.35em',
+    },
+    menuIcon: {
+      marginRight: '8px',
     },
   }),
   { index: 1 }
