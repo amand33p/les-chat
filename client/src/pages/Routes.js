@@ -1,6 +1,7 @@
 import { Switch, Route, Redirect } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+import Main from './Main';
 import { useAuthContext } from '../context/auth';
 
 const Routes = () => {
@@ -9,7 +10,7 @@ const Routes = () => {
   return (
     <Switch>
       <Route exact path="/">
-        {user ? <h1>Home</h1> : <Redirect to="/register" />}
+        {user ? <Main /> : <Redirect to="/register" />}
       </Route>
       <Route exact path="/login">
         {!user ? <LoginForm /> : <Redirect to="/" />}

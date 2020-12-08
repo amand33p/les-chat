@@ -127,3 +127,15 @@ export const useAuthFormStyles = makeStyles(
   }),
   { index: 1 }
 );
+
+export const useMainPageStyles = makeStyles(
+  (theme) => ({
+    root: {
+      display: 'flex',
+    },
+    recentMsgPanel: {
+      width: '30%',
+    },
+  }),
+  { index: 1 }
+);

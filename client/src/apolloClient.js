@@ -1,9 +1,9 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-//import { setContext } from 'apollo-link-context';
-//import storage from './utils/localStorage';
+import { setContext } from 'apollo-link-context';
+import storage from './utils/localStorage';
 //import backendUrl from './backendUrl';
 
-/*const authLink = setContext(() => {
+const authLink = setContext(() => {
   const loggedUser = storage.loadUser();
 
   return {
@@ -11,7 +11,7 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
       authorization: loggedUser ? loggedUser.token : null,
     },
   };
-});*/
+});
 
 const httpLink = new HttpLink({
   uri: 'http://localhost:4000',
@@ -19,9 +19,7 @@ const httpLink = new HttpLink({
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: httpLink,
+  link: authLink.concat(httpLink),
 });
-
-//authLink.concat(httpLink),
 
 export default client;

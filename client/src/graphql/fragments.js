@@ -7,3 +7,13 @@ export const LOGGED_USER_DETAILS = gql`
     token
   }
 `;
+
+export const MESSAGE_DETAILS = gql`
+  fragment MessageDetails on Message {
+    id
+    body
+    conversationId
+    senderId
+    createdAt
+  }
+`;
