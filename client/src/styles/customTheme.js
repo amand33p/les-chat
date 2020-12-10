@@ -24,6 +24,11 @@ const customTheme = (darkMode) =>
           fontSize: '0.95em',
         },
       },
+      MuiTypography: {
+        root: {
+          wordWrap: 'anywhere',
+        },
+      },
     },
     props: {
       MuiButton: {

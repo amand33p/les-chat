@@ -134,7 +134,31 @@ export const useMainPageStyles = makeStyles(
       display: 'flex',
     },
     recentMsgPanel: {
-      width: '30%',
+      width: '25%',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useUsersGroupsPageStyles = makeStyles(
+  (theme) => ({
+    root: {
+      height: '94vH',
+      borderRight: '1px solid #d3d3d3',
+    },
+    listItem: {
+      display: 'flex',
+    },
+    chatInfo: {
+      width: '100%',
+    },
+    latestMsgRow: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    greyText: {
+      color: '#555555',
     },
   }),
   { index: 1 }

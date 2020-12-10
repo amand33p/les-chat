@@ -13,4 +13,7 @@ module.exports = {
     ...messageResolvers.Mutation,
     ...groupResolvers.Mutation,
   },
+  Message: {
+    createdAt: (parent) => parent.createdAt.toISOString(),
+  },
 };
