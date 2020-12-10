@@ -6,12 +6,15 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import apolloClient from './apolloClient';
 import { AuthProvider } from './context/auth';
+import { StateProvider } from './context/state';
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
     <Router>
       <AuthProvider>
-        <App />
+        <StateProvider>
+          <App />
+        </StateProvider>
       </AuthProvider>
     </Router>
   </ApolloProvider>,

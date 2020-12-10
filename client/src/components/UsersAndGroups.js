@@ -5,14 +5,13 @@ import {
   GET_GLOBAL_GROUP,
 } from '../graphql/queries';
 import LatestMessage from './LatestMessage';
-import { formatDateAgo } from '../utils/helperFuncs';
+import { useStateContext } from '../context/state';
 
 import {
   List,
   ListItem,
   ListItemAvatar,
   Avatar,
-  Typography,
   Divider,
 } from '@material-ui/core';
 import { useUsersGroupsPageStyles } from '../styles/muiStyles';
@@ -21,15 +20,19 @@ import GroupIcon from '@material-ui/icons/Group';
 
 const UsersAndGroups = () => {
   const classes = useUsersGroupsPageStyles();
+  const { selectedChat, selectChat } = useStateContext();
+
   const { data: userData, loading: loadingUsers } = useQuery(GET_ALL_USERS, {
     onError: (err) => {
       console.log(err);
     },
+    fetchPolicy: 'network-only',
   });
   const { data: groupData, loading: loadingGroups } = useQuery(GET_GROUPS, {
     onError: (err) => {
       console.log(err);
     },
+    fetchPolicy: 'network-only',
   });
   const { data: globalData, loading: loadingGlobal } = useQuery(
     GET_GLOBAL_GROUP,
@@ -37,6 +40,7 @@ const UsersAndGroups = () => {
       onError: (err) => {
         console.log(err);
       },
+      fetchPolicy: 'network-only',
     }
   );
 
@@ -48,7 +52,15 @@ const UsersAndGroups = () => {
     <div className={classes.root}>
       <List className={classes.list}>
         {globalData && (
-          <ListItem className={classes.listItem} button>
+          <ListItem
+            className={classes.listItem}
+            button
+            onClick={() => selectChat(globalData.getGlobalGroup, 'public')}
+            selected={
+              selectedChat?.chatType === 'public' &&
+              globalData.getGlobalGroup.id === selectedChat.chatData.id
+            }
+          >
             <ListItemAvatar>
               <Avatar>
                 <LanguageIcon color="primary" />
@@ -62,7 +74,16 @@ const UsersAndGroups = () => {
           groupData.getGroups
             .filter((group) => group.latestMessage)
             .map((group) => (
-              <ListItem className={classes.listItem} button key={group.id}>
+              <ListItem
+                className={classes.listItem}
+                button
+                key={group.id}
+                onClick={() => selectChat(group, 'group')}
+                selected={
+                  selectedChat?.chatType === 'group' &&
+                  group.id === selectedChat.chatData.id
+                }
+              >
                 <ListItemAvatar>
                   <Avatar>
                     <GroupIcon color="primary" />
@@ -76,7 +97,16 @@ const UsersAndGroups = () => {
           userData.getAllUsers
             .filter((user) => user.latestMessage)
             .map((user) => (
-              <ListItem className={classes.listItem} button key={user.id}>
+              <ListItem
+                className={classes.listItem}
+                button
+                key={user.id}
+                onClick={() => selectChat(user, 'private')}
+                selected={
+                  selectedChat?.chatType === 'private' &&
+                  user.id === selectedChat.chatData.id
+                }
+              >
                 <ListItemAvatar>
                   <Avatar
                     alt={user.username}
@@ -86,6 +116,7 @@ const UsersAndGroups = () => {
                 <LatestMessage body={user} type="user" />
               </ListItem>
             ))}
+        <Divider />
       </List>
     </div>
   );

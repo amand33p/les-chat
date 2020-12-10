@@ -1,4 +1,5 @@
 import UsersAndGroups from '../components/UsersAndGroups';
+import Messages from '../components/Messages';
 
 import { useMainPageStyles } from '../styles/muiStyles';
 
@@ -10,6 +11,7 @@ const Main = () => {
       <div className={classes.recentMsgPanel}>
         <UsersAndGroups />
       </div>
+      <Messages />
     </div>
   );
 };

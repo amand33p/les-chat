@@ -135,6 +135,8 @@ export const useMainPageStyles = makeStyles(
     },
     recentMsgPanel: {
       width: '25%',
+      borderRight: '1px solid #d3d3d3',
+      height: '94vH',
     },
   }),
   { index: 1 }
@@ -143,8 +145,7 @@ export const useMainPageStyles = makeStyles(
 export const useUsersGroupsPageStyles = makeStyles(
   (theme) => ({
     root: {
-      height: '94vH',
-      borderRight: '1px solid #d3d3d3',
+      width: '100%',
     },
     listItem: {
       display: 'flex',
@@ -159,6 +160,15 @@ export const useUsersGroupsPageStyles = makeStyles(
     },
     greyText: {
       color: '#555555',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useMessagesPageStyles = makeStyles(
+  (theme) => ({
+    root: {
+      width: '100%',
     },
   }),
   { index: 1 }
