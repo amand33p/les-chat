@@ -1,10 +1,10 @@
 import { formatDateAgo } from '../utils/helperFuncs';
 
 import { Typography } from '@material-ui/core';
-import { useUsersGroupsPageStyles } from '../styles/muiStyles';
+import { useLatestMessagesPageStyles } from '../styles/muiStyles';
 
 const LatestMessage = ({ body, type }) => {
-  const classes = useUsersGroupsPageStyles();
+  const classes = useLatestMessagesPageStyles();
 
   return (
     <div className={classes.chatInfo}>

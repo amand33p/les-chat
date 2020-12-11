@@ -6,11 +6,12 @@ import {
   GET_GLOBAL_MSGS,
 } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
+import Message from '../../components/Message';
 
-import { useMessagesPageStyles } from '../../styles/muiStyles';
+import { useConversationPageStyles } from '../../styles/muiStyles';
 
-const Messages = () => {
-  const classes = useMessagesPageStyles();
+const Conversation = () => {
+  const classes = useConversationPageStyles();
   const { selectedChat } = useStateContext();
   const [messages, setMessages] = useState(null);
   const [fetchPrivateMsgs, { loadingPrivate }] = useLazyQuery(
@@ -60,15 +61,21 @@ const Messages = () => {
     } else {
       fetchGlobalMsgs();
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat]);
 
+  if (!messages || loadingPrivate || loadingGroup || loadingGlobal) {
+    return <div>loading...</div>;
+  }
+
   return (
     <div className={classes.root}>
-      <h1>Messages</h1>
+      <div className={classes.header}>{messages.name || messages.username}</div>
+      {messages.map((message) => (
+        <Message key={message.id} message={message} />
+      ))}
     </div>
   );
 };
 
-export default Messages;
+export default Conversation;

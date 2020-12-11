@@ -33,7 +33,6 @@ const customTheme = (darkMode) =>
         root: {
           '&$selected': {
             borderRight: '5px solid #f4649f',
-            backgroundColor: '#d3d3d3',
           },
         },
       },

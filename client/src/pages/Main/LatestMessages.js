@@ -14,12 +14,12 @@ import {
   Avatar,
   Divider,
 } from '@material-ui/core';
-import { useUsersGroupsPageStyles } from '../../styles/muiStyles';
+import { useLatestMessagesPageStyles } from '../../styles/muiStyles';
 import LanguageIcon from '@material-ui/icons/Language';
 import GroupIcon from '@material-ui/icons/Group';
 
-const UsersAndGroups = () => {
-  const classes = useUsersGroupsPageStyles();
+const LatestMessages = () => {
+  const classes = useLatestMessagesPageStyles();
   const { selectedChat, selectChat } = useStateContext();
 
   const { data: userData, loading: loadingUsers } = useQuery(GET_ALL_USERS, {
@@ -122,4 +122,4 @@ const UsersAndGroups = () => {
   );
 };
 
-export default UsersAndGroups;
+export default LatestMessages;

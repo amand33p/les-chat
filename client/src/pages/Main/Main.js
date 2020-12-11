@@ -1,18 +1,21 @@
-import UsersAndGroups from './UsersAndGroups';
-import Messages from './Messages';
+import LatestMessages from './LatestMessages';
+import Conversation from './Conversation';
 
+import { Container } from '@material-ui/core';
 import { useMainPageStyles } from '../../styles/muiStyles';
 
 const Main = () => {
   const classes = useMainPageStyles();
 
   return (
-    <div className={classes.root}>
-      <div className={classes.recentMsgPanel}>
-        <UsersAndGroups />
+    <Container>
+      <div className={classes.root}>
+        <div className={classes.recentMsgPanel}>
+          <LatestMessages />
+        </div>
+        <Conversation />
       </div>
-      <Messages />
-    </div>
+    </Container>
   );
 };
 

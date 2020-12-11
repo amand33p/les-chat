@@ -134,15 +134,16 @@ export const useMainPageStyles = makeStyles(
       display: 'flex',
     },
     recentMsgPanel: {
-      width: '25%',
-      borderRight: '1px solid #d3d3d3',
+      width: '40%',
+      borderRight: '1px solid #d3d3d390',
+      borderLeft: '1px solid #d3d3d390',
       height: '94vH',
     },
   }),
   { index: 1 }
 );
 
-export const useUsersGroupsPageStyles = makeStyles(
+export const useLatestMessagesPageStyles = makeStyles(
   (theme) => ({
     root: {
       width: '100%',
@@ -165,11 +166,37 @@ export const useUsersGroupsPageStyles = makeStyles(
   { index: 1 }
 );
 
-export const useMessagesPageStyles = makeStyles(
+export const useConversationPageStyles = makeStyles(
   (theme) => ({
     root: {
       width: '100%',
+      paddingTop: '1em',
+      padding: '2em',
+      borderRight: '1px solid #d3d3d390',
     },
+    messageWrapper: {
+      display: 'flex',
+      margin: '1em 0',
+    },
+    sentMsg: {
+      padding: '0.6em 1em',
+      backgroundColor: theme.palette.primary.main,
+      color: '#fff',
+      borderRadius: 20,
+      marginLeft: 'auto',
+      maxWidth: '90%',
+    },
+    receivedMsg: {
+      padding: '0.6em 1em',
+      backgroundColor: '#e3e3e3',
+      borderRadius: 20,
+      marginRight: 'auto',
+      maxWidth: '90%',
+    },
+    msgText: {
+      wordWrap: 'anywhere',
+    },
+    header: {},
   }),
   { index: 1 }
 );
