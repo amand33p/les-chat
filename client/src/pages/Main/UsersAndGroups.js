@@ -3,9 +3,9 @@ import {
   GET_ALL_USERS,
   GET_GROUPS,
   GET_GLOBAL_GROUP,
-} from '../graphql/queries';
-import LatestMessage from './LatestMessage';
-import { useStateContext } from '../context/state';
+} from '../../graphql/queries';
+import LatestMessage from '../../components/LatestMessage';
+import { useStateContext } from '../../context/state';
 
 import {
   List,
@@ -14,7 +14,7 @@ import {
   Avatar,
   Divider,
 } from '@material-ui/core';
-import { useUsersGroupsPageStyles } from '../styles/muiStyles';
+import { useUsersGroupsPageStyles } from '../../styles/muiStyles';
 import LanguageIcon from '@material-ui/icons/Language';
 import GroupIcon from '@material-ui/icons/Group';
 

@@ -1,7 +1,7 @@
 import { Switch, Route, Redirect } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
-import Main from './Main';
+import Main from './Main/Main';
 import { useAuthContext } from '../context/auth';
 
 const Routes = () => {

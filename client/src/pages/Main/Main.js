@@ -1,7 +1,7 @@
-import UsersAndGroups from '../components/UsersAndGroups';
-import Messages from '../components/Messages';
+import UsersAndGroups from './UsersAndGroups';
+import Messages from './Messages';
 
-import { useMainPageStyles } from '../styles/muiStyles';
+import { useMainPageStyles } from '../../styles/muiStyles';
 
 const Main = () => {
   const classes = useMainPageStyles();

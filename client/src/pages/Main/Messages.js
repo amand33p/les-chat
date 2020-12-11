@@ -4,10 +4,10 @@ import {
   GET_PRIVATE_MSGS,
   GET_GROUP_MSGS,
   GET_GLOBAL_MSGS,
-} from '../graphql/queries';
-import { useStateContext } from '../context/state';
+} from '../../graphql/queries';
+import { useStateContext } from '../../context/state';
 
-import { useMessagesPageStyles } from '../styles/muiStyles';
+import { useMessagesPageStyles } from '../../styles/muiStyles';
 
 const Messages = () => {
   const classes = useMessagesPageStyles();
@@ -58,7 +58,7 @@ const Messages = () => {
         variables: { conversationId: selectedChat.chatData.id },
       });
     } else {
-      fetchGlobalMsgs({});
+      fetchGlobalMsgs();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
