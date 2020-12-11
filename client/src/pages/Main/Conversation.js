@@ -7,6 +7,7 @@ import {
 } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
 import Message from '../../components/Message';
+import ConversationHeader from '../../components/ConversationHeader';
 
 import { useConversationPageStyles } from '../../styles/muiStyles';
 
@@ -70,10 +71,12 @@ const Conversation = () => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.header}>{messages.name || messages.username}</div>
-      {messages.map((message) => (
-        <Message key={message.id} message={message} />
-      ))}
+      <ConversationHeader selectedChat={selectedChat} />
+      <div className={classes.conversationWrapper}>
+        {messages.map((message) => (
+          <Message key={message.id} message={message} />
+        ))}
+      </div>
     </div>
   );
 };

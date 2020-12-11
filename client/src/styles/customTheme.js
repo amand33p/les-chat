@@ -36,6 +36,12 @@ const customTheme = (darkMode) =>
           },
         },
       },
+      MuiAvatar: {
+        colorDefault: {
+          backgroundColor: '#d3d3d399',
+          color: '#ff4081',
+        },
+      },
     },
     props: {
       MuiButton: {

@@ -170,9 +170,11 @@ export const useConversationPageStyles = makeStyles(
   (theme) => ({
     root: {
       width: '100%',
+      borderRight: '1px solid #d3d3d390',
+    },
+    conversationWrapper: {
       paddingTop: '1em',
       padding: '2em',
-      borderRight: '1px solid #d3d3d390',
     },
     messageWrapper: {
       display: 'flex',
@@ -196,7 +198,11 @@ export const useConversationPageStyles = makeStyles(
     msgText: {
       wordWrap: 'anywhere',
     },
-    header: {},
+    conversationHeader: {
+      display: 'flex',
+      padding: '0.4em 0.5em',
+      borderBottom: '1px solid #d3d3d390',
+    },
   }),
   { index: 1 }
 );
