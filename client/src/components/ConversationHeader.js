@@ -20,6 +20,11 @@ const ConversationHeader = ({ selectedChat }) => {
           />
         )}
       </Avatar>
+      <Typography color="primary" variant="h6" className={classes.titleText}>
+        {selectedChat.chatType === 'private'
+          ? selectedChat.chatData.username
+          : selectedChat.chatData.name}
+      </Typography>
     </div>
   );
 };

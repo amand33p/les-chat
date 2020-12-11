@@ -200,8 +200,12 @@ export const useConversationPageStyles = makeStyles(
     },
     conversationHeader: {
       display: 'flex',
-      padding: '0.4em 0.5em',
+      padding: '0.5em 1em',
       borderBottom: '1px solid #d3d3d390',
+      alignItems: 'center',
+    },
+    titleText: {
+      marginLeft: '0.8em',
     },
   }),
   { index: 1 }
