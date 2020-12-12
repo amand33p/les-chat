@@ -2,9 +2,13 @@ const { AuthenticationError } = require('apollo-server');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('./config');
 
-const authChecker = (context) => {
-  const token = context.req ? context.req.headers.authorization : null;
-  if (!token) {
+const authChecker = ({ req, connection }) => {
+  let token;
+  if (req && req.headers.authorization) {
+    token = req.headers.authorization;
+  } else if (connection && connection.context.authorization) {
+    token = connection.context.authorization;
+  } else {
     throw new AuthenticationError('No auth token found. Authorization denied.');
   }
 

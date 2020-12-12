@@ -13,6 +13,9 @@ module.exports = {
     ...messageResolvers.Mutation,
     ...groupResolvers.Mutation,
   },
+  Subscription: {
+    ...messageResolvers.Subscription,
+  },
   Message: {
     createdAt: (parent) => parent.createdAt.toISOString(),
   },

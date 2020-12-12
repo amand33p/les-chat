@@ -1,7 +1,13 @@
 const { Message, Conversation, User } = require('../../models');
 const { Op } = require('sequelize');
-const { UserInputError } = require('apollo-server');
+const {
+  UserInputError,
+  PubSub,
+  withFilter,
+  AuthenticationError,
+} = require('apollo-server');
 const authChecker = require('../../utils/authChecker');
+const pubsub = new PubSub();
 
 module.exports = {
   Query: {
@@ -162,6 +168,14 @@ module.exports = {
           body,
         });
 
+        pubsub.publish('NEW_MESSAGE', {
+          newMessage: {
+            message: newMessage,
+            type: 'private',
+            participants: conversation.participants,
+          },
+        });
+
         return newMessage;
       } catch (err) {
         throw new UserInputError(err);
@@ -199,6 +213,14 @@ module.exports = {
           body,
         });
 
+        pubsub.publish('NEW_MESSAGE', {
+          newMessage: {
+            message: newMessage,
+            type: 'group',
+            participants: groupConversation.participants,
+          },
+        });
+
         return newMessage;
       } catch (err) {
         throw new UserInputError(err);
@@ -228,10 +250,40 @@ module.exports = {
           body,
         });
 
+        pubsub.publish('NEW_MESSAGE', {
+          newMessage: {
+            message: newMessage,
+            type: 'public',
+          },
+        });
+
         return newMessage;
       } catch (err) {
         throw new UserInputError(err);
       }
+    },
+  },
+  Subscription: {
+    newMessage: {
+      subscribe: withFilter(
+        (_, __, context) => {
+          const loggedUser = authChecker(context);
+          if (!loggedUser) {
+            throw new AuthenticationError('Authentication is required.');
+          }
+
+          return pubsub.asyncIterator(['NEW_MESSAGE']);
+        },
+        (parent, _, context) => {
+          const { newMessage } = parent;
+          const loggedUser = authChecker(context);
+
+          return (
+            newMessage.type === 'public' ||
+            newMessage.participants.includes(loggedUser.id)
+          );
+        }
+      ),
     },
   },
 };

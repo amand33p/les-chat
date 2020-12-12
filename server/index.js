@@ -10,8 +10,9 @@ const server = new ApolloServer({
   context: (context) => context,
 });
 
-server.listen({ port: PORT }).then(({ url }) => {
+server.listen({ port: PORT }).then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`);
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`);
 
   sequelize
     .authenticate()

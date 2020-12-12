@@ -45,10 +45,17 @@ module.exports = gql`
     token: String!
   }
 
+  type SubbedMessage {
+    message: Message!
+    type: String!
+    participants: [ID!]
+  }
+
   type Query {
     getAllUsers: [User]!
     getGroups: [Group]!
     getGlobalGroup: GlobalGroup
+
     getPrivateMessages(userId: ID!): [Message]!
     getGroupMessages(conversationId: ID!): [Message]!
     getGlobalMessages: [Message]!
@@ -70,5 +77,9 @@ module.exports = gql`
       userId: ID!
       addOrDel: AddOrDelete!
     ): Group!
+  }
+
+  type Subscription {
+    newMessage: SubbedMessage!
   }
 `;
