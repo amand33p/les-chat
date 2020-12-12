@@ -1,9 +1,9 @@
-import { useAuthContext } from '../context/auth';
+import { useAuthContext } from '../../context/auth';
 
 import { Typography } from '@material-ui/core';
-import { useConversationPageStyles } from '../styles/muiStyles';
+import { useConversationPageStyles } from '../../styles/muiStyles';
 
-const Message = ({ message }) => {
+const MessageBubble = ({ message }) => {
   const classes = useConversationPageStyles();
   const { user } = useAuthContext();
 
@@ -18,4 +18,4 @@ const Message = ({ message }) => {
   );
 };
 
-export default Message;
+export default MessageBubble;

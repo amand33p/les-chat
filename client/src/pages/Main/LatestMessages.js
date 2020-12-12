@@ -4,7 +4,7 @@ import {
   GET_GROUPS,
   GET_GLOBAL_GROUP,
 } from '../../graphql/queries';
-import LatestMessage from '../../components/LatestMessage';
+import LatestMessage from './LatestMessage';
 import { useStateContext } from '../../context/state';
 
 import {

@@ -1,5 +1,5 @@
 import { Typography, Avatar } from '@material-ui/core';
-import { useConversationPageStyles } from '../styles/muiStyles';
+import { useConversationPageStyles } from '../../styles/muiStyles';
 import LanguageIcon from '@material-ui/icons/Language';
 import GroupIcon from '@material-ui/icons/Group';
 

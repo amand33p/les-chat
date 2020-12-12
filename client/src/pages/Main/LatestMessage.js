@@ -1,7 +1,7 @@
-import { formatDateAgo } from '../utils/helperFuncs';
+import { formatDateAgo } from '../../utils/helperFuncs';
 
 import { Typography } from '@material-ui/core';
-import { useLatestMessagesPageStyles } from '../styles/muiStyles';
+import { useLatestMessagesPageStyles } from '../../styles/muiStyles';
 
 const LatestMessage = ({ body, type }) => {
   const classes = useLatestMessagesPageStyles();

@@ -137,7 +137,7 @@ export const useMainPageStyles = makeStyles(
       width: '40%',
       borderRight: '1px solid #d3d3d390',
       borderLeft: '1px solid #d3d3d390',
-      height: '94vH',
+      height: 'calc(100vH - 52px)',
     },
   }),
   { index: 1 }
@@ -147,6 +147,7 @@ export const useLatestMessagesPageStyles = makeStyles(
   (theme) => ({
     root: {
       width: '100%',
+      overflowY: 'auto',
     },
     listItem: {
       display: 'flex',
@@ -171,10 +172,14 @@ export const useConversationPageStyles = makeStyles(
     root: {
       width: '100%',
       borderRight: '1px solid #d3d3d390',
+      display: 'flex',
+      flexDirection: 'column',
     },
     conversationWrapper: {
       paddingTop: '1em',
       padding: '2em',
+      overflowY: 'auto',
+      flexGrow: 1,
     },
     messageWrapper: {
       display: 'flex',
@@ -206,6 +211,9 @@ export const useConversationPageStyles = makeStyles(
     },
     titleText: {
       marginLeft: '0.8em',
+    },
+    sendMsgForm: {
+      display: 'flex',
     },
   }),
   { index: 1 }

@@ -6,8 +6,9 @@ import {
   GET_GLOBAL_MSGS,
 } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
-import Message from '../../components/Message';
-import ConversationHeader from '../../components/ConversationHeader';
+import MessageBubble from './MessageBubble';
+import ConversationHeader from './ConversationHeader';
+import SendMessage from './SendMessage';
 
 import { useConversationPageStyles } from '../../styles/muiStyles';
 
@@ -47,9 +48,7 @@ const Conversation = () => {
   });
 
   useEffect(() => {
-    if (!selectedChat) {
-      return;
-    }
+    if (!selectedChat) return;
 
     if (selectedChat.chatType === 'private') {
       fetchPrivateMsgs({
@@ -66,7 +65,7 @@ const Conversation = () => {
   }, [selectedChat]);
 
   if (!messages || loadingPrivate || loadingGroup || loadingGlobal) {
-    return <div>loading...</div>;
+    return <div className={classes.root}>loading...</div>;
   }
 
   return (
@@ -74,9 +73,10 @@ const Conversation = () => {
       <ConversationHeader selectedChat={selectedChat} />
       <div className={classes.conversationWrapper}>
         {messages.map((message) => (
-          <Message key={message.id} message={message} />
+          <MessageBubble key={message.id} message={message} />
         ))}
       </div>
+      <SendMessage />
     </div>
   );
 };
