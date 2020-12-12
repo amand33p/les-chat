@@ -20,7 +20,7 @@ export const LOGIN_USER = gql`
 `;
 
 export const SEND_PRIVATE_MSG = gql`
-  mutation submitPrivateMsg($receiverId: ID!, body: String!) {
+  mutation submitPrivateMsg($receiverId: ID!, $body: String!) {
     sendPrivateMessage(receiverId: $receiverId, body: $body) {
       ...MessageDetails
     }
@@ -29,7 +29,7 @@ export const SEND_PRIVATE_MSG = gql`
 `;
 
 export const SEND_GROUP_MSG = gql`
-  mutation submitGroupMsg($conversationId: ID!, body: String!) {
+  mutation submitGroupMsg($conversationId: ID!, $body: String!) {
     sendGroupMessage(conversationId: $conversationId, body: $body) {
       ...MessageDetails
     }
@@ -38,7 +38,7 @@ export const SEND_GROUP_MSG = gql`
 `;
 
 export const SEND_GLOBAL_MSG = gql`
-  mutation submitGlobalMsg(body: String!) {
+  mutation submitGlobalMsg($body: String!) {
     sendGlobalMessage(body: $body) {
       ...MessageDetails
     }

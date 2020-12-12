@@ -1,4 +1,10 @@
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import {
+  SEND_PRIVATE_MSG,
+  SEND_GROUP_MSG,
+  SEND_GLOBAL_MSG,
+} from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 
 import { Button, TextField } from '@material-ui/core';
@@ -10,9 +16,40 @@ const SendMessage = () => {
   const { selectedChat } = useStateContext();
   const [messageBody, setMessageBody] = useState('');
 
+  const [submitPrivateMsg, { loadingPrivate }] = useMutation(SEND_PRIVATE_MSG, {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  const [submitGroupMsg, { loadingGroup }] = useMutation(SEND_GROUP_MSG, {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  const [submitGlobalMsg, { loadingGlobal }] = useMutation(SEND_GLOBAL_MSG, {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (messageBody.trim() === '') return;
+    if (messageBody.trim() === '' || !selectedChat) return;
+
+    if (selectedChat.chatType === 'private') {
+      submitPrivateMsg({
+        variables: { receiverId: selectedChat.chatData.id, body: messageBody },
+      });
+    } else if (selectedChat.chatType === 'group') {
+      submitGroupMsg({
+        variables: {
+          conversationId: selectedChat.chatData.id,
+          body: messageBody,
+        },
+      });
+    } else {
+      submitGlobalMsg({ variables: { body: messageBody } });
+    }
   };
 
   return (
@@ -25,7 +62,13 @@ const SendMessage = () => {
         variant="outlined"
         onChange={(e) => setMessageBody(e.target.value)}
       />
-      <Button size="small" color="primary" variant="contained" type="submit">
+      <Button
+        size="small"
+        color="primary"
+        variant="contained"
+        type="submit"
+        disabled={loadingPrivate || loadingGroup || loadingGlobal}
+      >
         <SendIcon />
       </Button>
     </form>
