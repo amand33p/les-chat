@@ -16,7 +16,7 @@ const Conversation = () => {
   const classes = useConversationPageStyles();
   const { selectedChat } = useStateContext();
   const [messages, setMessages] = useState(null);
-  const [fetchPrivateMsgs, { loadingPrivate }] = useLazyQuery(
+  const [fetchPrivateMsgs, { loading: loadingPrivate }] = useLazyQuery(
     GET_PRIVATE_MSGS,
     {
       fetchPolicy: 'network-only',
@@ -28,24 +28,30 @@ const Conversation = () => {
       },
     }
   );
-  const [fetchGroupMsgs, { loadingGroup }] = useLazyQuery(GET_GROUP_MSGS, {
-    fetchPolicy: 'network-only',
-    onError: (err) => {
-      console.log(err);
-    },
-    onCompleted: ({ getGroupMessages: fetchedData }) => {
-      setMessages(fetchedData);
-    },
-  });
-  const [fetchGlobalMsgs, { loadingGlobal }] = useLazyQuery(GET_GLOBAL_MSGS, {
-    fetchPolicy: 'network-only',
-    onError: (err) => {
-      console.log(err);
-    },
-    onCompleted: ({ getGlobalMessages: fetchedData }) => {
-      setMessages(fetchedData);
-    },
-  });
+  const [fetchGroupMsgs, { loading: loadingGroup }] = useLazyQuery(
+    GET_GROUP_MSGS,
+    {
+      fetchPolicy: 'network-only',
+      onError: (err) => {
+        console.log(err);
+      },
+      onCompleted: ({ getGroupMessages: fetchedData }) => {
+        setMessages(fetchedData);
+      },
+    }
+  );
+  const [fetchGlobalMsgs, { loading: loadingGlobal }] = useLazyQuery(
+    GET_GLOBAL_MSGS,
+    {
+      fetchPolicy: 'network-only',
+      onError: (err) => {
+        console.log(err);
+      },
+      onCompleted: ({ getGlobalMessages: fetchedData }) => {
+        setMessages(fetchedData);
+      },
+    }
+  );
 
   useEffect(() => {
     if (!selectedChat) return;

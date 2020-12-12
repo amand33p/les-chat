@@ -180,6 +180,7 @@ export const useConversationPageStyles = makeStyles(
       padding: '2em',
       overflowY: 'auto',
       flexGrow: 1,
+      maxHeight: 'calc(100vH - 214px)',
     },
     messageWrapper: {
       display: 'flex',

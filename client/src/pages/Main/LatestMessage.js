@@ -12,8 +12,10 @@ const LatestMessage = ({ body, type }) => {
         {type === 'user' ? body.username : body.name}
       </Typography>
       <div className={classes.latestMsgRow}>
-        <Typography variant="subtitle2" noWrap className={classes.greyText}>
-          {body.latestMessage.body}
+        <Typography variant="subtitle2" className={classes.greyText}>
+          {body.latestMessage.body.length < 20
+            ? body.latestMessage.body
+            : body.latestMessage.body.slice(0, 20) + '...'}
         </Typography>
         <Typography variant="caption" className={classes.greyText}>
           {`${formatDateAgo(body.latestMessage.createdAt)} ago`}

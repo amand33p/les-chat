@@ -16,21 +16,34 @@ const SendMessage = () => {
   const { selectedChat } = useStateContext();
   const [messageBody, setMessageBody] = useState('');
 
-  const [submitPrivateMsg, { loadingPrivate }] = useMutation(SEND_PRIVATE_MSG, {
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-  const [submitGroupMsg, { loadingGroup }] = useMutation(SEND_GROUP_MSG, {
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-  const [submitGlobalMsg, { loadingGlobal }] = useMutation(SEND_GLOBAL_MSG, {
-    onError: (err) => {
-      console.log(err);
-    },
-  });
+  const [submitPrivateMsg, { loading: loadingPrivate }] = useMutation(
+    SEND_PRIVATE_MSG,
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
+  const [submitGroupMsg, { loading: loadingGroup }] = useMutation(
+    SEND_GROUP_MSG,
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
+  const [submitGlobalMsg, { loading: loadingGlobal }] = useMutation(
+    SEND_GLOBAL_MSG,
+    {
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
+
+  const clearInput = () => {
+    setMessageBody('');
+  };
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -39,6 +52,9 @@ const SendMessage = () => {
     if (selectedChat.chatType === 'private') {
       submitPrivateMsg({
         variables: { receiverId: selectedChat.chatData.id, body: messageBody },
+        update: () => {
+          clearInput();
+        },
       });
     } else if (selectedChat.chatType === 'group') {
       submitGroupMsg({
@@ -46,9 +62,17 @@ const SendMessage = () => {
           conversationId: selectedChat.chatData.id,
           body: messageBody,
         },
+        update: () => {
+          clearInput();
+        },
       });
     } else {
-      submitGlobalMsg({ variables: { body: messageBody } });
+      submitGlobalMsg({
+        variables: { body: messageBody },
+        update: () => {
+          clearInput();
+        },
+      });
     }
   };
 
