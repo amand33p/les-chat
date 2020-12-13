@@ -268,11 +268,9 @@ module.exports = {
       subscribe: withFilter(
         (_, __, context) => {
           const loggedUser = authChecker(context);
-          if (!loggedUser) {
-            throw new AuthenticationError('Authentication is required.');
+          if (loggedUser) {
+            return pubsub.asyncIterator(['NEW_MESSAGE']);
           }
-
-          return pubsub.asyncIterator(['NEW_MESSAGE']);
         },
         (parent, _, context) => {
           const { newMessage } = parent;

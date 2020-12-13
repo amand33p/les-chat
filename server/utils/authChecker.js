@@ -6,8 +6,8 @@ const authChecker = ({ req, connection }) => {
   let token;
   if (req && req.headers.authorization) {
     token = req.headers.authorization;
-  } else if (connection && connection.context.authorization) {
-    token = connection.context.authorization;
+  } else if (connection && connection.context.Authorization) {
+    token = connection.context.Authorization;
   } else {
     throw new AuthenticationError('No auth token found. Authorization denied.');
   }
