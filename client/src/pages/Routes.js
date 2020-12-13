@@ -4,7 +4,6 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import Main from './Main/Main';
 import { useAuthContext } from '../context/auth';
-import { useStateContext } from '../context/state';
 
 import { useSubscription } from '@apollo/client';
 import { NEW_MESSAGE } from '../graphql/subscriptions';
@@ -12,34 +11,50 @@ import {
   GET_PRIVATE_MSGS,
   GET_GROUP_MSGS,
   GET_GLOBAL_MSGS,
+  GET_ALL_USERS,
+  GET_GROUPS,
+  GET_GLOBAL_GROUP,
 } from '../graphql/queries';
 
 const Routes = () => {
   const { user } = useAuthContext();
-  //const { selectedChat } = useStateContext();
   const { error: subscriptionError } = useSubscription(NEW_MESSAGE, {
     onSubscriptionData: ({ client, subscriptionData }) => {
       const newMessage = subscriptionData.data.newMessage;
-      let getMsgQuery;
-      let getMsgVariables;
-      let getMsgQueryName;
+
+      let getMsgQuery,
+        getMsgVariables,
+        getMsgQueryName,
+        getLastMsgQuery,
+        getLastMsgQueryName,
+        lastMsgTargetId;
 
       if (newMessage.type === 'private') {
-        const otherUser = newMessage.participants.filter(
+        const otherUserId = newMessage.participants.filter(
           (p) => p !== user.id
         )[0];
 
         getMsgQuery = GET_PRIVATE_MSGS;
-        getMsgVariables = { userId: otherUser };
+        getMsgVariables = { userId: otherUserId };
         getMsgQueryName = 'getPrivateMessages';
+        getLastMsgQuery = GET_ALL_USERS;
+        getLastMsgQueryName = 'getAllUsers';
+        lastMsgTargetId = otherUserId;
       } else if (newMessage.type === 'group') {
+        const groupConversationId = newMessage.message.conversationId;
+
         getMsgQuery = GET_GROUP_MSGS;
-        getMsgVariables = { conversationId: newMessage.message.conversationId };
+        getMsgVariables = { conversationId: groupConversationId };
         getMsgQueryName = 'getGroupMessages';
+        getLastMsgQuery = GET_GROUPS;
+        getLastMsgQueryName = 'getGroups';
+        lastMsgTargetId = groupConversationId;
       } else if (newMessage.type === 'public') {
         getMsgQuery = GET_GLOBAL_MSGS;
         getMsgVariables = null;
         getMsgQueryName = 'getGlobalMessages';
+        getLastMsgQuery = GET_GLOBAL_GROUP;
+        getLastMsgQueryName = 'getGlobalGroup';
       }
 
       const conversationCache = client.readQuery({
@@ -58,6 +73,29 @@ const Routes = () => {
           variables: getMsgVariables,
           data: {
             [getMsgQueryName]: updatedConvoCache,
+          },
+        });
+      }
+
+      const lastMsgCache = client.readQuery({
+        query: getLastMsgQuery,
+      });
+
+      if (lastMsgCache) {
+        const updatedLastMsgCache =
+          newMessage.type === 'public'
+            ? {
+                ...lastMsgCache[getLastMsgQueryName],
+                latestMessage: newMessage.message,
+              }
+            : lastMsgCache[getLastMsgQueryName].map((l) =>
+                l.id === lastMsgTargetId ? newMessage.message : l
+              );
+
+        client.writeQuery({
+          query: getLastMsgQuery,
+          data: {
+            [getLastMsgQueryName]: updatedLastMsgCache,
           },
         });
       }
