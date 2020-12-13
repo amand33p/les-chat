@@ -4,23 +4,71 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import Main from './Main/Main';
 import { useAuthContext } from '../context/auth';
+import { useStateContext } from '../context/state';
 
 import { useSubscription } from '@apollo/client';
 import { NEW_MESSAGE } from '../graphql/subscriptions';
+import {
+  GET_PRIVATE_MSGS,
+  GET_GROUP_MSGS,
+  GET_GLOBAL_MSGS,
+} from '../graphql/queries';
 
 const Routes = () => {
   const { user } = useAuthContext();
-  const { error } = useSubscription(NEW_MESSAGE, {
+  //const { selectedChat } = useStateContext();
+  const { error: subscriptionError } = useSubscription(NEW_MESSAGE, {
     onSubscriptionData: ({ client, subscriptionData }) => {
-      console.log(subscriptionData);
+      const newMessage = subscriptionData.data.newMessage;
+      let getMsgQuery;
+      let getMsgVariables;
+      let getMsgQueryName;
+
+      if (newMessage.type === 'private') {
+        const otherUser = newMessage.participants.filter(
+          (p) => p !== user.id
+        )[0];
+
+        getMsgQuery = GET_PRIVATE_MSGS;
+        getMsgVariables = { userId: otherUser };
+        getMsgQueryName = 'getPrivateMessages';
+      } else if (newMessage.type === 'group') {
+        getMsgQuery = GET_GROUP_MSGS;
+        getMsgVariables = { conversationId: newMessage.message.conversationId };
+        getMsgQueryName = 'getGroupMessages';
+      } else if (newMessage.type === 'public') {
+        getMsgQuery = GET_GLOBAL_MSGS;
+        getMsgVariables = null;
+        getMsgQueryName = 'getGlobalMessages';
+      }
+
+      const conversationCache = client.readQuery({
+        query: getMsgQuery,
+        variables: getMsgVariables,
+      });
+
+      if (conversationCache) {
+        const updatedConvoCache = [
+          ...conversationCache[getMsgQueryName],
+          newMessage.message,
+        ];
+
+        client.writeQuery({
+          query: getMsgQuery,
+          variables: getMsgVariables,
+          data: {
+            [getMsgQueryName]: updatedConvoCache,
+          },
+        });
+      }
     },
   });
 
   useEffect(() => {
-    if (error) {
-      console.log(error);
+    if (subscriptionError) {
+      console.log(subscriptionError);
     }
-  }, [error]);
+  }, [subscriptionError]);
 
   return (
     <Switch>
