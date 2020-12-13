@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import {
   GET_PRIVATE_MSGS,
@@ -14,6 +14,7 @@ import { useConversationPageStyles } from '../../styles/muiStyles';
 
 const Conversation = () => {
   const classes = useConversationPageStyles();
+  const messagesEndRef = useRef(null);
   const { selectedChat } = useStateContext();
   const [messages, setMessages] = useState(null);
   const [
@@ -69,6 +70,17 @@ const Conversation = () => {
     }
   }, [privateData, groupData, globalData, selectedChat]);
 
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView();
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
+
   if (!messages || loadingPrivate || loadingGroup || loadingGlobal) {
     return <div className={classes.root}>loading...</div>;
   }
@@ -80,7 +92,9 @@ const Conversation = () => {
         {messages.map((message) => (
           <MessageBubble key={message.id} message={message} />
         ))}
+        <div ref={messagesEndRef} />
       </div>
+
       <SendMessage />
     </div>
   );
