@@ -1,11 +1,6 @@
 const { Message, Conversation, User } = require('../../models');
 const { Op } = require('sequelize');
-const {
-  UserInputError,
-  PubSub,
-  withFilter,
-  AuthenticationError,
-} = require('apollo-server');
+const { UserInputError, PubSub, withFilter } = require('apollo-server');
 const authChecker = require('../../utils/authChecker');
 const pubsub = new PubSub();
 
@@ -38,6 +33,11 @@ module.exports = {
                 ],
               },
               attributes: [],
+            },
+            {
+              model: User,
+              as: 'user',
+              attributes: ['username', 'id'],
             },
           ],
           order: [['createdAt', 'ASC']],

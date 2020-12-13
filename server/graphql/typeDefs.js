@@ -6,19 +6,25 @@ module.exports = gql`
     DELETE
   }
 
+  type User {
+    id: ID!
+    username: String!
+    createdAt: String!
+    latestMessage: Message
+  }
+
+  type MessageUser {
+    id: ID!
+    username: String!
+  }
+
   type Message {
     id: ID!
     body: String!
     conversationId: ID!
     senderId: ID!
     createdAt: String!
-  }
-
-  type User {
-    id: ID!
-    username: String!
-    createdAt: String!
-    latestMessage: Message
+    user: MessageUser
   }
 
   type Group {
