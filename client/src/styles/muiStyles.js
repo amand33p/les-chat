@@ -155,7 +155,7 @@ export const useLatestMessagesPageStyles = makeStyles(
     chatInfo: {
       width: '100%',
     },
-    latestMsgRow: {
+    nameAndDate: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -176,11 +176,23 @@ export const useConversationPageStyles = makeStyles(
       flexDirection: 'column',
     },
     conversationWrapper: {
-      paddingTop: '1em',
-      padding: '2em',
+      paddingTop: '0.2em',
+      padding: '1em',
       overflowY: 'auto',
       flexGrow: 1,
       maxHeight: 'calc(100vH - 214px)',
+    },
+    conversationDay: {
+      margin: '2em 0',
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    dayText: {
+      backgroundColor: `${theme.palette.primary.main}18`,
+      color: '#333',
+      padding: '0.4em 0.8em',
+      borderRadius: 20,
+      border: `1px solid ${theme.palette.primary.main}40`,
     },
     messageWrapper: {
       display: 'flex',

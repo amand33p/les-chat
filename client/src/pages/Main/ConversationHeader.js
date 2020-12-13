@@ -15,7 +15,7 @@ const ConversationHeader = ({ selectedChat }) => {
           <GroupIcon color="primary" />
         ) : (
           <Avatar
-            alt={selectedChat.chatData.id}
+            alt={selectedChat.chatData.username}
             src={`https://secure.gravatar.com/avatar/${selectedChat.chatData.id}?s=150&d=retro`}
           />
         )}

@@ -9,7 +9,9 @@ import { useStateContext } from '../../context/state';
 import MessageBubble from './MessageBubble';
 import ConversationHeader from './ConversationHeader';
 import SendMessage from './SendMessage';
+import { sameDay, formatToYesterDay } from '../../utils/helperFuncs';
 
+import { Typography } from '@material-ui/core';
 import { useConversationPageStyles } from '../../styles/muiStyles';
 
 const Conversation = () => {
@@ -89,9 +91,25 @@ const Conversation = () => {
     <div className={classes.root}>
       <ConversationHeader selectedChat={selectedChat} />
       <div className={classes.conversationWrapper}>
-        {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
-        ))}
+        {messages.map((message, index) => {
+          const isSameDay =
+            index !== 0
+              ? sameDay(messages[index - 1].createdAt, message.createdAt)
+              : false;
+
+          return (
+            <div key={message.id}>
+              {!isSameDay && (
+                <div className={classes.conversationDay}>
+                  <Typography variant="body2" className={classes.dayText}>
+                    {formatToYesterDay(message.createdAt)}
+                  </Typography>
+                </div>
+              )}
+              <MessageBubble message={message} />
+            </div>
+          );
+        })}
         <div ref={messagesEndRef} />
       </div>
 

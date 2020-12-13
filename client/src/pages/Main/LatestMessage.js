@@ -1,26 +1,28 @@
-import { formatDateAgo } from '../../utils/helperFuncs';
+import { formatRelativeTime } from '../../utils/helperFuncs';
 
 import { Typography } from '@material-ui/core';
 import { useLatestMessagesPageStyles } from '../../styles/muiStyles';
+import { truncateString } from '../../utils/helperFuncs';
 
 const LatestMessage = ({ body, type }) => {
   const classes = useLatestMessagesPageStyles();
 
   return (
     <div className={classes.chatInfo}>
-      <Typography variant="subtitle1" noWrap>
-        {type === 'user' ? body.username : body.name}
-      </Typography>
-      <div className={classes.latestMsgRow}>
-        <Typography variant="subtitle2" className={classes.greyText}>
-          {body.latestMessage.body.length < 20
-            ? body.latestMessage.body
-            : body.latestMessage.body.slice(0, 20) + '...'}
+      <div className={classes.nameAndDate}>
+        <Typography variant="subtitle1" noWrap>
+          {type === 'user'
+            ? truncateString(body.username, 20)
+            : truncateString(body.name, 20)}
         </Typography>
         <Typography variant="caption" className={classes.greyText}>
-          {`${formatDateAgo(body.latestMessage.createdAt)} ago`}
+          {formatRelativeTime(body.latestMessage.createdAt)}
         </Typography>
       </div>
+
+      <Typography variant="subtitle2" className={classes.greyText}>
+        {truncateString(body.latestMessage.body, 30)}
+      </Typography>
     </div>
   );
 };
