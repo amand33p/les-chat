@@ -1,12 +1,26 @@
+import { useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { useSubscription } from '@apollo/client';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import Main from './Main/Main';
 import { useAuthContext } from '../context/auth';
 
+import { useSubscription } from '@apollo/client';
+import { NEW_MESSAGE } from '../graphql/subscriptions';
+
 const Routes = () => {
   const { user } = useAuthContext();
+  const { error } = useSubscription(NEW_MESSAGE, {
+    onSubscriptionData: ({ client, subscriptionData }) => {
+      console.log(subscriptionData);
+    },
+  });
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+  }, [error]);
 
   return (
     <Switch>

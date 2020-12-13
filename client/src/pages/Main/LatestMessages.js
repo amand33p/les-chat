@@ -26,13 +26,11 @@ const LatestMessages = () => {
     onError: (err) => {
       console.log(err);
     },
-    fetchPolicy: 'network-only',
   });
   const { data: groupData, loading: loadingGroups } = useQuery(GET_GROUPS, {
     onError: (err) => {
       console.log(err);
     },
-    fetchPolicy: 'network-only',
   });
   const { data: globalData, loading: loadingGlobal } = useQuery(
     GET_GLOBAL_GROUP,
@@ -40,7 +38,6 @@ const LatestMessages = () => {
       onError: (err) => {
         console.log(err);
       },
-      fetchPolicy: 'network-only',
     }
   );
 

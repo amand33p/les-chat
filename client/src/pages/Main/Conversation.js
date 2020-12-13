@@ -16,42 +16,30 @@ const Conversation = () => {
   const classes = useConversationPageStyles();
   const { selectedChat } = useStateContext();
   const [messages, setMessages] = useState(null);
-  const [fetchPrivateMsgs, { loading: loadingPrivate }] = useLazyQuery(
-    GET_PRIVATE_MSGS,
-    {
-      fetchPolicy: 'network-only',
-      onError: (err) => {
-        console.log(err);
-      },
-      onCompleted: ({ getPrivateMessages: fetchedData }) => {
-        setMessages(fetchedData);
-      },
-    }
-  );
-  const [fetchGroupMsgs, { loading: loadingGroup }] = useLazyQuery(
-    GET_GROUP_MSGS,
-    {
-      fetchPolicy: 'network-only',
-      onError: (err) => {
-        console.log(err);
-      },
-      onCompleted: ({ getGroupMessages: fetchedData }) => {
-        setMessages(fetchedData);
-      },
-    }
-  );
-  const [fetchGlobalMsgs, { loading: loadingGlobal }] = useLazyQuery(
-    GET_GLOBAL_MSGS,
-    {
-      fetchPolicy: 'network-only',
-      onError: (err) => {
-        console.log(err);
-      },
-      onCompleted: ({ getGlobalMessages: fetchedData }) => {
-        setMessages(fetchedData);
-      },
-    }
-  );
+  const [
+    fetchPrivateMsgs,
+    { data: privateData, loading: loadingPrivate },
+  ] = useLazyQuery(GET_PRIVATE_MSGS, {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  const [
+    fetchGroupMsgs,
+    { data: groupData, loading: loadingGroup },
+  ] = useLazyQuery(GET_GROUP_MSGS, {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  const [
+    fetchGlobalMsgs,
+    { data: globalData, loading: loadingGlobal },
+  ] = useLazyQuery(GET_GLOBAL_MSGS, {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   useEffect(() => {
     if (!selectedChat) return;
@@ -59,6 +47,7 @@ const Conversation = () => {
     if (selectedChat.chatType === 'private') {
       fetchPrivateMsgs({
         variables: { userId: selectedChat.chatData.id },
+        update: () => {},
       });
     } else if (selectedChat.chatType === 'group') {
       fetchGroupMsgs({
@@ -69,6 +58,16 @@ const Conversation = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat]);
+
+  useEffect(() => {
+    if (privateData && selectedChat.chatType === 'private') {
+      setMessages(privateData.getPrivateMessages);
+    } else if (groupData && selectedChat.chatType === 'group') {
+      setMessages(groupData.getGroupMessages);
+    } else if (globalData && selectedChat.chatType === 'public') {
+      setMessages(globalData.getGlobalMessages);
+    }
+  }, [privateData, groupData, globalData, selectedChat]);
 
   if (!messages || loadingPrivate || loadingGroup || loadingGlobal) {
     return <div className={classes.root}>loading...</div>;
