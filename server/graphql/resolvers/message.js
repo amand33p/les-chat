@@ -80,6 +80,11 @@ module.exports = {
               },
               attributes: [],
             },
+            {
+              model: User,
+              as: 'user',
+              attributes: ['username', 'id'],
+            },
           ],
           order: [['createdAt', 'ASC']],
         });
@@ -109,6 +114,11 @@ module.exports = {
                 type: 'public',
               },
               attributes: [],
+            },
+            {
+              model: User,
+              as: 'user',
+              attributes: ['username', 'id'],
             },
           ],
           order: [['createdAt', 'ASC']],
@@ -170,7 +180,10 @@ module.exports = {
 
         pubsub.publish('NEW_MESSAGE', {
           newMessage: {
-            message: newMessage,
+            message: {
+              ...newMessage.toJSON(),
+              user: { id: loggedUser.id, username: loggedUser.username },
+            },
             type: 'private',
             participants: conversation.participants,
           },
@@ -215,7 +228,10 @@ module.exports = {
 
         pubsub.publish('NEW_MESSAGE', {
           newMessage: {
-            message: newMessage,
+            message: {
+              ...newMessage.toJSON(),
+              user: { id: loggedUser.id, username: loggedUser.username },
+            },
             type: 'group',
             participants: groupConversation.participants,
           },
@@ -252,7 +268,10 @@ module.exports = {
 
         pubsub.publish('NEW_MESSAGE', {
           newMessage: {
-            message: newMessage,
+            message: {
+              ...newMessage.toJSON(),
+              user: { id: loggedUser.id, username: loggedUser.username },
+            },
             type: 'public',
           },
         });
