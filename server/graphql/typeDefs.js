@@ -13,7 +13,7 @@ module.exports = gql`
     latestMessage: Message
   }
 
-  type MessageUser {
+  type MsgUser {
     id: ID!
     username: String!
   }
@@ -24,7 +24,7 @@ module.exports = gql`
     conversationId: ID!
     senderId: ID!
     createdAt: String!
-    user: MessageUser
+    user: MsgUser
   }
 
   type Group {

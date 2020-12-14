@@ -221,7 +221,7 @@ export const useConversationPageStyles = makeStyles(
       alignItems: 'flex-end',
     },
     receivedMsg: {
-      padding: '0.6em 1em',
+      padding: '0.4em 1em',
       backgroundColor: '#e3e3e3',
       borderRadius: 10,
       marginRight: 'auto',
