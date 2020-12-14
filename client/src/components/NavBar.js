@@ -1,4 +1,5 @@
 import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { useApolloClient } from '@apollo/client';
 import { useAuthContext } from '../context/auth';
 import UserButtonsDesktop from './UserButtonsDesktop';
 import UserMenuMobile from './UserMenuMobile';
@@ -18,6 +19,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const NavBar = () => {
   const { user, logoutUser } = useAuthContext();
+  const client = useApolloClient();
   const history = useHistory();
   const classes = useNavStyles();
   const theme = useTheme();
@@ -25,6 +27,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     logoutUser();
+    client.resetStore();
     history.push('/login');
   };
 
