@@ -6,6 +6,7 @@ import {
   GET_GLOBAL_MSGS,
 } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
+import { useAuthContext } from '../../context/auth';
 import MessageBubble from './MessageBubble';
 import ConversationHeader from './ConversationHeader';
 import SendMessage from './SendMessage';
@@ -18,7 +19,9 @@ const Conversation = () => {
   const classes = useConversationPageStyles();
   const messagesEndRef = useRef(null);
   const { selectedChat } = useStateContext();
+  const { user } = useAuthContext();
   const [messages, setMessages] = useState(null);
+
   const [
     fetchPrivateMsgs,
     { data: privateData, loading: loadingPrivate },
@@ -87,6 +90,9 @@ const Conversation = () => {
     return <div className={classes.root}>loading...</div>;
   }
 
+  const isGroupGlobalChat =
+    selectedChat.chatType === 'public' || selectedChat.chatType === 'group';
+
   return (
     <div className={classes.root}>
       <ConversationHeader selectedChat={selectedChat} />
@@ -97,6 +103,11 @@ const Conversation = () => {
               ? sameDay(messages[index - 1].createdAt, message.createdAt)
               : false;
 
+          const isSameUser =
+            index !== 0 &&
+            isSameDay &&
+            messages[index - 1].senderId === message.senderId;
+
           return (
             <div key={message.id}>
               {!isSameDay && (
@@ -106,13 +117,27 @@ const Conversation = () => {
                   </Typography>
                 </div>
               )}
-              <MessageBubble message={message} />
+              <div
+                className={
+                  isSameUser
+                    ? classes.msgMarginSameUser
+                    : classes.msgMarginDiffUser
+                }
+              >
+                {isGroupGlobalChat &&
+                  !isSameUser &&
+                  user.id !== message.senderId && (
+                    <Typography variant="caption" color="secondary">
+                      {message.user.username}
+                    </Typography>
+                  )}
+                <MessageBubble message={message} />
+              </div>
             </div>
           );
         })}
         <div ref={messagesEndRef} />
       </div>
-
       <SendMessage />
     </div>
   );

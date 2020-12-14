@@ -15,5 +15,9 @@ export const MESSAGE_DETAILS = gql`
     conversationId
     senderId
     createdAt
+    user {
+      id
+      username
+    }
   }
 `;

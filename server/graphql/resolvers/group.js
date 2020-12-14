@@ -35,6 +35,11 @@ module.exports = {
               },
               attributes: [],
             },
+            {
+              model: User,
+              as: 'user',
+              attributes: ['username', 'id'],
+            },
           ],
           order: [['createdAt', 'DESC']],
         });
@@ -68,6 +73,11 @@ module.exports = {
                   type: 'public',
                 },
                 attributes: [],
+              },
+              {
+                model: User,
+                as: 'user',
+                attributes: ['username', 'id'],
               },
             ],
             order: [['createdAt', 'DESC']],

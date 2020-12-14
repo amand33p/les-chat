@@ -32,6 +32,11 @@ module.exports = {
               },
               attributes: ['participants'],
             },
+            {
+              model: User,
+              as: 'user',
+              attributes: ['username', 'id'],
+            },
           ],
           order: [['createdAt', 'DESC']],
         });
@@ -78,7 +83,10 @@ module.exports = {
 
         const savedUser = await user.save();
 
-        const token = jwt.sign({ id: savedUser.id }, JWT_SECRET);
+        const token = jwt.sign(
+          { id: savedUser.id, username: savedUser.username },
+          JWT_SECRET
+        );
 
         return {
           id: savedUser.id,
@@ -116,7 +124,10 @@ module.exports = {
           throw new UserInputError('Invalid credentials.');
         }
 
-        const token = jwt.sign({ id: user.id }, JWT_SECRET);
+        const token = jwt.sign(
+          { id: user.id, username: user.username },
+          JWT_SECRET
+        );
 
         return {
           id: user.id,

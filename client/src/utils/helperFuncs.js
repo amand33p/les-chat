@@ -10,6 +10,10 @@ export const formatDate = (date) => {
   return format(new Date(date), "MMM d', ' YYY");
 };
 
+export const formatTime = (date) => {
+  return format(new Date(date), "h':'mm a");
+};
+
 export const formatRelativeTime = (date) => {
   return formatRelative(new Date(date), new Date());
 };
