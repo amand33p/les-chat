@@ -7,6 +7,8 @@ import { useConversationPageStyles } from '../../styles/muiStyles';
 import LanguageIcon from '@material-ui/icons/Language';
 import GroupIcon from '@material-ui/icons/Group';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 const ConversationHeader = ({ selectedChat }) => {
   const classes = useConversationPageStyles();
@@ -61,11 +63,12 @@ const ConversationHeader = ({ selectedChat }) => {
       ) : (
         <div className={classes.headerTitle}> {conversationDetails()}</div>
       )}
+
       {selectedChat.chatType === 'group' && (
         <DialogBox
           triggerButton={
             <IconButton color="primary" onClick={handleModalOpen} size="small">
-              <MoreHorizIcon fontSize="large" />
+              <MenuOpenIcon fontSize="large" />
             </IconButton>
           }
           children={<GroupInfo />}

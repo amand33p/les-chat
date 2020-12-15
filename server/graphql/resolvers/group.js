@@ -211,30 +211,5 @@ module.exports = {
         throw new UserInputError(err);
       }
     },
-    deleteGroup: async (_, args, context) => {
-      const loggedUser = authChecker(context);
-      const { conversationId } = args;
-
-      try {
-        const groupConversation = await Conversation.findOne({
-          where: { id: conversationId },
-        });
-
-        if (!groupConversation || groupConversation.type !== 'group') {
-          throw new UserInputError(
-            `Invalid conversation ID, or conversation isn't of group type.`
-          );
-        }
-
-        if (groupConversation.admin !== loggedUser.id) {
-          throw new UserInputError('Access is denied.');
-        }
-
-        await Conversation.destroy({ where: { id: conversationId } });
-        return conversationId;
-      } catch (err) {
-        throw new UserInputError(err);
-      }
-    },
   },
 };

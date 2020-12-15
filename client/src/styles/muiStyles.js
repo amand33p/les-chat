@@ -278,9 +278,15 @@ export const useGroupInfoStyles = makeStyles(
       textAlign: 'center',
     },
     groupIcon: {
-      width: 70,
-      height: 70,
-      marginBottom: '0.6em',
+      width: 60,
+      height: 60,
+    },
+    groupName: {
+      marginBottom: '0.5em',
+      display: 'flex',
+    },
+    editBtn: {
+      marginLeft: '0.8em',
     },
     membersListWrapper: {
       margin: '0 auto',

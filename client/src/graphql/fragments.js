@@ -21,3 +21,22 @@ export const MESSAGE_DETAILS = gql`
     }
   }
 `;
+
+export const GROUP_DETAILS = gql`
+  fragment GroupDetails on Group {
+    id
+    name
+    admin
+    type
+    participants
+    createdAt
+    latestMessage {
+      ...MessageDetails
+    }
+    adminUser {
+      id
+      username
+    }
+  }
+  ${MESSAGE_DETAILS}
+`;

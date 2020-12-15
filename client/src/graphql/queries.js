@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { MESSAGE_DETAILS } from './fragments';
+import { MESSAGE_DETAILS, GROUP_DETAILS } from './fragments';
 
 export const GET_ALL_USERS = gql`
   query {
@@ -33,22 +33,10 @@ export const GET_GLOBAL_GROUP = gql`
 export const GET_GROUPS = gql`
   query {
     getGroups {
-      id
-      name
-      admin
-      type
-      participants
-      createdAt
-      latestMessage {
-        ...MessageDetails
-      }
-      adminUser {
-        id
-        username
-      }
+      ...GroupDetails
     }
   }
-  ${MESSAGE_DETAILS}
+  ${GROUP_DETAILS}
 `;
 
 export const GET_PRIVATE_MSGS = gql`

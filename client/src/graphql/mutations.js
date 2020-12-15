@@ -1,5 +1,9 @@
 import { gql } from '@apollo/client';
-import { LOGGED_USER_DETAILS, MESSAGE_DETAILS } from './fragments';
+import {
+  LOGGED_USER_DETAILS,
+  MESSAGE_DETAILS,
+  GROUP_DETAILS,
+} from './fragments';
 
 export const REGISTER_USER = gql`
   mutation registerUser($username: String!, $password: String!) {
@@ -44,4 +48,21 @@ export const SEND_GLOBAL_MSG = gql`
     }
   }
   ${MESSAGE_DETAILS}
+`;
+
+export const ADD_REMOVE_GROUP_USER = gql`
+  mutation addRemoveUser(
+    $conversationId: ID!
+    $userId: ID!
+    $addOrDel: AddOrDelete!
+  ) {
+    addRemoveGroupUser(
+      conversationId: $conversationId
+      userId: $userId
+      addOrDel: $addOrDel
+    ) {
+      ...GroupDetails
+    }
+  }
+  ${GROUP_DETAILS}
 `;

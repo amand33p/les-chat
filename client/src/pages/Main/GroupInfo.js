@@ -1,7 +1,9 @@
-import { useQuery } from '@apollo/client';
-import { GET_ALL_USERS } from '../../graphql/queries';
+import { useQuery, useMutation } from '@apollo/client';
+import { GET_ALL_USERS, GET_GROUPS } from '../../graphql/queries';
+import { ADD_REMOVE_GROUP_USER } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
+import DeleteDialog from '../../components/DeleteDialog';
 import { formatDate } from '../../utils/helperFuncs';
 
 import {
@@ -12,19 +14,56 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  ListItemSecondaryAction,
 } from '@material-ui/core';
 import { useGroupInfoStyles } from '../../styles/muiStyles';
 import GroupIcon from '@material-ui/icons/Group';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 const GroupInfo = () => {
   const classes = useGroupInfoStyles();
   const { selectedChat } = useStateContext();
   const { user } = useAuthContext();
+
   const { data: userData, loading: loadingUsers } = useQuery(GET_ALL_USERS, {
     onError: (err) => {
       console.log(err);
     },
   });
+  const [addRemoveUser] = useMutation(ADD_REMOVE_GROUP_USER, {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const handleRemoveUser = (userToRemoveId) => {
+    addRemoveUser({
+      variables: {
+        conversationId: selectedChat.chatData.id,
+        userId: userToRemoveId,
+        addOrDel: 'DELETE',
+      },
+      update: (proxy, { data }) => {
+        const updatedGroup = data.addRemoveGroupUser;
+        const dataInCache = proxy.readQuery({
+          query: GET_GROUPS,
+        });
+
+        const updatedGroups = dataInCache.getGroups.map((g) =>
+          g.id === updatedGroup.id
+            ? { ...g, participants: updatedGroup.participants }
+            : g
+        );
+
+        proxy.writeQuery({
+          query: GET_GROUPS,
+          data: { getGroups: updatedGroups },
+        });
+      },
+    });
+  };
+
+  const isGroupAdmin = user.id === selectedChat.chatData.admin;
 
   return (
     <div>
@@ -32,9 +71,22 @@ const GroupInfo = () => {
         <Avatar className={classes.groupIcon}>
           <GroupIcon color="primary" fontSize="large" />
         </Avatar>
-        <Typography variant="h5" color="secondary">
-          {selectedChat.chatData.name}
-        </Typography>
+        <div className={classes.groupName}>
+          <Typography variant="h5" color="secondary">
+            {selectedChat.chatData.name}
+          </Typography>
+          {isGroupAdmin && (
+            <Button
+              color="secondary"
+              size="small"
+              startIcon={<EditOutlinedIcon />}
+              variant="outlined"
+              className={classes.editBtn}
+            >
+              Edit
+            </Button>
+          )}
+        </div>
         <Typography variant="subtitle1" color="secondary">
           Admin: <strong>{selectedChat.chatData.adminUser.username}</strong> |
           Created:{' '}
@@ -76,6 +128,14 @@ const GroupInfo = () => {
                       />
                     </ListItemAvatar>
                     <ListItemText primary={u.username} />
+                    {isGroupAdmin && (
+                      <ListItemSecondaryAction>
+                        <DeleteDialog
+                          handleRemove={() => handleRemoveUser(u.id)}
+                          username={u.username}
+                        />
+                      </ListItemSecondaryAction>
+                    )}
                   </ListItem>
                 ))}
           </List>
