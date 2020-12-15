@@ -18,6 +18,13 @@ module.exports = {
               },
             ],
           },
+          include: [
+            {
+              model: User,
+              as: 'adminUser',
+              attributes: ['id', 'username'],
+            },
+          ],
         });
 
         const groupMessages = await Message.findAll({
