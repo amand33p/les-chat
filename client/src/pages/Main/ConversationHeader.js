@@ -1,14 +1,20 @@
 import { useState } from 'react';
-import GroupInfoDialog from '../../components/GroupInfoDialog';
+import DialogBox from '../../components/DialogBox';
+import GroupInfo from './GroupInfo';
 
-import { Typography, Avatar, Button } from '@material-ui/core';
+import { Typography, Avatar, Button, IconButton } from '@material-ui/core';
 import { useConversationPageStyles } from '../../styles/muiStyles';
 import LanguageIcon from '@material-ui/icons/Language';
 import GroupIcon from '@material-ui/icons/Group';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 const ConversationHeader = ({ selectedChat }) => {
   const classes = useConversationPageStyles();
   const [modalOpen, setModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
 
   const conversationDetails = () => {
     return (
@@ -56,7 +62,16 @@ const ConversationHeader = ({ selectedChat }) => {
         <div className={classes.headerTitle}> {conversationDetails()}</div>
       )}
       {selectedChat.chatType === 'group' && (
-        <GroupInfoDialog modalOpen={modalOpen} setModalOpen={setModalOpen} />
+        <DialogBox
+          triggerButton={
+            <IconButton color="primary" onClick={handleModalOpen} size="small">
+              <MoreHorizIcon fontSize="large" />
+            </IconButton>
+          }
+          children={<GroupInfo />}
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+        />
       )}
     </div>
   );

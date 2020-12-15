@@ -19,4 +19,7 @@ module.exports = {
   Message: {
     createdAt: (parent) => parent.createdAt.toISOString(),
   },
+  Group: {
+    createdAt: (parent) => parent.createdAt.toISOString(),
+  },
 };

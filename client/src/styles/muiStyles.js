@@ -258,7 +258,7 @@ export const useConversationPageStyles = makeStyles(
 export const useDialogStyles = makeStyles(
   (theme) => ({
     dialogWrapper: {
-      padding: 0,
+      paddingBottom: 20,
       overflow: 'hidden',
       [theme.breakpoints.down('xs')]: {
         padding: 0,
@@ -277,10 +277,30 @@ export const useGroupInfoStyles = makeStyles(
       flexDirection: 'column',
       textAlign: 'center',
     },
-    avatar: {
+    groupIcon: {
       width: 70,
       height: 70,
       marginBottom: '0.6em',
+    },
+    membersListWrapper: {
+      margin: '0 auto',
+      width: '50%',
+      border: '1px solid #d3d3d3',
+      marginTop: '1.2em',
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
+      },
+    },
+    membersList: {
+      overflowY: 'auto',
+      maxHeight: '250px',
+      [theme.breakpoints.down('sm')]: {
+        maxHeight: '200px',
+      },
+    },
+    membersHeader: {
+      textAlign: 'center',
+      borderBottom: '1px solid #d3d3d3',
     },
   }),
   { index: 1 }
