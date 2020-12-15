@@ -42,6 +42,10 @@ export const GET_GROUPS = gql`
       latestMessage {
         ...MessageDetails
       }
+      adminUser {
+        id
+        username
+      }
     }
   }
   ${MESSAGE_DETAILS}

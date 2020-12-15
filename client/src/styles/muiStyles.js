@@ -197,11 +197,11 @@ export const useConversationPageStyles = makeStyles(
     },
     msgMarginSameUser: {
       marginTop: '0.2em',
-      marginBottom: '0.3em',
+      marginBottom: '0.2em',
     },
     msgMarginDiffUser: {
       marginTop: '1.5em',
-      marginBottom: '0.3em',
+      marginBottom: '0.2em',
     },
     messageWrapper: {
       display: 'flex',
@@ -237,12 +237,50 @@ export const useConversationPageStyles = makeStyles(
       padding: '0.5em 1em',
       borderBottom: '1px solid #d3d3d390',
       alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    headerTitle: {
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0 0.4em',
     },
     titleText: {
       marginLeft: '0.8em',
+      marginRight: '0.7em',
     },
     sendMsgForm: {
       display: 'flex',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useDialogStyles = makeStyles(
+  (theme) => ({
+    dialogWrapper: {
+      padding: 0,
+      overflow: 'hidden',
+      [theme.breakpoints.down('xs')]: {
+        padding: 0,
+      },
+    },
+  }),
+  { index: 1 }
+);
+
+export const useGroupInfoStyles = makeStyles(
+  (theme) => ({
+    topPart: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      textAlign: 'center',
+    },
+    avatar: {
+      width: 70,
+      height: 70,
+      marginBottom: '0.6em',
     },
   }),
   { index: 1 }
