@@ -1,5 +1,5 @@
-import { useQuery, useMutation } from '@apollo/client';
-import { GET_ALL_USERS, GET_GROUPS } from '../../graphql/queries';
+import { useMutation } from '@apollo/client';
+import { GET_GROUPS } from '../../graphql/queries';
 import { ADD_REMOVE_GROUP_USER } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
@@ -20,16 +20,11 @@ import { useGroupInfoStyles } from '../../styles/muiStyles';
 import GroupIcon from '@material-ui/icons/Group';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
-const GroupInfo = () => {
+const GroupInfo = ({ userData, loadingUsers }) => {
   const classes = useGroupInfoStyles();
-  const { selectedChat } = useStateContext();
+  const { selectedChat, selectChat } = useStateContext();
   const { user } = useAuthContext();
 
-  const { data: userData, loading: loadingUsers } = useQuery(GET_ALL_USERS, {
-    onError: (err) => {
-      console.log(err);
-    },
-  });
   const [addRemoveUser] = useMutation(ADD_REMOVE_GROUP_USER, {
     onError: (err) => {
       console.log(err);
@@ -59,10 +54,15 @@ const GroupInfo = () => {
           query: GET_GROUPS,
           data: { getGroups: updatedGroups },
         });
+
+        if (selectedChat.chatData.id === updatedGroup.id) {
+          selectChat(updatedGroup);
+        }
       },
     });
   };
 
+  const { name, participants, adminUser, createdAt } = selectedChat.chatData;
   const isGroupAdmin = user.id === selectedChat.chatData.admin;
 
   return (
@@ -73,11 +73,11 @@ const GroupInfo = () => {
         </Avatar>
         <div className={classes.groupName}>
           <Typography variant="h5" color="secondary">
-            {selectedChat.chatData.name}
+            {name}
           </Typography>
           {isGroupAdmin && (
             <Button
-              color="secondary"
+              color="primary"
               size="small"
               startIcon={<EditOutlinedIcon />}
               variant="outlined"
@@ -88,9 +88,8 @@ const GroupInfo = () => {
           )}
         </div>
         <Typography variant="subtitle1" color="secondary">
-          Admin: <strong>{selectedChat.chatData.adminUser.username}</strong> |
-          Created:{' '}
-          <strong>{formatDate(selectedChat.chatData.createdAt)}</strong>
+          Admin: <strong>{adminUser.username}</strong> | Created:{' '}
+          <strong>{formatDate(createdAt)}</strong>
         </Typography>
       </div>
       {loadingUsers ? (
@@ -102,7 +101,8 @@ const GroupInfo = () => {
             color="secondary"
             className={classes.membersHeader}
           >
-            {selectedChat.chatData.participants.length} Members
+            {participants.length}{' '}
+            {participants.length > 1 ? 'Members' : 'Member'}
           </Typography>
           <List className={classes.membersList}>
             <ListItem>
@@ -116,9 +116,7 @@ const GroupInfo = () => {
             </ListItem>
             {userData &&
               userData.getAllUsers
-                .filter((u) =>
-                  selectedChat.chatData.participants.includes(u.id)
-                )
+                .filter((u) => participants.includes(u.id))
                 .map((u) => (
                   <ListItem key={u.id}>
                     <ListItemAvatar>

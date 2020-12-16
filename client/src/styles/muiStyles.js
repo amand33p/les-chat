@@ -244,6 +244,10 @@ export const useConversationPageStyles = makeStyles(
       alignItems: 'center',
       padding: '0 0.4em',
     },
+    rightHeaderBtns: {
+      display: 'flex',
+      alignItems: 'center',
+    },
     titleText: {
       marginLeft: '0.8em',
       marginRight: '0.7em',

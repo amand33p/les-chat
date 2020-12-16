@@ -89,7 +89,9 @@ const Routes = () => {
                 latestMessage: newMessage.message,
               }
             : lastMsgCache[getLastMsgQueryName].map((l) =>
-                l.id === lastMsgTargetId ? newMessage.message : l
+                l.id === lastMsgTargetId
+                  ? { ...l, latestMessage: newMessage.message }
+                  : l
               );
 
         client.writeQuery({
