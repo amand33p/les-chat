@@ -13,6 +13,19 @@ export const useBodyStyles = makeStyles(
   { index: 1 }
 );
 
+export const useDialogStyles = makeStyles(
+  (theme) => ({
+    dialogWrapper: {
+      paddingBottom: 20,
+      overflow: 'hidden',
+      [theme.breakpoints.down('xs')]: {
+        padding: 0,
+      },
+    },
+  }),
+  { index: 1 }
+);
+
 export const useNavStyles = makeStyles(
   (theme) => ({
     leftPortion: {
@@ -259,19 +272,6 @@ export const useConversationPageStyles = makeStyles(
   { index: 1 }
 );
 
-export const useDialogStyles = makeStyles(
-  (theme) => ({
-    dialogWrapper: {
-      paddingBottom: 20,
-      overflow: 'hidden',
-      [theme.breakpoints.down('xs')]: {
-        padding: 0,
-      },
-    },
-  }),
-  { index: 1 }
-);
-
 export const useGroupInfoStyles = makeStyles(
   (theme) => ({
     topPart: {
@@ -311,6 +311,15 @@ export const useGroupInfoStyles = makeStyles(
     membersHeader: {
       textAlign: 'center',
       borderBottom: '1px solid #d3d3d3',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useAddGroupMembersStyles = makeStyles(
+  (theme) => ({
+    addMemberBtn: {
+      marginTop: '3em ',
     },
   }),
   { index: 1 }

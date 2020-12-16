@@ -42,6 +42,18 @@ const customTheme = (darkMode) =>
           color: '#ff4081',
         },
       },
+      MuiSelect: {
+        select: {
+          '&:focus': {
+            display: 'flex',
+            alignItems: 'center',
+          },
+        },
+        selectMenu: {
+          display: 'flex',
+          alignItems: 'center',
+        },
+      },
     },
     props: {
       MuiButton: {

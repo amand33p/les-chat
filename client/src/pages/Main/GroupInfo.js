@@ -24,7 +24,6 @@ const GroupInfo = ({ userData, loadingUsers }) => {
   const classes = useGroupInfoStyles();
   const { selectedChat, selectChat } = useStateContext();
   const { user } = useAuthContext();
-
   const [addRemoveUser] = useMutation(ADD_REMOVE_GROUP_USER, {
     onError: (err) => {
       console.log(err);

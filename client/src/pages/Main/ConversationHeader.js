@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '../../graphql/queries';
 import DialogBox from '../../components/DialogBox';
 import GroupInfo from './GroupInfo';
-import AddGroupUsers from './AddGroupUsers';
+import AddGroupMembers from './AddGroupMembers';
 import { useAuthContext } from '../../context/auth';
 
 import { Typography, Avatar, Button, IconButton } from '@material-ui/core';
@@ -18,7 +18,6 @@ const ConversationHeader = ({ selectedChat }) => {
   const [infoModal, setInfoModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const { user } = useAuthContext();
-
   const { data: userData, loading: loadingUsers } = useQuery(GET_ALL_USERS, {
     onError: (err) => {
       console.log(err);
@@ -76,6 +75,7 @@ const ConversationHeader = ({ selectedChat }) => {
           <DialogBox
             modalOpen={addModal}
             setModalOpen={setAddModal}
+            title="Add Members"
             triggerButton={
               <IconButton
                 color="primary"
@@ -87,13 +87,14 @@ const ConversationHeader = ({ selectedChat }) => {
               </IconButton>
             }
           >
-            <AddGroupUsers userData={userData} loadingUsers={loadingUsers} />
+            <AddGroupMembers userData={userData} loadingUsers={loadingUsers} />
           </DialogBox>
         )}
         {selectedChat.chatType === 'group' && (
           <DialogBox
             modalOpen={infoModal}
             setModalOpen={setInfoModal}
+            title="Group Info"
             triggerButton={
               <IconButton
                 color="primary"

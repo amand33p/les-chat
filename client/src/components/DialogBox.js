@@ -2,7 +2,13 @@ import { DialogTitle } from './MuiCustomDialogTitle';
 import { Dialog, DialogContent } from '@material-ui/core';
 import { useDialogStyles } from '../styles/muiStyles';
 
-const DialogBox = ({ modalOpen, setModalOpen, triggerButton, children }) => {
+const DialogBox = ({
+  modalOpen,
+  setModalOpen,
+  triggerButton,
+  children,
+  title,
+}) => {
   const classes = useDialogStyles();
 
   const handleModalClose = () => {
@@ -19,7 +25,7 @@ const DialogBox = ({ modalOpen, setModalOpen, triggerButton, children }) => {
         fullWidth
         classes={{ paper: classes.dialogWrapper }}
       >
-        <DialogTitle onClose={handleModalClose}></DialogTitle>
+        <DialogTitle onClose={handleModalClose}>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
       </Dialog>
     </div>
