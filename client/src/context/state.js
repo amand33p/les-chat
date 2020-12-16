@@ -3,6 +3,7 @@ import { useReducer, createContext, useContext } from 'react';
 const StateContext = createContext({
   selectedChat: null,
   selectChat: (chatData, chatType) => {},
+  updateMembers: (updatedData) => {},
 });
 
 const stateReducer = (state, action) => {
@@ -11,6 +12,17 @@ const stateReducer = (state, action) => {
       return {
         ...state,
         selectedChat: action.payload,
+      };
+    case 'UPDATE_GROUP_PARTICIPANTS':
+      return {
+        ...state,
+        selectedChat: {
+          ...state.selectedChat,
+          chatData: {
+            ...state.selectedChat.chatData,
+            participants: action.payload,
+          },
+        },
       };
     default:
       return state;
@@ -27,9 +39,18 @@ export const StateProvider = ({ children }) => {
     });
   };
 
+  const updateMembers = (updatedData) => {
+    if (state.selectedChat.chatData.id === updatedData.groupId) {
+      dispatch({
+        type: 'UPDATE_GROUP_PARTICIPANTS',
+        payload: updatedData.participants,
+      });
+    }
+  };
+
   return (
     <StateContext.Provider
-      value={{ selectedChat: state.selectedChat, selectChat }}
+      value={{ selectedChat: state.selectedChat, selectChat, updateMembers }}
     >
       {children}
     </StateContext.Provider>

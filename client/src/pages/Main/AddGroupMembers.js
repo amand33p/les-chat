@@ -19,7 +19,7 @@ import { useAddGroupMembersStyles } from '../../styles/muiStyles';
 const AddGroupMembers = ({ userData, loadingUsers }) => {
   const classes = useAddGroupMembersStyles();
   const [userToAdd, setUserToAdd] = useState('');
-  const { selectedChat, selectChat } = useStateContext();
+  const { selectedChat, updateMembers } = useStateContext();
   const [addRemoveUser, { loading: addingUser }] = useMutation(
     ADD_REMOVE_GROUP_USER,
     {
@@ -41,14 +41,14 @@ const AddGroupMembers = ({ userData, loadingUsers }) => {
         addOrDel: 'ADD',
       },
       update: (proxy, { data }) => {
-        const updatedGroup = data.addRemoveGroupUser;
+        const returnedData = data.addRemoveGroupUser;
         const dataInCache = proxy.readQuery({
           query: GET_GROUPS,
         });
 
         const updatedGroups = dataInCache.getGroups.map((g) =>
-          g.id === updatedGroup.id
-            ? { ...g, participants: updatedGroup.participants }
+          g.id === returnedData.groupId
+            ? { ...g, participants: returnedData.participants }
             : g
         );
 
@@ -57,16 +57,18 @@ const AddGroupMembers = ({ userData, loadingUsers }) => {
           data: { getGroups: updatedGroups },
         });
 
-        if (selectedChat.chatData.id === updatedGroup.id) {
-          selectChat(updatedGroup);
+        if (selectedChat.chatData.id === returnedData.groupId) {
+          updateMembers(returnedData);
         }
+
+        setUserToAdd('');
       },
     });
   };
 
   return (
     <div>
-      <FormControl variant="outlined" fullWidth required>
+      <FormControl variant="outlined" fullWidth>
         <InputLabel id="user-menu">Select a user</InputLabel>
         <Select
           value={userToAdd}
@@ -74,10 +76,12 @@ const AddGroupMembers = ({ userData, loadingUsers }) => {
           labelId="user-menu"
           onChange={handleSelectChange}
           label="Select a user"
-          required
         >
-          {loadingUsers ? (
-            <MenuItem value={0}>Loading</MenuItem>
+          {loadingUsers ||
+          userData?.getAllUsers.filter(
+            (u) => !selectedChat.chatData.participants.includes(u.id)
+          ).length === 0 ? (
+            <MenuItem value="">No Users Available</MenuItem>
           ) : (
             userData &&
             userData.getAllUsers

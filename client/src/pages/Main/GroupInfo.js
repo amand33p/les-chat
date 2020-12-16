@@ -22,7 +22,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 const GroupInfo = ({ userData, loadingUsers }) => {
   const classes = useGroupInfoStyles();
-  const { selectedChat, selectChat } = useStateContext();
+  const { selectedChat, updateMembers } = useStateContext();
   const { user } = useAuthContext();
   const [addRemoveUser] = useMutation(ADD_REMOVE_GROUP_USER, {
     onError: (err) => {
@@ -38,14 +38,14 @@ const GroupInfo = ({ userData, loadingUsers }) => {
         addOrDel: 'DELETE',
       },
       update: (proxy, { data }) => {
-        const updatedGroup = data.addRemoveGroupUser;
+        const returnedData = data.addRemoveGroupUser;
         const dataInCache = proxy.readQuery({
           query: GET_GROUPS,
         });
 
         const updatedGroups = dataInCache.getGroups.map((g) =>
-          g.id === updatedGroup.id
-            ? { ...g, participants: updatedGroup.participants }
+          g.id === returnedData.groupId
+            ? { ...g, participants: returnedData.participants }
             : g
         );
 
@@ -54,8 +54,8 @@ const GroupInfo = ({ userData, loadingUsers }) => {
           data: { getGroups: updatedGroups },
         });
 
-        if (selectedChat.chatData.id === updatedGroup.id) {
-          selectChat(updatedGroup);
+        if (selectedChat.chatData.id === returnedData.groupId) {
+          updateMembers(returnedData);
         }
       },
     });

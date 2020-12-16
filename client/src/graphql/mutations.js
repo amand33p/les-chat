@@ -61,8 +61,8 @@ export const ADD_REMOVE_GROUP_USER = gql`
       userId: $userId
       addOrDel: $addOrDel
     ) {
-      ...GroupDetails
+      groupId
+      participants
     }
   }
-  ${GROUP_DETAILS}
 `;
