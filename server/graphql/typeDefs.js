@@ -63,6 +63,11 @@ module.exports = gql`
     participants: [ID!]!
   }
 
+  type GroupName {
+    groupId: ID!
+    name: String!
+  }
+
   type Query {
     getAllUsers: [User]!
     getGroups: [Group]!
@@ -82,7 +87,7 @@ module.exports = gql`
     sendGlobalMessage(body: String): Message!
 
     createGroup(name: String!): Group!
-    EditGroupName(conversationId: ID!, name: String!): Group!
+    EditGroupName(conversationId: ID!, name: String!): GroupName!
     addRemoveGroupUser(
       conversationId: ID!
       userId: ID!

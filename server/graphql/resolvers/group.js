@@ -209,7 +209,10 @@ module.exports = {
 
         groupConversation.name = name;
         const updatedConversation = await groupConversation.save();
-        return updatedConversation;
+        return {
+          groupId: updatedConversation.id,
+          name: updatedConversation.name,
+        };
       } catch (err) {
         throw new UserInputError(err);
       }
