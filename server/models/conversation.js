@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         validate: {
           max: 30,
+          min: 3,
         },
       },
       admin: {

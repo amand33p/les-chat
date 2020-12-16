@@ -66,3 +66,12 @@ export const ADD_REMOVE_GROUP_USER = gql`
     }
   }
 `;
+
+export const EDIT_GROUP_NAME = gql`
+  mutation updateGroupName($conversationId: ID!, $name: String!) {
+    editGroupName(conversationId: $conversationId, name: $name) {
+      groupId
+      name
+    }
+  }
+`;
