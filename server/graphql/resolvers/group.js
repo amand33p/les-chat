@@ -176,7 +176,10 @@ module.exports = {
         }
 
         const savedConversation = await groupConversation.save();
-        return savedConversation;
+        return {
+          groupId: savedConversation.id,
+          participants: savedConversation.participants,
+        };
       } catch (err) {
         throw new UserInputError(err);
       }

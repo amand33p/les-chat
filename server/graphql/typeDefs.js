@@ -58,6 +58,11 @@ module.exports = gql`
     participants: [ID!]
   }
 
+  type GroupParticipants {
+    groupId: ID!
+    participants: [ID!]!
+  }
+
   type Query {
     getAllUsers: [User]!
     getGroups: [Group]!
@@ -82,7 +87,7 @@ module.exports = gql`
       conversationId: ID!
       userId: ID!
       addOrDel: AddOrDelete!
-    ): Group!
+    ): GroupParticipants!
   }
 
   type Subscription {
