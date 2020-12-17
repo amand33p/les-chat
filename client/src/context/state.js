@@ -4,6 +4,7 @@ const StateContext = createContext({
   selectedChat: null,
   selectChat: (chatData, chatType) => {},
   updateMembers: (updatedData) => {},
+  updateName: (updatedData) => {},
 });
 
 const stateReducer = (state, action) => {
@@ -21,6 +22,17 @@ const stateReducer = (state, action) => {
           chatData: {
             ...state.selectedChat.chatData,
             participants: action.payload,
+          },
+        },
+      };
+    case 'UPDATE_GROUP_NAME':
+      return {
+        ...state,
+        selectedChat: {
+          ...state.selectedChat,
+          chatData: {
+            ...state.selectedChat.chatData,
+            name: action.payload,
           },
         },
       };
@@ -48,9 +60,23 @@ export const StateProvider = ({ children }) => {
     }
   };
 
+  const updateName = (updatedData) => {
+    if (state.selectedChat.chatData.id === updatedData.groupId) {
+      dispatch({
+        type: 'UPDATE_GROUP_NAME',
+        payload: updatedData.name,
+      });
+    }
+  };
+
   return (
     <StateContext.Provider
-      value={{ selectedChat: state.selectedChat, selectChat, updateMembers }}
+      value={{
+        selectedChat: state.selectedChat,
+        selectChat,
+        updateMembers,
+        updateName,
+      }}
     >
       {children}
     </StateContext.Provider>

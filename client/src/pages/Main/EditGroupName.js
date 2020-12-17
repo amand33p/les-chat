@@ -19,7 +19,7 @@ const validationSchema = yup.object({
 
 const EditGroupName = ({ setEditOpen }) => {
   const classes = useGroupInfoStyles();
-  const { selectedChat } = useStateContext();
+  const { selectedChat, updateName } = useStateContext();
   const { register, handleSubmit, errors } = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
@@ -36,6 +36,26 @@ const EditGroupName = ({ setEditOpen }) => {
   const handleEditName = ({ name }) => {
     updateGroupName({
       variables: { conversationId: selectedChat.chatData.id, name },
+      update: (proxy, { data }) => {
+        const returnedData = data.editGroupName;
+        const dataInCache = proxy.readQuery({
+          query: GET_GROUPS,
+        });
+
+        const updatedGroups = dataInCache.getGroups.map((g) =>
+          g.id === returnedData.groupId ? { ...g, name: returnedData.name } : g
+        );
+
+        proxy.writeQuery({
+          query: GET_GROUPS,
+          data: { getGroups: updatedGroups },
+        });
+
+        setEditOpen(false);
+        if (selectedChat.chatData.id === returnedData.groupId) {
+          updateName(returnedData);
+        }
+      },
     });
   };
 
