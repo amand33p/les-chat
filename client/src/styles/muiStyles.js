@@ -26,6 +26,36 @@ export const useDialogStyles = makeStyles(
   { index: 1 }
 );
 
+export const useMainPageStyles = makeStyles(
+  (theme) => ({
+    root: {
+      display: 'flex',
+    },
+    leftPanel: {
+      width: '40%',
+      borderRight: '1px solid #d3d3d390',
+      borderLeft: '1px solid #d3d3d390',
+      maxHeight: 'calc(100vH - 52px)',
+      minHeight: 'calc(100vH - 52px)',
+      overflowY: 'auto',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useTabBarStyles = makeStyles(
+  (theme) => ({
+    tabs: {
+      borderBottom: '1px solid #d3d3d390',
+    },
+    tab: {
+      minWidth: 50,
+      minHeight: 56,
+    },
+  }),
+  { index: 1 }
+);
+
 export const useNavStyles = makeStyles(
   (theme) => ({
     leftPortion: {
@@ -141,26 +171,10 @@ export const useAuthFormStyles = makeStyles(
   { index: 1 }
 );
 
-export const useMainPageStyles = makeStyles(
-  (theme) => ({
-    root: {
-      display: 'flex',
-    },
-    recentMsgPanel: {
-      width: '40%',
-      borderRight: '1px solid #d3d3d390',
-      borderLeft: '1px solid #d3d3d390',
-      height: 'calc(100vH - 52px)',
-    },
-  }),
-  { index: 1 }
-);
-
-export const useLatestMessagesPageStyles = makeStyles(
+export const useChatListStyles = makeStyles(
   (theme) => ({
     root: {
       width: '100%',
-      overflowY: 'auto',
     },
     listItem: {
       display: 'flex',
@@ -194,6 +208,7 @@ export const useConversationPageStyles = makeStyles(
       overflowY: 'auto',
       flexGrow: 1,
       maxHeight: 'calc(100vH - 181px)',
+      minHeight: 'calc(100vH - 181px)',
     },
     conversationDay: {
       margin: '2em 0',

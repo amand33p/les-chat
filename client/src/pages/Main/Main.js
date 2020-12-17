@@ -1,4 +1,8 @@
+import { useState } from 'react';
+import TabBar from './TabBar';
 import LatestMessages from './LatestMessages';
+import Users from './Users';
+import Groups from './Groups';
 import Conversation from './Conversation';
 
 import { Container } from '@material-ui/core';
@@ -6,12 +10,20 @@ import { useMainPageStyles } from '../../styles/muiStyles';
 
 const Main = () => {
   const classes = useMainPageStyles();
+  const [tab, setTab] = useState('chat');
 
   return (
     <Container>
       <div className={classes.root}>
-        <div className={classes.recentMsgPanel}>
-          <LatestMessages />
+        <div className={classes.leftPanel}>
+          <TabBar tab={tab} setTab={setTab} />
+          {tab === 'chat' ? (
+            <LatestMessages />
+          ) : tab === 'users' ? (
+            <Users />
+          ) : (
+            <Groups />
+          )}
         </div>
         <Conversation />
       </div>

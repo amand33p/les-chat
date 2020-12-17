@@ -1,11 +1,11 @@
 import { formatRelativeTime } from '../../utils/helperFuncs';
 
 import { Typography } from '@material-ui/core';
-import { useLatestMessagesPageStyles } from '../../styles/muiStyles';
+import { useChatListStyles } from '../../styles/muiStyles';
 import { truncateString } from '../../utils/helperFuncs';
 
 const LatestMessage = ({ body, type }) => {
-  const classes = useLatestMessagesPageStyles();
+  const classes = useChatListStyles();
 
   return (
     <div className={classes.chatInfo}>

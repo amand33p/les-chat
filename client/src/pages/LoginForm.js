@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
@@ -34,7 +34,6 @@ const validationSchema = yup.object({
 const LoginForm = () => {
   const [showPass, setShowPass] = useState(false);
   //const [errorMsg, setErrorMsg] = useState(null);
-  const history = useHistory();
   const classes = useAuthFormStyles();
   const { setUser } = useAuthContext();
   //const { notify } = useStateContext();

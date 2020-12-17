@@ -34,6 +34,8 @@ const AddGroupMembers = ({ userData, loadingUsers }) => {
   };
 
   const handleAddUser = () => {
+    setUserToAdd('');
+
     addRemoveUser({
       variables: {
         conversationId: selectedChat.chatData.id,
@@ -60,8 +62,6 @@ const AddGroupMembers = ({ userData, loadingUsers }) => {
         if (selectedChat.chatData.id === returnedData.groupId) {
           updateMembers(returnedData);
         }
-
-        setUserToAdd('');
       },
     });
   };

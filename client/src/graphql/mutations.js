@@ -1,9 +1,5 @@
 import { gql } from '@apollo/client';
-import {
-  LOGGED_USER_DETAILS,
-  MESSAGE_DETAILS,
-  GROUP_DETAILS,
-} from './fragments';
+import { LOGGED_USER_DETAILS, MESSAGE_DETAILS } from './fragments';
 
 export const REGISTER_USER = gql`
   mutation registerUser($username: String!, $password: String!) {
