@@ -210,13 +210,20 @@ export const useConversationPageStyles = makeStyles(
       maxHeight: 'calc(100vH - 181px)',
       minHeight: 'calc(100vH - 181px)',
     },
-    conversationDay: {
+    noMessages: {
+      display: 'flex',
+      height: 'calc(100vH - 181px)',
+      padding: '1em',
+      paddingTop: '0em',
+    },
+    dateInfoWrapper: {
       margin: '2em 0',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
     },
-    dayText: {
+    infoText: {
+      margin: 'auto auto 1em auto',
       backgroundColor: `${theme.palette.primary.main}18`,
       color: '#333',
       padding: '0.4em 0.8em',

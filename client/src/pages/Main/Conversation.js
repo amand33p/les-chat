@@ -96,48 +96,60 @@ const Conversation = () => {
   return (
     <div className={classes.root}>
       <ConversationHeader selectedChat={selectedChat} />
-      <div className={classes.conversationWrapper}>
-        {messages.map((message, index) => {
-          const isSameDay =
-            index !== 0
-              ? sameDay(messages[index - 1].createdAt, message.createdAt)
-              : false;
+      {messages.length > 0 ? (
+        <div className={classes.conversationWrapper}>
+          {messages.map((message, index) => {
+            const isSameDay =
+              index !== 0
+                ? sameDay(messages[index - 1].createdAt, message.createdAt)
+                : false;
 
-          const isSameUser =
-            index !== 0 &&
-            isSameDay &&
-            messages[index - 1].senderId === message.senderId;
+            const isSameUser =
+              index !== 0 &&
+              isSameDay &&
+              messages[index - 1].senderId === message.senderId;
 
-          return (
-            <div key={message.id}>
-              {!isSameDay && (
-                <div className={classes.conversationDay}>
-                  <Typography variant="body2" className={classes.dayText}>
-                    {formatToYesterDay(message.createdAt)}
-                  </Typography>
-                </div>
-              )}
-              <div
-                className={
-                  isSameUser
-                    ? classes.msgMarginSameUser
-                    : classes.msgMarginDiffUser
-                }
-              >
-                {isGroupGlobalChat &&
-                  !isSameUser &&
-                  user.id !== message.senderId && (
-                    <Typography variant="caption" color="secondary">
-                      {message.user.username}
+            return (
+              <div key={message.id}>
+                {!isSameDay && (
+                  <div className={classes.dateInfoWrapper}>
+                    <Typography variant="body2" className={classes.infoText}>
+                      {formatToYesterDay(message.createdAt)}
                     </Typography>
-                  )}
-                <MessageBubble message={message} />
+                  </div>
+                )}
+                <div
+                  className={
+                    isSameUser
+                      ? classes.msgMarginSameUser
+                      : classes.msgMarginDiffUser
+                  }
+                >
+                  {isGroupGlobalChat &&
+                    !isSameUser &&
+                    user.id !== message.senderId && (
+                      <Typography variant="caption" color="secondary">
+                        {message.user.username}
+                      </Typography>
+                    )}
+                  <MessageBubble message={message} />
+                </div>
               </div>
-            </div>
-          );
-        })}
-        <div ref={messagesEndRef} />
-      </div>
+            );
+          })}
+          <div ref={messagesEndRef} />
+        </div>
+      ) : (
+        <div className={classes.noMessages}>
+          <div className={classes.infoText}>
+            <Typography>
+              {selectedChat.chatType === 'private'
+                ? `You're connected with '${selectedChat.chatData.username}'. Start chatting now!`
+                : 'Be the first one to message in the group.'}
+            </Typography>
+          </div>
+        </div>
+      )}
       <SendMessage />
     </div>
   );
