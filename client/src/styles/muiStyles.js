@@ -312,6 +312,11 @@ export const useGroupInfoStyles = makeStyles(
       textAlign: 'center',
       borderBottom: '1px solid #d3d3d3',
     },
+    updateNameBtns: {
+      marginTop: 2,
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
   }),
   { index: 1 }
 );

@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { GET_GROUPS } from '../../graphql/queries';
 import { ADD_REMOVE_GROUP_USER } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
 import DeleteDialog from '../../components/DeleteDialog';
+import EditGroupName from './EditGroupName';
 import { formatDate } from '../../utils/helperFuncs';
 
 import {
@@ -17,13 +19,13 @@ import {
   ListItemSecondaryAction,
 } from '@material-ui/core';
 import { useGroupInfoStyles } from '../../styles/muiStyles';
-import GroupIcon from '@material-ui/icons/Group';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 const GroupInfo = ({ userData, loadingUsers }) => {
   const classes = useGroupInfoStyles();
   const { selectedChat, updateMembers } = useStateContext();
   const { user } = useAuthContext();
+  const [editOpen, setEditOpen] = useState(false);
   const [addRemoveUser] = useMutation(ADD_REMOVE_GROUP_USER, {
     onError: (err) => {
       console.log(err);
@@ -67,25 +69,27 @@ const GroupInfo = ({ userData, loadingUsers }) => {
   return (
     <div>
       <div className={classes.topPart}>
-        <Avatar className={classes.groupIcon}>
-          <GroupIcon color="primary" fontSize="large" />
-        </Avatar>
-        <div className={classes.groupName}>
-          <Typography variant="h5" color="secondary">
-            {name}
-          </Typography>
-          {isGroupAdmin && (
-            <Button
-              color="primary"
-              size="small"
-              startIcon={<EditOutlinedIcon />}
-              variant="outlined"
-              className={classes.editBtn}
-            >
-              Edit
-            </Button>
-          )}
-        </div>
+        {!editOpen ? (
+          <div className={classes.groupName}>
+            <Typography variant="h5" color="secondary">
+              {name}
+            </Typography>
+            {isGroupAdmin && (
+              <Button
+                color="primary"
+                size="small"
+                startIcon={<EditOutlinedIcon />}
+                variant="outlined"
+                className={classes.editBtn}
+                onClick={() => setEditOpen(true)}
+              >
+                Edit
+              </Button>
+            )}
+          </div>
+        ) : (
+          <EditGroupName setEditOpen={setEditOpen} />
+        )}
         <Typography variant="subtitle1" color="secondary">
           Admin: <strong>{adminUser.username}</strong> | Created:{' '}
           <strong>{formatDate(createdAt)}</strong>

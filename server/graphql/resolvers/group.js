@@ -184,7 +184,7 @@ module.exports = {
         throw new UserInputError(err);
       }
     },
-    EditGroupName: async (_, args, context) => {
+    editGroupName: async (_, args, context) => {
       const loggedUser = authChecker(context);
       const { conversationId, name } = args;
 
