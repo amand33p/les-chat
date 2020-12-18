@@ -87,7 +87,10 @@ const ConversationHeader = ({ selectedChat }) => {
               </IconButton>
             }
           >
-            <AddGroupMembers userData={userData} loadingUsers={loadingUsers} />
+            <AddGroupMembers
+              userData={userData}
+              closeModal={() => setAddModal(false)}
+            />
           </DialogBox>
         )}
         {selectedChat.chatType === 'group' && (

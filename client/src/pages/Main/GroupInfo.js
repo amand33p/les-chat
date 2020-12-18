@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { GET_GROUPS } from '../../graphql/queries';
-import { ADD_REMOVE_GROUP_USER } from '../../graphql/mutations';
+import { REMOVE_GROUP_USER } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
 import DeleteDialog from '../../components/DeleteDialog';
@@ -26,21 +26,20 @@ const GroupInfo = ({ userData, loadingUsers }) => {
   const { selectedChat, updateMembers } = useStateContext();
   const { user } = useAuthContext();
   const [editOpen, setEditOpen] = useState(false);
-  const [addRemoveUser] = useMutation(ADD_REMOVE_GROUP_USER, {
+  const [removeUser] = useMutation(REMOVE_GROUP_USER, {
     onError: (err) => {
       console.log(err);
     },
   });
 
   const handleRemoveUser = (userToRemoveId) => {
-    addRemoveUser({
+    removeUser({
       variables: {
         conversationId: selectedChat.chatData.id,
         userId: userToRemoveId,
-        addOrDel: 'DELETE',
       },
       update: (proxy, { data }) => {
-        const returnedData = data.addRemoveGroupUser;
+        const returnedData = data.removeGroupUser;
         const dataInCache = proxy.readQuery({
           query: GET_GROUPS,
         });

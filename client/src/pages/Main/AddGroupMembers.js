@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { ADD_REMOVE_GROUP_USER } from '../../graphql/mutations';
+import { ADD_GROUP_USER } from '../../graphql/mutations';
 import { GET_GROUPS } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
 
@@ -16,21 +16,18 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useAddGroupMembersStyles } from '../../styles/muiStyles';
 
-const AddGroupMembers = ({ userData }) => {
+const AddGroupMembers = ({ userData, closeModal }) => {
   const classes = useAddGroupMembersStyles();
-  const [userToAdd, setUserToAdd] = useState('');
+  const [usersToAdd, setUsersToAdd] = useState([]);
   const { selectedChat, updateMembers } = useStateContext();
-  const [addRemoveUser, { loading: addingUser }] = useMutation(
-    ADD_REMOVE_GROUP_USER,
-    {
-      onError: (err) => {
-        console.log(err);
-      },
-    }
-  );
+  const [addRemoveUser, { loading: addingUser }] = useMutation(ADD_GROUP_USER, {
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const usersOnChange = (e, selectedOption) => {
-    setUserToAdd(selectedOption.map((o) => o.id));
+    setUsersToAdd(selectedOption.map((o) => o.id));
   };
 
   const handleAddUser = (e) => {
@@ -39,11 +36,10 @@ const AddGroupMembers = ({ userData }) => {
     addRemoveUser({
       variables: {
         conversationId: selectedChat.chatData.id,
-        userId: userToAdd,
-        addOrDel: 'ADD',
+        participants: usersToAdd,
       },
       update: (proxy, { data }) => {
-        const returnedData = data.addRemoveGroupUser;
+        const returnedData = data.addGroupUser;
         const dataInCache = proxy.readQuery({
           query: GET_GROUPS,
         });
@@ -62,6 +58,7 @@ const AddGroupMembers = ({ userData }) => {
         if (selectedChat.chatData.id === returnedData.groupId) {
           updateMembers(returnedData);
         }
+        closeModal();
       },
     });
   };

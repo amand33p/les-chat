@@ -50,17 +50,18 @@ export const SEND_GLOBAL_MSG = gql`
   ${MESSAGE_DETAILS}
 `;
 
-export const ADD_REMOVE_GROUP_USER = gql`
-  mutation addRemoveUser(
-    $conversationId: ID!
-    $userId: ID!
-    $addOrDel: AddOrDelete!
-  ) {
-    addRemoveGroupUser(
-      conversationId: $conversationId
-      userId: $userId
-      addOrDel: $addOrDel
-    ) {
+export const REMOVE_GROUP_USER = gql`
+  mutation removeUser($conversationId: ID!, $userId: ID!) {
+    removeGroupUser(conversationId: $conversationId, userId: $userId) {
+      groupId
+      participants
+    }
+  }
+`;
+
+export const ADD_GROUP_USER = gql`
+  mutation addUser($conversationId: ID!, $participants: [ID!]!) {
+    addGroupUser(conversationId: $conversationId, participants: $participants) {
       groupId
       participants
     }
