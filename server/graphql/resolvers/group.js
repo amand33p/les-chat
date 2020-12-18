@@ -148,9 +148,9 @@ module.exports = {
         throw new UserInputError(err);
       }
     },
-    addRemoveGroupUser: async (_, args, context) => {
+    removeGroupUser: async (_, args, context) => {
       const loggedUser = authChecker(context);
-      const { conversationId, userId, addOrDel } = args;
+      const { conversationId, userId } = args;
 
       try {
         const groupConversation = await Conversation.findOne({
@@ -168,7 +168,7 @@ module.exports = {
         }
 
         if (groupConversation.admin === userId) {
-          throw new UserInputError("You can't remove/add admin.");
+          throw new UserInputError("You can't remove admin.");
         }
 
         const userToAdd = await User.findOne({ where: { id: userId } });
@@ -179,25 +179,71 @@ module.exports = {
           );
         }
 
-        if (addOrDel === 'ADD') {
-          if (groupConversation.participants.find((p) => p == userId)) {
-            throw new UserInputError('User is already a member of the group.');
-          } else {
-            groupConversation.participants = [
-              ...groupConversation.participants,
-              userId,
-            ];
-          }
-        } else {
-          if (!groupConversation.participants.find((p) => p == userId)) {
-            throw new UserInputError('User is not a member of the group.');
-          } else {
-            groupConversation.participants = groupConversation.participants.filter(
-              (p) => p != userId
-            );
-          }
+        if (!groupConversation.participants.find((p) => p == userId)) {
+          throw new UserInputError('User is not a member of the group.');
         }
 
+        groupConversation.participants = groupConversation.participants.filter(
+          (p) => p != userId
+        );
+        const savedConversation = await groupConversation.save();
+        return {
+          groupId: savedConversation.id,
+          participants: savedConversation.participants,
+        };
+      } catch (err) {
+        throw new UserInputError(err);
+      }
+    },
+    addGroupUser: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { conversationId, participants } = args;
+
+      if (!participants || participants.length === 0) {
+        throw new UserInputError('Participants field must not be empty.');
+      }
+
+      try {
+        const groupConversation = await Conversation.findOne({
+          where: { id: conversationId },
+        });
+
+        if (!groupConversation || groupConversation.type !== 'group') {
+          throw new UserInputError(
+            `Invalid conversation ID, or conversation isn't of group type.`
+          );
+        }
+
+        if (groupConversation.admin !== loggedUser.id) {
+          throw new UserInputError('Access is denied.');
+        }
+
+        const users = await User.findAll();
+        const userIds = users.map((u) => u.id.toString());
+
+        if (!participants.every((p) => userIds.includes(p))) {
+          throw new UserInputError(
+            'Participants array must contain valid user IDs.'
+          );
+        }
+
+        const updatedParticipants = [
+          ...groupConversation.participants,
+          ...participants,
+        ];
+
+        if (
+          updatedParticipants.filter(
+            (p, i) => i !== updatedParticipants.indexOf(p)
+          ).length !== 0 ||
+          updatedParticipants.includes(loggedUser.id.toString())
+        ) {
+          throw new UserInputError(
+            'Participants array must not contain duplicate or already added users.'
+          );
+        }
+
+        groupConversation.participants = updatedParticipants;
         const savedConversation = await groupConversation.save();
         return {
           groupId: savedConversation.id,

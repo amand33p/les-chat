@@ -88,11 +88,8 @@ module.exports = gql`
 
     createGroup(name: String!, participants: [ID!]!): Group!
     editGroupName(conversationId: ID!, name: String!): GroupName!
-    addRemoveGroupUser(
-      conversationId: ID!
-      userId: ID!
-      addOrDel: AddOrDelete!
-    ): GroupParticipants!
+    removeGroupUser(conversationId: ID!, userId: ID!): GroupParticipants!
+    addGroupUser(conversationId: ID!, participants: [ID!]!): GroupParticipants!
   }
 
   type Subscription {
