@@ -100,7 +100,7 @@ module.exports = {
   Mutation: {
     createGroup: async (_, args, context) => {
       const loggedUser = authChecker(context);
-      const { name } = args;
+      const { name, participants } = args;
 
       if (name.trim() === '') {
         throw new UserInputError('Name field must not be empty.');
@@ -112,12 +112,35 @@ module.exports = {
         );
       }
 
+      if (!participants || participants.length === 0) {
+        throw new UserInputError('Participants field must not be empty.');
+      }
+
       try {
+        const users = await User.findAll();
+        const userIds = users.map((u) => u.id.toString());
+
+        if (!participants.every((p) => userIds.includes(p))) {
+          throw new UserInputError(
+            'Participants array must contain valid user IDs.'
+          );
+        }
+
+        if (
+          participants.filter((p, i) => i !== participants.indexOf(p))
+            .length !== 0 ||
+          participants.includes(loggedUser.id.toString())
+        ) {
+          throw new UserInputError(
+            'Participants array must not contain duplicate IDs.'
+          );
+        }
+
         const group = await Conversation.create({
           name,
           admin: loggedUser.id,
           type: 'group',
-          participants: [loggedUser.id],
+          participants: [loggedUser.id, ...participants],
         });
 
         return group;
