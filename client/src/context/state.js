@@ -14,25 +14,14 @@ const stateReducer = (state, action) => {
         ...state,
         selectedChat: action.payload,
       };
-    case 'UPDATE_GROUP_PARTICIPANTS':
+    case 'UPDATE_GROUP':
       return {
         ...state,
         selectedChat: {
           ...state.selectedChat,
           chatData: {
             ...state.selectedChat.chatData,
-            participants: action.payload,
-          },
-        },
-      };
-    case 'UPDATE_GROUP_NAME':
-      return {
-        ...state,
-        selectedChat: {
-          ...state.selectedChat,
-          chatData: {
-            ...state.selectedChat.chatData,
-            name: action.payload,
+            ...action.payload,
           },
         },
       };
@@ -54,8 +43,8 @@ export const StateProvider = ({ children }) => {
   const updateMembers = (updatedData) => {
     if (state.selectedChat.chatData.id === updatedData.groupId) {
       dispatch({
-        type: 'UPDATE_GROUP_PARTICIPANTS',
-        payload: updatedData.participants,
+        type: 'UPDATE_GROUP',
+        payload: { participants: updatedData.participants },
       });
     }
   };
@@ -63,8 +52,8 @@ export const StateProvider = ({ children }) => {
   const updateName = (updatedData) => {
     if (state.selectedChat.chatData.id === updatedData.groupId) {
       dispatch({
-        type: 'UPDATE_GROUP_NAME',
-        payload: updatedData.name,
+        type: 'UPDATE_GROUP',
+        payload: { name: updatedData.name },
       });
     }
   };

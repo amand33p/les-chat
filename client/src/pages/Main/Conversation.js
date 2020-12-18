@@ -144,7 +144,7 @@ const Conversation = () => {
           <div className={classes.infoText}>
             <Typography>
               {selectedChat.chatType === 'private'
-                ? `You're connected with '${selectedChat.chatData.username}'. Start chatting now!`
+                ? `You're connected with ${selectedChat.chatData.username}. Start chatting now!`
                 : 'Be the first one to message in the group.'}
             </Typography>
           </div>
