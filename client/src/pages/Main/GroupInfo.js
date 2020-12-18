@@ -6,7 +6,7 @@ import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
 import DeleteDialog from '../../components/DeleteDialog';
 import EditGroupName from './EditGroupName';
-import { formatDate } from '../../utils/helperFuncs';
+import { formatDateInWords } from '../../utils/helperFuncs';
 
 import {
   Typography,
@@ -92,7 +92,7 @@ const GroupInfo = ({ userData, loadingUsers }) => {
         )}
         <Typography variant="subtitle1" color="secondary">
           Admin: <strong>{adminUser.username}</strong> | Created:{' '}
-          <strong>{formatDate(createdAt)}</strong>
+          <strong>{formatDateInWords(createdAt)}</strong>
         </Typography>
       </div>
       {loadingUsers ? (

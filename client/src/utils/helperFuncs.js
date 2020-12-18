@@ -1,21 +1,15 @@
-import {
-  formatRelative,
-  isSameDay,
-  isToday,
-  isYesterday,
-  format,
-} from 'date-fns';
+import { isSameDay, isToday, isYesterday, format } from 'date-fns';
 
-export const formatDate = (date) => {
+export const formatDateInWords = (date) => {
   return format(new Date(date), "MMM d', ' YYY");
+};
+
+export const formatDateInNum = (date) => {
+  return format(new Date(date), 'dd/MM/yy');
 };
 
 export const formatTime = (date) => {
   return format(new Date(date), "h':'mm a");
-};
-
-export const formatRelativeTime = (date) => {
-  return formatRelative(new Date(date), new Date());
 };
 
 export const formatToYesterDay = (date) => {
@@ -23,7 +17,17 @@ export const formatToYesterDay = (date) => {
     ? 'Today'
     : isYesterday(new Date(date))
     ? 'Yesterday'
-    : formatDate(date);
+    : formatDateInWords(date);
+};
+
+export const formatRecentDate = (date) => {
+  const first = isToday(new Date(date))
+    ? 'Today'
+    : isYesterday(new Date(date))
+    ? 'Yesterday'
+    : formatDateInNum(date);
+
+  return first.concat(` at ${formatTime(date)}`);
 };
 
 export const sameDay = (prevDate, currentDate) => {

@@ -1,5 +1,4 @@
-import { formatRelativeTime } from '../../utils/helperFuncs';
-
+import { formatRecentDate } from '../../utils/helperFuncs';
 import { Typography } from '@material-ui/core';
 import { useChatListStyles } from '../../styles/muiStyles';
 import { truncateString } from '../../utils/helperFuncs';
@@ -12,11 +11,11 @@ const LatestMessage = ({ body, type }) => {
       <div className={classes.nameAndDate}>
         <Typography variant="subtitle1" noWrap>
           {type === 'user'
-            ? truncateString(body.username, 20)
-            : truncateString(body.name, 20)}
+            ? truncateString(body.username, 10)
+            : truncateString(body.name, 10)}
         </Typography>
         <Typography variant="caption" className={classes.greyText}>
-          {formatRelativeTime(body.latestMessage.createdAt)}
+          {formatRecentDate(body.latestMessage.createdAt)}
         </Typography>
       </div>
 
