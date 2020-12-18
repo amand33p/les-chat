@@ -95,7 +95,7 @@ export const useNavStyles = makeStyles(
       alignItems: 'center',
     },
     lastBtn: {
-      marginLeft: '0.7em',
+      marginLeft: '0.2em',
     },
     userInfo: {
       display: 'flex',
@@ -346,7 +346,19 @@ export const useGroupInfoStyles = makeStyles(
 export const useAddGroupMembersStyles = makeStyles(
   (theme) => ({
     addMemberBtn: {
-      marginTop: '3em ',
+      marginTop: '2em ',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useCreateGroupStyles = makeStyles(
+  (theme) => ({
+    textField: {
+      marginBottom: '1.5em',
+    },
+    submitBtn: {
+      marginTop: '1.5em',
     },
   }),
   { index: 1 }

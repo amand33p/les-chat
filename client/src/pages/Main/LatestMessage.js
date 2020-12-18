@@ -11,8 +11,8 @@ const LatestMessage = ({ body, type }) => {
       <div className={classes.nameAndDate}>
         <Typography variant="subtitle1" noWrap>
           {type === 'user'
-            ? truncateString(body.username, 10)
-            : truncateString(body.name, 10)}
+            ? truncateString(body.username, 12)
+            : truncateString(body.name, 12)}
         </Typography>
         <Typography variant="caption" className={classes.greyText}>
           {formatRecentDate(body.latestMessage.createdAt)}

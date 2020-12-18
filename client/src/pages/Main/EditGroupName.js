@@ -67,7 +67,7 @@ const EditGroupName = ({ setEditOpen }) => {
         required
         fullWidth
         type="text"
-        placeholder="Enter group name"
+        label="Group Name"
         variant="outlined"
         size="small"
         error={'name' in errors}

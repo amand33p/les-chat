@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import DialogBox from './DialogBox';
+import CreateGroup from '../pages/Main/CreateGroup';
 
 import { Button, Typography, Avatar } from '@material-ui/core';
 import { useNavStyles } from '../styles/muiStyles';
 
 const UserButtonsDesktop = ({ user, handleLogout, isMobile }) => {
+  const [createGroupModal, setCreateGroupModal] = useState(false);
   const classes = useNavStyles();
 
   if (isMobile) return null;
@@ -22,6 +26,19 @@ const UserButtonsDesktop = ({ user, handleLogout, isMobile }) => {
               {user.username}
             </Typography>
           </div>
+          <DialogBox
+            title="Create A Group"
+            modalOpen={createGroupModal}
+            setModalOpen={setCreateGroupModal}
+            triggerButton={
+              <Button color="primary" onClick={() => setCreateGroupModal(true)}>
+                Create Group
+              </Button>
+            }
+            children={
+              <CreateGroup closeModal={() => setCreateGroupModal(false)} />
+            }
+          />
           <Button
             color="primary"
             className={classes.lastBtn}

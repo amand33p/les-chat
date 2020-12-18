@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
@@ -37,6 +37,7 @@ const LoginForm = () => {
   const classes = useAuthFormStyles();
   const { setUser } = useAuthContext();
   //const { notify } = useStateContext();
+  const history = useHistory();
   const { register, handleSubmit, reset, errors } = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
@@ -55,7 +56,7 @@ const LoginForm = () => {
       update: (_, { data }) => {
         console.log(data);
         setUser(data.login);
-        //history.go(0);
+        history.go(0);
         //notify(`Welcome, ${data.login.username}! You're logged in.`);
         reset();
       },

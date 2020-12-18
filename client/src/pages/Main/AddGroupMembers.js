@@ -5,18 +5,18 @@ import { GET_GROUPS } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
 
 import {
-  Select,
-  MenuItem,
-  ListItemAvatar,
-  Avatar,
-  Typography,
-  InputLabel,
-  FormControl,
+  TextField,
   Button,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Avatar,
+  Chip,
 } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useAddGroupMembersStyles } from '../../styles/muiStyles';
 
-const AddGroupMembers = ({ userData, loadingUsers }) => {
+const AddGroupMembers = ({ userData }) => {
   const classes = useAddGroupMembersStyles();
   const [userToAdd, setUserToAdd] = useState('');
   const { selectedChat, updateMembers } = useStateContext();
@@ -29,12 +29,12 @@ const AddGroupMembers = ({ userData, loadingUsers }) => {
     }
   );
 
-  const handleSelectChange = (event) => {
-    setUserToAdd(event.target.value);
+  const usersOnChange = (e, selectedOption) => {
+    setUserToAdd(selectedOption.map((o) => o.id));
   };
 
-  const handleAddUser = () => {
-    setUserToAdd('');
+  const handleAddUser = (e) => {
+    e.preventDefault();
 
     addRemoveUser({
       variables: {
@@ -67,50 +67,67 @@ const AddGroupMembers = ({ userData, loadingUsers }) => {
   };
 
   return (
-    <div>
-      <FormControl variant="outlined" fullWidth>
-        <InputLabel id="user-menu">Select a user</InputLabel>
-        <Select
-          value={userToAdd}
-          id="user-menu"
-          labelId="user-menu"
-          onChange={handleSelectChange}
-          label="Select a user"
-        >
-          {loadingUsers ||
-          userData?.getAllUsers.filter(
-            (u) => !selectedChat.chatData.participants.includes(u.id)
-          ).length === 0 ? (
-            <MenuItem value="">No Users Available</MenuItem>
-          ) : (
-            userData &&
-            userData.getAllUsers
-              .filter((u) => !selectedChat.chatData.participants.includes(u.id))
-              .map((u) => (
-                <MenuItem key={u.id} value={u.id}>
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={u.username}
-                      src={`https://secure.gravatar.com/avatar/${u.id}?s=150&d=retro`}
-                    />
-                  </ListItemAvatar>
-                  <Typography variant="inherit">{u.username}</Typography>
-                </MenuItem>
-              ))
-          )}
-        </Select>
-        <Button
-          size="large"
-          color="primary"
-          variant="contained"
-          disabled={addingUser}
-          className={classes.addMemberBtn}
-          onClick={handleAddUser}
-        >
-          Add Member
-        </Button>
-      </FormControl>
-    </div>
+    <form onSubmit={handleAddUser}>
+      <Autocomplete
+        multiple
+        filterSelectedOptions
+        onChange={usersOnChange}
+        options={
+          userData
+            ? userData.getAllUsers.filter(
+                (u) => !selectedChat.chatData.participants.includes(u.id)
+              )
+            : []
+        }
+        getOptionLabel={(option) => option.username}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="outlined"
+            label="Select Users"
+            size="small"
+          />
+        )}
+        renderOption={(option) => (
+          <ListItem dense>
+            <ListItemAvatar>
+              <Avatar
+                alt={option.username}
+                src={`https://secure.gravatar.com/avatar/${option.id}?s=150&d=retro`}
+              />
+            </ListItemAvatar>
+            <ListItemText primary={option.username} />
+          </ListItem>
+        )}
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip
+              avatar={
+                <Avatar
+                  alt={option.username}
+                  src={`https://secure.gravatar.com/avatar/${option.id}?s=150&d=retro`}
+                />
+              }
+              color="secondary"
+              variant="outlined"
+              label={option.username}
+              {...getTagProps({ index })}
+            />
+          ))
+        }
+      />
+      <Button
+        size="large"
+        color="primary"
+        variant="contained"
+        disabled={addingUser}
+        className={classes.addMemberBtn}
+        fullWidth
+        type="submit"
+      >
+        Add Members
+      </Button>
+    </form>
   );
 };
 

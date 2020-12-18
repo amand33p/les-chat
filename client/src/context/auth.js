@@ -46,7 +46,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logoutUser = () => {
-    storage.removeUser();
     dispatch({ type: 'LOGOUT' });
   };
 
