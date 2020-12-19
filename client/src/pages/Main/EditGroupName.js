@@ -3,10 +3,11 @@ import { useMutation } from '@apollo/client';
 import { GET_GROUPS } from '../../graphql/queries';
 import { EDIT_GROUP_NAME } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
+import EmojiPicker from '../../components/EmojiPicker';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, InputAdornment } from '@material-ui/core';
 import { useGroupInfoStyles } from '../../styles/muiStyles';
 
 const validationSchema = yup.object({
@@ -20,7 +21,7 @@ const validationSchema = yup.object({
 const EditGroupName = ({ setEditOpen }) => {
   const classes = useGroupInfoStyles();
   const { selectedChat, updateName } = useStateContext();
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors, setValue, getValues } = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
     defaultValues: {
@@ -32,6 +33,10 @@ const EditGroupName = ({ setEditOpen }) => {
       console.log(err);
     },
   });
+
+  const handleEmojiAdd = (emoji) => {
+    setValue('name', getValues('name').concat(emoji), { shouldDirty: true });
+  };
 
   const handleEditName = ({ name }) => {
     updateGroupName({
@@ -72,6 +77,13 @@ const EditGroupName = ({ setEditOpen }) => {
         size="small"
         error={'name' in errors}
         helperText={'name' in errors ? errors.name.message : ''}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <EmojiPicker handleEmojiAdd={handleEmojiAdd} isModal={true} />
+            </InputAdornment>
+          ),
+        }}
       />
       <div className={classes.updateNameBtns}>
         <Button
