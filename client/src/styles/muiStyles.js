@@ -207,12 +207,12 @@ export const useConversationPageStyles = makeStyles(
       paddingTop: '0em',
       overflowY: 'auto',
       flexGrow: 1,
-      maxHeight: 'calc(100vH - 181px)',
-      minHeight: 'calc(100vH - 181px)',
+      maxHeight: 'calc(100vH - 182px)',
+      minHeight: 'calc(100vH - 182px)',
     },
     noMessages: {
       display: 'flex',
-      height: 'calc(100vH - 181px)',
+      height: 'calc(100vH - 182px)',
       padding: '1em',
       paddingTop: '0em',
     },
@@ -224,6 +224,14 @@ export const useConversationPageStyles = makeStyles(
     },
     infoText: {
       margin: 'auto auto 1em auto',
+      backgroundColor: `${theme.palette.primary.main}18`,
+      color: '#333',
+      padding: '0.4em 0.8em',
+      borderRadius: 8,
+      border: `1px solid ${theme.palette.primary.main}40`,
+    },
+    selectChatText: {
+      margin: 'auto',
       backgroundColor: `${theme.palette.primary.main}18`,
       color: '#333',
       padding: '0.4em 0.8em',
@@ -359,6 +367,20 @@ export const useCreateGroupStyles = makeStyles(
     },
     submitBtn: {
       marginTop: '1.5em',
+    },
+  }),
+  { index: 1 }
+);
+
+export const useEmojiPanelStyles = makeStyles(
+  (theme) => ({
+    emojiWrapper: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(5, auto)',
+      gridGap: '5px',
+    },
+    emojiBtn: {
+      fontSize: '1.3em',
     },
   }),
   { index: 1 }

@@ -6,15 +6,23 @@ import {
   SEND_GLOBAL_MSG,
 } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
+import EmojiPicker from '../../components/EmojiPicker';
 
-import { Button, TextField } from '@material-ui/core';
+import {
+  Button,
+  TextField,
+  IconButton,
+  InputAdornment,
+} from '@material-ui/core';
 import { useConversationPageStyles } from '../../styles/muiStyles';
 import SendIcon from '@material-ui/icons/Send';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 
 const SendMessage = () => {
   const classes = useConversationPageStyles();
   const { selectedChat } = useStateContext();
   const [messageBody, setMessageBody] = useState('');
+  const [emojiAnchorEl, setEmojiAnchorEl] = useState(null);
 
   const [submitPrivateMsg, { loading: loadingPrivate }] = useMutation(
     SEND_PRIVATE_MSG,
@@ -76,6 +84,10 @@ const SendMessage = () => {
     }
   };
 
+  const handleEmojiAdd = (emoji) => {
+    setMessageBody((prevString) => prevString.concat(emoji));
+  };
+
   return (
     <form className={classes.sendMsgForm} onSubmit={handleSendMessage}>
       <TextField
@@ -85,6 +97,24 @@ const SendMessage = () => {
         placeholder="Type a message..."
         variant="outlined"
         onChange={(e) => setMessageBody(e.target.value)}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                size="small"
+                color="primary"
+                onClick={(e) => setEmojiAnchorEl(e.currentTarget)}
+              >
+                <InsertEmoticonIcon fontSize="large" />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+      <EmojiPicker
+        anchorEl={emojiAnchorEl}
+        setAnchorEl={setEmojiAnchorEl}
+        handleEmojiAdd={handleEmojiAdd}
       />
       <Button
         size="small"

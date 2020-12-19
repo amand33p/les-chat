@@ -72,7 +72,6 @@ const RegisterForm = () => {
     registerUser({
       variables: { username, password },
       update: (_, { data }) => {
-        console.log(data);
         setUser(data.register);
         /*notify(
           `Welcome, ${data.register.username}! You've successfully registered.`

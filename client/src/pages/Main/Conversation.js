@@ -135,6 +135,9 @@ const Conversation = () => {
         });
       }
     },
+    onError: (err) => {
+      console.log(err);
+    },
   });
 
   useEffect(() => {
@@ -145,7 +148,6 @@ const Conversation = () => {
 
   useEffect(() => {
     if (!selectedChat) return;
-
     if (selectedChat.chatType === 'private') {
       fetchPrivateMsgs({
         variables: { userId: selectedChat.chatData.id },
@@ -182,9 +184,16 @@ const Conversation = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
-  if (!messages || loadingPrivate || loadingGroup || loadingGlobal) {
-    return <div className={classes.root}>loading...</div>;
-  }
+  if (!messages || !selectedChat)
+    return (
+      <div className={classes.root}>
+        <div className={classes.noMessages}>
+          <div className={classes.selectChatText}>
+            <Typography>Select a chat to start messaging</Typography>
+          </div>
+        </div>
+      </div>
+    );
 
   const isGroupGlobalChat =
     selectedChat.chatType === 'public' || selectedChat.chatType === 'group';
@@ -192,6 +201,9 @@ const Conversation = () => {
   return (
     <div className={classes.root}>
       <ConversationHeader selectedChat={selectedChat} />
+      {(loadingPrivate || loadingGroup || loadingGlobal) && (
+        <div>loading...</div>
+      )}
       {messages.length > 0 ? (
         <div className={classes.conversationWrapper}>
           {messages.map((message, index) => {
