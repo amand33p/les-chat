@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_GROUPS } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
+import FilterBar from '../../components/FilterBar';
 
 import {
   ListItem,
@@ -15,6 +17,7 @@ import GroupIcon from '@material-ui/icons/Group';
 const Groups = () => {
   const classes = useChatListStyles();
   const { selectedChat, selectChat } = useStateContext();
+  const [filterValue, setFilterValue] = useState('');
   const { data: groupData, loading: loadingGroups } = useQuery(GET_GROUPS, {
     onError: (err) => {
       console.log(err);
@@ -28,28 +31,37 @@ const Groups = () => {
   return (
     <div className={classes.root}>
       <div className={classes.list}>
+        <FilterBar
+          filterValue={filterValue}
+          setFilterValue={setFilterValue}
+          placeholder="Search groups"
+        />
         {groupData &&
-          groupData.getGroups.map((group) => (
-            <div key={group.id}>
-              <ListItem
-                className={classes.listItem}
-                button
-                onClick={() => selectChat(group, 'group')}
-                selected={
-                  selectedChat?.chatType === 'group' &&
-                  group.id === selectedChat.chatData.id
-                }
-              >
-                <ListItemAvatar>
-                  <Avatar>
-                    <GroupIcon color="primary" />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={group.name} />
-              </ListItem>
-              <Divider />
-            </div>
-          ))}
+          groupData.getGroups
+            .filter((group) =>
+              group.name.toLowerCase().includes(filterValue.toLowerCase())
+            )
+            .map((group) => (
+              <div key={group.id}>
+                <ListItem
+                  className={classes.listItem}
+                  button
+                  onClick={() => selectChat(group, 'group')}
+                  selected={
+                    selectedChat?.chatType === 'group' &&
+                    group.id === selectedChat.chatData.id
+                  }
+                >
+                  <ListItemAvatar>
+                    <Avatar>
+                      <GroupIcon color="primary" />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={group.name} />
+                </ListItem>
+                <Divider />
+              </div>
+            ))}
       </div>
     </div>
   );
