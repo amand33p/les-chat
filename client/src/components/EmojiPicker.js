@@ -37,6 +37,7 @@ const EmojiPicker = ({ handleEmojiAdd, isModal }) => {
               onClick={() => handleEmojiAdd(emoji)}
               className={classes.emojiBtn}
               key={emoji}
+              color="primary"
             >
               {emoji}
             </Button>
