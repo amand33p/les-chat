@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import {
   GET_ALL_USERS,
@@ -8,13 +7,7 @@ import {
 import LatestMessage from './LatestMessage';
 import { useStateContext } from '../../context/state';
 
-import {
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  Divider,
-  Typography,
-} from '@material-ui/core';
+import { ListItem, ListItemAvatar, Avatar, Divider } from '@material-ui/core';
 import { useChatListStyles } from '../../styles/muiStyles';
 import LanguageIcon from '@material-ui/icons/Language';
 import GroupIcon from '@material-ui/icons/Group';

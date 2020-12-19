@@ -18,7 +18,7 @@ const EmojiPicker = ({ handleEmojiAdd, isModal }) => {
         <InsertEmoticonIcon fontSize={isModal ? 'default' : 'large'} />
       </IconButton>
       <Popover
-        open={anchorEl}
+        open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(false)}
         anchorOrigin={{
@@ -36,6 +36,7 @@ const EmojiPicker = ({ handleEmojiAdd, isModal }) => {
             <Button
               onClick={() => handleEmojiAdd(emoji)}
               className={classes.emojiBtn}
+              key={emoji}
             >
               {emoji}
             </Button>
