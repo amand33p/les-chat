@@ -26,8 +26,8 @@ const NavBar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   const handleLogout = () => {
+    client.clearStore();
     logoutUser();
-    client.resetStore();
     history.push('/login');
   };
 

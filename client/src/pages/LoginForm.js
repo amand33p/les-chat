@@ -56,7 +56,6 @@ const LoginForm = () => {
       update: (_, { data }) => {
         console.log(data);
         setUser(data.login);
-        history.go(0);
         //notify(`Welcome, ${data.login.username}! You're logged in.`);
         reset();
       },
