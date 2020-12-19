@@ -1,12 +1,22 @@
-import { Popover, Button } from '@material-ui/core';
+import { useState } from 'react';
+import { Popover, Button, IconButton } from '@material-ui/core';
 import { useEmojiPanelStyles } from '../styles/muiStyles';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 
-const EmojiPicker = ({ anchorEl, setAnchorEl, handleEmojiAdd }) => {
+const EmojiPicker = ({ handleEmojiAdd }) => {
   const classes = useEmojiPanelStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
   const emojis = ['😂', '😭', '❤️', '🤣', '😍', '😌', '🔥', '🤔', '😫', '🙄'];
 
   return (
     <div>
+      <IconButton
+        size="small"
+        color="primary"
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+      >
+        <InsertEmoticonIcon fontSize="large" />
+      </IconButton>
       <Popover
         open={anchorEl}
         anchorEl={anchorEl}

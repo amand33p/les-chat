@@ -8,21 +8,14 @@ import {
 import { useStateContext } from '../../context/state';
 import EmojiPicker from '../../components/EmojiPicker';
 
-import {
-  Button,
-  TextField,
-  IconButton,
-  InputAdornment,
-} from '@material-ui/core';
+import { Button, TextField, InputAdornment } from '@material-ui/core';
 import { useConversationPageStyles } from '../../styles/muiStyles';
 import SendIcon from '@material-ui/icons/Send';
-import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 
 const SendMessage = () => {
   const classes = useConversationPageStyles();
   const { selectedChat } = useStateContext();
   const [messageBody, setMessageBody] = useState('');
-  const [emojiAnchorEl, setEmojiAnchorEl] = useState(null);
 
   const [submitPrivateMsg, { loading: loadingPrivate }] = useMutation(
     SEND_PRIVATE_MSG,
@@ -100,22 +93,12 @@ const SendMessage = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton
-                size="small"
-                color="primary"
-                onClick={(e) => setEmojiAnchorEl(e.currentTarget)}
-              >
-                <InsertEmoticonIcon fontSize="large" />
-              </IconButton>
+              <EmojiPicker handleEmojiAdd={handleEmojiAdd} />
             </InputAdornment>
           ),
         }}
       />
-      <EmojiPicker
-        anchorEl={emojiAnchorEl}
-        setAnchorEl={setEmojiAnchorEl}
-        handleEmojiAdd={handleEmojiAdd}
-      />
+
       <Button
         size="small"
         color="primary"
