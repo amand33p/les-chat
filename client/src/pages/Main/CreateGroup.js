@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GET_GROUPS, GET_ALL_USERS } from '../../graphql/queries';
 import { CREATE_GROUP } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
+import EmojiPicker from '../../components/EmojiPicker';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -15,6 +16,7 @@ import {
   ListItemText,
   Avatar,
   Chip,
+  InputAdornment,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useCreateGroupStyles } from '../../styles/muiStyles';
@@ -30,7 +32,7 @@ const validationSchema = yup.object({
 const CreateGroup = ({ closeModal }) => {
   const classes = useCreateGroupStyles();
   const { selectChat } = useStateContext();
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors, setValue, getValues } = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
@@ -49,6 +51,10 @@ const CreateGroup = ({ closeModal }) => {
 
   const usersOnChange = (e, selectedOption) => {
     setParticipants(selectedOption.map((o) => o.id));
+  };
+
+  const handleEmojiAdd = (emoji) => {
+    setValue('name', getValues('name').concat(emoji), { shouldDirty: true });
   };
 
   const handleCreateGroup = ({ name }) => {
@@ -85,6 +91,13 @@ const CreateGroup = ({ closeModal }) => {
         error={'name' in errors}
         helperText={'name' in errors ? errors.name.message : ''}
         className={classes.textField}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <EmojiPicker handleEmojiAdd={handleEmojiAdd} isModal={true} />
+            </InputAdornment>
+          ),
+        }}
       />
       <Autocomplete
         multiple

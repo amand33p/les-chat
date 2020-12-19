@@ -46,6 +46,10 @@ const SendMessage = () => {
     setMessageBody('');
   };
 
+  const handleEmojiAdd = (emoji) => {
+    setMessageBody((prevString) => prevString.concat(emoji));
+  };
+
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (messageBody.trim() === '' || !selectedChat) return;
@@ -75,10 +79,6 @@ const SendMessage = () => {
         },
       });
     }
-  };
-
-  const handleEmojiAdd = (emoji) => {
-    setMessageBody((prevString) => prevString.concat(emoji));
   };
 
   return (
