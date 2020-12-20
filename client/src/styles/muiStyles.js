@@ -35,8 +35,10 @@ export const useMainPageStyles = makeStyles(
       width: '40%',
       borderRight: '1px solid #d3d3d390',
       borderLeft: '1px solid #d3d3d390',
-      maxHeight: 'calc(100vH - 52px)',
-      minHeight: 'calc(100vH - 52px)',
+    },
+    leftPanelContent: {
+      maxHeight: 'calc(100vH - 111px)',
+      minHeight: 'calc(100vH - 111px)',
       overflowY: 'auto',
     },
   }),

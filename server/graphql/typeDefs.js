@@ -86,7 +86,7 @@ module.exports = gql`
     sendGroupMessage(conversationId: ID!, body: String!): Message!
     sendGlobalMessage(body: String): Message!
 
-    createGroup(name: String!, participants: [ID!]!): Group!
+    createGroup(name: String!, participants: [ID!]): Group!
     editGroupName(conversationId: ID!, name: String!): GroupName!
     removeGroupUser(conversationId: ID!, userId: ID!): GroupParticipants!
     addGroupUser(conversationId: ID!, participants: [ID!]!): GroupParticipants!

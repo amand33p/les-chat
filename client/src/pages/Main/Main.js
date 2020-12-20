@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import TabBar from './TabBar';
+import TabBar from '../../components/TabBar';
 import LatestMessages from './LatestMessages';
 import Users from './Users';
 import Groups from './Groups';
@@ -17,13 +17,15 @@ const Main = () => {
       <div className={classes.root}>
         <div className={classes.leftPanel}>
           <TabBar tab={tab} setTab={setTab} />
-          {tab === 'chat' ? (
-            <LatestMessages />
-          ) : tab === 'users' ? (
-            <Users />
-          ) : (
-            <Groups />
-          )}
+          <div className={classes.leftPanelContent}>
+            {tab === 'chat' ? (
+              <LatestMessages />
+            ) : tab === 'users' ? (
+              <Users />
+            ) : (
+              <Groups />
+            )}
+          </div>
         </div>
         <Conversation />
       </div>

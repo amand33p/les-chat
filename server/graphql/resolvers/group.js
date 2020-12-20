@@ -112,10 +112,6 @@ module.exports = {
         );
       }
 
-      if (!participants || participants.length === 0) {
-        throw new UserInputError('Participants field must not be empty.');
-      }
-
       try {
         const users = await User.findAll();
         const userIds = users.map((u) => u.id.toString());

@@ -1,5 +1,5 @@
 import { Tab, Tabs } from '@material-ui/core';
-import { useTabBarStyles } from '../../styles/muiStyles';
+import { useTabBarStyles } from '../styles/muiStyles';
 
 const TabBar = ({ tab, setTab }) => {
   const classes = useTabBarStyles();
