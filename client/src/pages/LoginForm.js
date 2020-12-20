@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
+import { useApolloClient } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
@@ -41,7 +42,7 @@ const LoginForm = () => {
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
-
+  const client = useApolloClient();
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     onError: (err) => {
       //setErrorMsg(getErrorMsg(err));
@@ -53,6 +54,7 @@ const LoginForm = () => {
     loginUser({
       variables: { username, password },
       update: (_, { data }) => {
+        client.clearStore();
         setUser(data.login);
         //notify(`Welcome, ${data.login.username}! You're logged in.`);
         reset();

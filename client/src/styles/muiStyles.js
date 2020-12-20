@@ -329,14 +329,12 @@ export const useConversationPageStyles = makeStyles(
       marginLeft: '0.8em',
       marginRight: '0.7em',
       [theme.breakpoints.down('sm')]: {
-        marginLeft: '0.4em',
+        marginLeft: '0.5em',
       },
     },
     sendMsgForm: {
       display: 'flex',
       [theme.breakpoints.down('sm')]: {
-        marginLeft: '2px',
-        marginRight: '2px',
         margin: 0,
       },
     },

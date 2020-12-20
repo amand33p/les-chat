@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
+import { useApolloClient } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
@@ -58,10 +59,11 @@ const RegisterForm = () => {
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
-
+  const client = useApolloClient();
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
     onError: (err) => {
       //setErrorMsg(getErrorMsg(err));
+      console.log(err);
     },
   });
 
@@ -72,6 +74,7 @@ const RegisterForm = () => {
     registerUser({
       variables: { username, password },
       update: (_, { data }) => {
+        client.clearStore();
         setUser(data.register);
         /*notify(
           `Welcome, ${data.register.username}! You've successfully registered.`
