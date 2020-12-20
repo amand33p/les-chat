@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import DialogBox from './DialogBox';
+import CreateGroup from '../pages/Main/CreateGroup';
 
 import { IconButton, Menu, MenuItem, Avatar } from '@material-ui/core';
 import { useMenuStyles } from '../styles/muiStyles';
@@ -7,9 +9,11 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 
 const MobileUserMenu = ({ user, handleLogout, isMobile }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [createGroupModal, setCreateGroupModal] = useState(false);
   const classes = useMenuStyles();
 
   const handleOpenMenu = (event) => {
@@ -22,6 +26,11 @@ const MobileUserMenu = ({ user, handleLogout, isMobile }) => {
 
   const handleLogoutClick = () => {
     handleLogout();
+    handleCloseMenu();
+  };
+
+  const handleCreateGroupModal = () => {
+    setCreateGroupModal(true);
     handleCloseMenu();
   };
 
@@ -67,6 +76,20 @@ const MobileUserMenu = ({ user, handleLogout, isMobile }) => {
       >
         {user ? (
           <div>
+            <DialogBox
+              title="Create A Group"
+              modalOpen={createGroupModal}
+              setModalOpen={setCreateGroupModal}
+              triggerButton={
+                <MenuItem onClick={handleCreateGroupModal}>
+                  <PeopleAltIcon className={classes.menuIcon} />
+                  Create Group
+                </MenuItem>
+              }
+              children={
+                <CreateGroup closeModal={() => setCreateGroupModal(false)} />
+              }
+            />
             <MenuItem onClick={handleLogoutClick}>
               <PowerSettingsNewIcon className={classes.menuIcon} />
               Logout: {user.username}
