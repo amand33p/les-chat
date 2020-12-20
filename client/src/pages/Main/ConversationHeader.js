@@ -5,19 +5,32 @@ import DialogBox from '../../components/DialogBox';
 import GroupInfo from './GroupInfo';
 import AddGroupMembers from './AddGroupMembers';
 import { useAuthContext } from '../../context/auth';
+import { useStateContext } from '../../context/state';
+import { truncateString } from '../../utils/helperFuncs';
 
-import { Typography, Avatar, Button, IconButton } from '@material-ui/core';
+import {
+  Typography,
+  Avatar,
+  Button,
+  IconButton,
+  useMediaQuery,
+} from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
 import { useConversationPageStyles } from '../../styles/muiStyles';
 import LanguageIcon from '@material-ui/icons/Language';
 import GroupIcon from '@material-ui/icons/Group';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-const ConversationHeader = ({ selectedChat }) => {
+const ConversationHeader = () => {
   const classes = useConversationPageStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { user } = useAuthContext();
+  const { unselectChat, selectedChat } = useStateContext();
   const [infoModal, setInfoModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-  const { user } = useAuthContext();
   const { data: userData, loading: loadingUsers } = useQuery(GET_ALL_USERS, {
     onError: (err) => {
       console.log(err);
@@ -29,7 +42,7 @@ const ConversationHeader = ({ selectedChat }) => {
   const conversationDetails = () => {
     return (
       <>
-        <Avatar>
+        <Avatar className={classes.avatar}>
           {selectedChat.chatType === 'public' ? (
             <LanguageIcon color="primary" />
           ) : selectedChat.chatType === 'group' ? (
@@ -43,13 +56,22 @@ const ConversationHeader = ({ selectedChat }) => {
         </Avatar>
         <Typography
           color="secondary"
-          variant="h6"
+          variant={isMobile ? 'subtitle2' : 'h6'}
           className={classes.titleText}
         >
-          {selectedChat.chatType === 'private' ? username : name}
+          {selectedChat.chatType === 'private'
+            ? isMobile
+              ? truncateString(username, 12)
+              : username
+            : isMobile
+            ? truncateString(name, 12)
+            : name}
         </Typography>
         {selectedChat.chatType === 'group' && (
-          <Typography color="secondary" variant="body1">
+          <Typography
+            color="secondary"
+            variant={isMobile ? 'caption' : 'body1'}
+          >
             ({participants.length}{' '}
             {participants.length > 1 ? 'members' : 'member'})
           </Typography>
@@ -60,16 +82,29 @@ const ConversationHeader = ({ selectedChat }) => {
 
   return (
     <div className={classes.conversationHeader}>
-      {selectedChat.chatType === 'group' ? (
-        <Button
-          className={classes.headerTitle}
-          onClick={() => setInfoModal(true)}
-        >
-          {conversationDetails()}
-        </Button>
-      ) : (
-        <div className={classes.headerTitle}> {conversationDetails()}</div>
-      )}
+      <div className={classes.leftBtns}>
+        {isMobile && selectedChat && (
+          <Button
+            size="small"
+            color="primary"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => unselectChat()}
+          >
+            Back
+          </Button>
+        )}
+        {selectedChat.chatType === 'group' ? (
+          <Button
+            className={classes.headerTitle}
+            onClick={() => setInfoModal(true)}
+          >
+            {conversationDetails()}
+          </Button>
+        ) : (
+          <div className={classes.headerTitle}>{conversationDetails()}</div>
+        )}
+      </div>
+
       <div className={classes.rightHeaderBtns}>
         {admin === user.id && (
           <DialogBox
@@ -83,7 +118,7 @@ const ConversationHeader = ({ selectedChat }) => {
                 size="small"
                 style={{ marginRight: 10 }}
               >
-                <GroupAddIcon fontSize="large" />
+                <GroupAddIcon fontSize={isMobile ? 'default' : 'large'} />
               </IconButton>
             }
           >
@@ -104,7 +139,7 @@ const ConversationHeader = ({ selectedChat }) => {
                 onClick={() => setInfoModal(true)}
                 size="small"
               >
-                <MenuOpenIcon fontSize="large" />
+                <MenuOpenIcon fontSize={isMobile ? 'default' : 'large'} />
               </IconButton>
             }
           >

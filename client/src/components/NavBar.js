@@ -1,6 +1,7 @@
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useApolloClient } from '@apollo/client';
 import { useAuthContext } from '../context/auth';
+import { useStateContext } from '../context/state';
 import UserButtonsDesktop from './UserButtonsDesktop';
 import UserMenuMobile from './UserMenuMobile';
 import ChatIcon from '../svg/chat.svg';
@@ -19,17 +20,20 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const NavBar = () => {
   const { user, logoutUser } = useAuthContext();
+  const { selectedChat } = useStateContext();
   const client = useApolloClient();
   const history = useHistory();
   const classes = useNavStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleLogout = () => {
     client.clearStore();
     logoutUser();
     history.push('/login');
   };
+
+  if (isMobile && selectedChat) return null;
 
   return (
     <AppBar

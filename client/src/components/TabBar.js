@@ -9,18 +9,20 @@ const TabBar = ({ tab, setTab }) => {
   };
 
   return (
-    <Tabs
-      value={tab}
-      indicatorColor="primary"
-      textColor="primary"
-      onChange={handleTabChange}
-      variant="fullWidth"
-      className={classes.tabs}
-    >
-      <Tab className={classes.tab} label="Chat" value="chat" />
-      <Tab className={classes.tab} label="Users" value="users" />
-      <Tab className={classes.tab} label="Groups" value="groups" />
-    </Tabs>
+    <div className={classes.root}>
+      <Tabs
+        value={tab}
+        indicatorColor="primary"
+        textColor="primary"
+        onChange={handleTabChange}
+        variant="fullWidth"
+        className={classes.tabs}
+      >
+        <Tab className={classes.tab} label="Chat" value="chat" />
+        <Tab className={classes.tab} label="Users" value="users" />
+        <Tab className={classes.tab} label="Groups" value="groups" />
+      </Tabs>
+    </div>
   );
 };
 

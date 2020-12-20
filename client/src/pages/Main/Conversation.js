@@ -16,11 +16,15 @@ import MessageBubble from './MessageBubble';
 import ConversationHeader from './ConversationHeader';
 import SendMessage from './SendMessage';
 import { sameDay, formatToYesterDay } from '../../utils/helperFuncs';
-import { Typography } from '@material-ui/core';
+
+import { Typography, useMediaQuery } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
 import { useConversationPageStyles } from '../../styles/muiStyles';
 
 const Conversation = () => {
   const classes = useConversationPageStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const messagesEndRef = useRef(null);
   const { selectedChat } = useStateContext();
   const { user } = useAuthContext();
@@ -189,7 +193,11 @@ const Conversation = () => {
       <div className={classes.root}>
         <div className={classes.noMessages}>
           <div className={classes.selectChatText}>
-            <Typography>Select a chat to start messaging</Typography>
+            {!isMobile ? (
+              <Typography>Select a chat to start messaging</Typography>
+            ) : (
+              <div>Loading...</div>
+            )}
           </div>
         </div>
       </div>
@@ -200,7 +208,7 @@ const Conversation = () => {
 
   return (
     <div className={classes.root}>
-      <ConversationHeader selectedChat={selectedChat} />
+      <ConversationHeader />
       {(loadingPrivate || loadingGroup || loadingGlobal) && (
         <div>loading...</div>
       )}

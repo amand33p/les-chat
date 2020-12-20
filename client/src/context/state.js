@@ -5,6 +5,7 @@ const StateContext = createContext({
   selectChat: (chatData, chatType) => {},
   updateMembers: (updatedData) => {},
   updateName: (updatedData) => {},
+  unselectChat: () => {},
 });
 
 const stateReducer = (state, action) => {
@@ -24,6 +25,11 @@ const stateReducer = (state, action) => {
             ...action.payload,
           },
         },
+      };
+    case 'UNSELECT_CHAT':
+      return {
+        ...state,
+        selectedChat: null,
       };
     default:
       return state;
@@ -58,6 +64,12 @@ export const StateProvider = ({ children }) => {
     }
   };
 
+  const unselectChat = () => {
+    dispatch({
+      type: 'UNSELECT_CHAT',
+    });
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -65,6 +77,7 @@ export const StateProvider = ({ children }) => {
         selectChat,
         updateMembers,
         updateName,
+        unselectChat,
       }}
     >
       {children}

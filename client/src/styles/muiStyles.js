@@ -47,6 +47,14 @@ export const useMainPageStyles = makeStyles(
 
 export const useTabBarStyles = makeStyles(
   (theme) => ({
+    root: {
+      [theme.breakpoints.down('sm')]: {
+        position: 'sticky',
+        top: '51px',
+        backgroundColor: '#fff',
+        zIndex: 10,
+      },
+    },
     tabs: {
       borderBottom: '1px solid #d3d3d390',
     },
@@ -203,20 +211,31 @@ export const useConversationPageStyles = makeStyles(
       borderRight: '1px solid #d3d3d390',
       display: 'flex',
       flexDirection: 'column',
+      [theme.breakpoints.down('sm')]: {
+        width: 'auto',
+        borderRight: 'none',
+      },
     },
     conversationWrapper: {
       padding: '1em',
       paddingTop: '0em',
       overflowY: 'auto',
       flexGrow: 1,
-      maxHeight: 'calc(100vH - 182px)',
-      minHeight: 'calc(100vH - 182px)',
+      maxHeight: 'calc(100vH - 181px)',
+      minHeight: 'calc(100vH - 181px)',
+      [theme.breakpoints.down('sm')]: {
+        maxHeight: 'calc(100vH - 122px)',
+        minHeight: 'calc(100vH - 122px)',
+      },
     },
     noMessages: {
       display: 'flex',
-      height: 'calc(100vH - 182px)',
+      height: 'calc(100vH - 181px)',
       padding: '1em',
       paddingTop: '0em',
+      [theme.breakpoints.down('sm')]: {
+        height: 'calc(100vH - 122px)',
+      },
     },
     dateInfoWrapper: {
       margin: '2em 0',
@@ -280,14 +299,27 @@ export const useConversationPageStyles = makeStyles(
     conversationHeader: {
       display: 'flex',
       padding: '0.5em 1em',
-      borderBottom: '1px solid #d3d3d390',
       alignItems: 'center',
       justifyContent: 'space-between',
+      [theme.breakpoints.down('sm')]: {
+        padding: '0.5em 0.2em',
+        borderBottom: `3px solid ${theme.palette.primary.main}98`,
+      },
+    },
+    avatar: {
+      [theme.breakpoints.down('sm')]: {
+        width: '1.5em',
+        height: '1.5em',
+      },
     },
     headerTitle: {
       display: 'flex',
       alignItems: 'center',
       padding: '0 0.4em',
+    },
+    leftBtns: {
+      display: 'flex',
+      alignItems: 'center',
     },
     rightHeaderBtns: {
       display: 'flex',
@@ -296,9 +328,17 @@ export const useConversationPageStyles = makeStyles(
     titleText: {
       marginLeft: '0.8em',
       marginRight: '0.7em',
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: '0.4em',
+      },
     },
     sendMsgForm: {
       display: 'flex',
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: '2px',
+        marginRight: '2px',
+        margin: 0,
+      },
     },
   }),
   { index: 1 }
