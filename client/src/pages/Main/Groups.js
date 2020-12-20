@@ -10,6 +10,7 @@ import {
   ListItemText,
   Avatar,
   Divider,
+  Typography,
 } from '@material-ui/core';
 import { useChatListStyles } from '../../styles/muiStyles';
 import GroupIcon from '@material-ui/icons/Group';
@@ -36,6 +37,15 @@ const Groups = () => {
           setFilterValue={setFilterValue}
           placeholder="Search groups"
         />
+        {groupData && groupData.getGroups.length === 0 && (
+          <Typography
+            variant="subtitle1"
+            color="secondary"
+            style={{ padding: '0.5em', textAlign: 'center' }}
+          >
+            You've not been added to any groups.
+          </Typography>
+        )}
         {groupData &&
           groupData.getGroups
             .filter((group) =>

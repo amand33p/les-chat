@@ -5,11 +5,11 @@ import { useApolloClient } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
-//import { useStateContext } from '../context/state';
-//import ErrorMessage from './ErrorMessage';
+import { useStateContext } from '../context/state';
+import ErrorMessage from '../components/ErrorMessage';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-//import { getErrorMsg } from '../utils/helperFuncs';
+import { getErrorMsg } from '../utils/helperFuncs';
 
 import {
   TextField,
@@ -34,10 +34,10 @@ const validationSchema = yup.object({
 
 const LoginForm = () => {
   const [showPass, setShowPass] = useState(false);
-  //const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const classes = useAuthFormStyles();
   const { setUser } = useAuthContext();
-  //const { notify } = useStateContext();
+  const { notify } = useStateContext();
   const { register, handleSubmit, reset, errors } = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
@@ -45,8 +45,7 @@ const LoginForm = () => {
   const client = useApolloClient();
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     onError: (err) => {
-      //setErrorMsg(getErrorMsg(err));
-      console.log(err);
+      setErrorMsg(getErrorMsg(err));
     },
   });
 
@@ -54,12 +53,12 @@ const LoginForm = () => {
     loginUser({
       variables: { username, password },
       update: (_, { data }) => {
-        client.clearStore();
         setUser(data.login);
-        //notify(`Welcome, ${data.login.username}! You're logged in.`);
+        notify(`Welcome, ${data.login.username}! You're logged in.`);
         reset();
       },
     });
+    client.clearStore();
   };
 
   return (
@@ -141,10 +140,10 @@ const LoginForm = () => {
             Sign Up
           </Link>
         </Typography>
-        {/*<ErrorMessage
-        errorMsg={errorMsg}
-        clearErrorMsg={() => setErrorMsg(null)}
-      />*/}
+        <ErrorMessage
+          errorMsg={errorMsg}
+          clearErrorMsg={() => setErrorMsg(null)}
+        />
       </div>
     </Container>
   );

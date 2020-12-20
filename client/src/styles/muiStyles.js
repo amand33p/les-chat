@@ -301,6 +301,7 @@ export const useConversationPageStyles = makeStyles(
       padding: '0.5em 1em',
       alignItems: 'center',
       justifyContent: 'space-between',
+      borderBottom: '1px solid #d3d3d390',
       [theme.breakpoints.down('sm')]: {
         padding: '0.5em 0.2em',
         borderBottom: `3px solid ${theme.palette.primary.main}98`,

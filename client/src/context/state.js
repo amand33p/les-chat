@@ -2,10 +2,13 @@ import { useReducer, createContext, useContext } from 'react';
 
 const StateContext = createContext({
   selectedChat: null,
+  notification: null,
   selectChat: (chatData, chatType) => {},
   updateMembers: (updatedData) => {},
   updateName: (updatedData) => {},
   unselectChat: () => {},
+  notify: (message, severity, duration) => {},
+  clearNotif: () => {},
 });
 
 const stateReducer = (state, action) => {
@@ -31,13 +34,26 @@ const stateReducer = (state, action) => {
         ...state,
         selectedChat: null,
       };
+    case 'SET_NOTIFICATION':
+      return {
+        ...state,
+        notification: action.payload,
+      };
+    case 'CLEAR_NOTIFICATION':
+      return {
+        ...state,
+        notification: null,
+      };
     default:
       return state;
   }
 };
 
 export const StateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(stateReducer, { selectedChat: null });
+  const [state, dispatch] = useReducer(stateReducer, {
+    selectedChat: null,
+    notification: null,
+  });
 
   const selectChat = (chatData, chatType) => {
     dispatch({
@@ -70,14 +86,40 @@ export const StateProvider = ({ children }) => {
     });
   };
 
+  let timeoutID = null;
+
+  const notify = (message, severity = 'success', duration = 5) => {
+    clearTimeout(timeoutID);
+
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      payload: { message, severity, duration },
+    });
+
+    timeoutID = setTimeout(() => {
+      dispatch({
+        type: 'CLEAR_NOTIFICATION',
+      });
+    }, duration * 1000);
+  };
+
+  const clearNotif = () => {
+    dispatch({
+      type: 'CLEAR_NOTIFICATION',
+    });
+  };
+
   return (
     <StateContext.Provider
       value={{
         selectedChat: state.selectedChat,
+        notification: state.notification,
         selectChat,
         updateMembers,
         updateName,
         unselectChat,
+        notify,
+        clearNotif,
       }}
     >
       {children}

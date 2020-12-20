@@ -10,6 +10,7 @@ import {
   ListItemText,
   Avatar,
   Divider,
+  Typography,
 } from '@material-ui/core';
 import { useChatListStyles } from '../../styles/muiStyles';
 
@@ -35,6 +36,15 @@ const Users = () => {
           setFilterValue={setFilterValue}
           placeholder="Search users"
         />
+        {userData && userData.getAllUsers.length === 0 && (
+          <Typography
+            variant="subtitle1"
+            color="secondary"
+            style={{ padding: '0.5em', textAlign: 'center' }}
+          >
+            No users found. :(
+          </Typography>
+        )}
         {userData &&
           userData.getAllUsers
             .filter((user) =>
