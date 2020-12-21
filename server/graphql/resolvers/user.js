@@ -64,38 +64,34 @@ module.exports = {
         throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
-      try {
-        const existingUser = await User.findOne({
-          where: { username: { [Op.iLike]: username } },
-        });
+      const existingUser = await User.findOne({
+        where: { username: { [Op.iLike]: username } },
+      });
 
-        if (existingUser) {
-          throw new UserInputError(`Username '${username}' is already taken.`);
-        }
-
-        const saltRounds = 10;
-        const passwordHash = await bcrypt.hash(password, saltRounds);
-
-        const user = new User({
-          username,
-          passwordHash,
-        });
-
-        const savedUser = await user.save();
-
-        const token = jwt.sign(
-          { id: savedUser.id, username: savedUser.username },
-          JWT_SECRET
-        );
-
-        return {
-          id: savedUser.id,
-          username: savedUser.username,
-          token,
-        };
-      } catch (err) {
-        throw new UserInputError(err);
+      if (existingUser) {
+        throw new UserInputError(`Username '${username}' is already taken.`);
       }
+
+      const saltRounds = 10;
+      const passwordHash = await bcrypt.hash(password, saltRounds);
+
+      const user = new User({
+        username,
+        passwordHash,
+      });
+
+      const savedUser = await user.save();
+
+      const token = jwt.sign(
+        { id: savedUser.id, username: savedUser.username },
+        JWT_SECRET
+      );
+
+      return {
+        id: savedUser.id,
+        username: savedUser.username,
+        token,
+      };
     },
 
     login: async (_, args) => {
@@ -106,37 +102,33 @@ module.exports = {
         throw new UserInputError(Object.values(errors)[0], { errors });
       }
 
-      try {
-        const user = await User.findOne({
-          where: { username: { [Op.iLike]: username } },
-        });
+      const user = await User.findOne({
+        where: { username: { [Op.iLike]: username } },
+      });
 
-        if (!user) {
-          throw new UserInputError(`User: '${username}' not found.`);
-        }
-
-        const credentialsValid = await bcrypt.compare(
-          password,
-          user.passwordHash
-        );
-
-        if (!credentialsValid) {
-          throw new UserInputError('Invalid credentials.');
-        }
-
-        const token = jwt.sign(
-          { id: user.id, username: user.username },
-          JWT_SECRET
-        );
-
-        return {
-          id: user.id,
-          username: user.username,
-          token,
-        };
-      } catch (err) {
-        throw new UserInputError(err);
+      if (!user) {
+        throw new UserInputError(`User: '${username}' not found.`);
       }
+
+      const credentialsValid = await bcrypt.compare(
+        password,
+        user.passwordHash
+      );
+
+      if (!credentialsValid) {
+        throw new UserInputError('Invalid credentials.');
+      }
+
+      const token = jwt.sign(
+        { id: user.id, username: user.username },
+        JWT_SECRET
+      );
+
+      return {
+        id: user.id,
+        username: user.username,
+        token,
+      };
     },
   },
 };
