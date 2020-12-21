@@ -172,11 +172,11 @@ const Conversation = () => {
   }, [selectedChat]);
 
   useEffect(() => {
-    if (privateData && selectedChat.chatType === 'private') {
+    if (privateData && selectedChat?.chatType === 'private') {
       setMessages(privateData.getPrivateMessages);
-    } else if (groupData && selectedChat.chatType === 'group') {
+    } else if (groupData && selectedChat?.chatType === 'group') {
       setMessages(groupData.getGroupMessages);
-    } else if (globalData && selectedChat.chatType === 'public') {
+    } else if (globalData && selectedChat?.chatType === 'public') {
       setMessages(globalData.getGlobalMessages);
     }
   }, [privateData, groupData, globalData, selectedChat]);

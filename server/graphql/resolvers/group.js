@@ -139,7 +139,10 @@ module.exports = {
           participants: [loggedUser.id, ...participants],
         });
 
-        return group;
+        return {
+          ...group.toJSON(),
+          adminUser: { id: loggedUser.id, username: loggedUser.username },
+        };
       } catch (err) {
         throw new UserInputError(err);
       }

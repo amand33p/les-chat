@@ -144,7 +144,11 @@ const ConversationHeader = () => {
               </IconButton>
             }
           >
-            <GroupInfo userData={userData} loadingUsers={loadingUsers} />
+            <GroupInfo
+              userData={userData}
+              loadingUsers={loadingUsers}
+              closeModal={() => setInfoModal(false)}
+            />
           </DialogBox>
         )}
       </div>

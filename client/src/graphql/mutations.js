@@ -85,3 +85,9 @@ export const CREATE_GROUP = gql`
   }
   ${GROUP_DETAILS}
 `;
+
+export const DELETE_GROUP = gql`
+  mutation removeGroup($conversationId: ID!) {
+    deleteGroup(conversationId: $conversationId)
+  }
+`;

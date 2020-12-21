@@ -10,8 +10,9 @@ import {
   IconButton,
 } from '@material-ui/core';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
-const DeleteDialog = ({ handleRemove, username }) => {
+const DeleteDialog = ({ handleDelete, username, type }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalOpen = () => {
@@ -23,20 +24,36 @@ const DeleteDialog = ({ handleRemove, username }) => {
   };
 
   const handleDeleteClick = () => {
-    handleRemove();
+    handleDelete();
     handleModalClose();
   };
 
   return (
     <div>
-      <IconButton color="primary" size="small" onClick={handleModalOpen}>
-        <CancelOutlinedIcon />
-      </IconButton>
+      {type === 'group' ? (
+        <Button
+          color="primary"
+          size="small"
+          startIcon={<DeleteOutlinedIcon />}
+          variant="outlined"
+          onClick={handleModalOpen}
+        >
+          Delete
+        </Button>
+      ) : (
+        <IconButton color="primary" size="small" onClick={handleModalOpen}>
+          <CancelOutlinedIcon />
+        </IconButton>
+      )}
       <Dialog open={modalOpen} onClose={handleModalClose}>
-        <DialogTitle>Confirm Remove User</DialogTitle>
+        <DialogTitle>
+          {type === 'group' ? 'Confirm Delete Group' : 'Confirm Remove User'}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {`Are you sure you want to remove ${username} from your group?`}
+            {type === 'group'
+              ? `Are you sure you want to delete your group?`
+              : `Are you sure you want to remove ${username} from your group?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -44,7 +61,7 @@ const DeleteDialog = ({ handleRemove, username }) => {
             Cancel
           </Button>
           <Button onClick={handleDeleteClick} color="primary">
-            Remove
+            {type === 'group' ? 'Delete' : 'Remove'}
           </Button>
         </DialogActions>
       </Dialog>

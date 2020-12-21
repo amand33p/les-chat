@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { GET_GROUPS } from '../../graphql/queries';
-import { REMOVE_GROUP_USER } from '../../graphql/mutations';
+import { REMOVE_GROUP_USER, DELETE_GROUP } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
 import DeleteDialog from '../../components/DeleteDialog';
@@ -22,16 +22,51 @@ import {
 import { useGroupInfoStyles } from '../../styles/muiStyles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
-const GroupInfo = ({ userData, loadingUsers }) => {
+const GroupInfo = ({ userData, loadingUsers, closeModal }) => {
   const classes = useGroupInfoStyles();
-  const { selectedChat, updateMembers, notify } = useStateContext();
+  const {
+    selectedChat,
+    updateMembers,
+    unselectChat,
+    notify,
+  } = useStateContext();
   const { user } = useAuthContext();
   const [editOpen, setEditOpen] = useState(false);
+  const [removeGroup] = useMutation(DELETE_GROUP, {
+    onError: (err) => {
+      notify(getErrorMsg(err), 'error');
+    },
+  });
   const [removeUser] = useMutation(REMOVE_GROUP_USER, {
     onError: (err) => {
       notify(getErrorMsg(err), 'error');
     },
   });
+
+  const handleGroupDelete = () => {
+    removeGroup({
+      variables: { conversationId: selectedChat.chatData.id },
+      update: (proxy, { data }) => {
+        const returnedData = data.deleteGroup;
+        const dataInCache = proxy.readQuery({
+          query: GET_GROUPS,
+        });
+
+        const updatedGroups = dataInCache.getGroups.filter(
+          (g) => g.id !== returnedData
+        );
+
+        proxy.writeQuery({
+          query: GET_GROUPS,
+          data: { getGroups: updatedGroups },
+        });
+
+        closeModal();
+        unselectChat();
+        notify('Group deleted!');
+      },
+    });
+  };
 
   const handleRemoveUser = (userToRemoveId) => {
     removeUser({
@@ -75,21 +110,25 @@ const GroupInfo = ({ userData, loadingUsers }) => {
             <Typography variant="h5" color="secondary">
               {name}
             </Typography>
-            {isGroupAdmin && (
-              <Button
-                color="primary"
-                size="small"
-                startIcon={<EditOutlinedIcon />}
-                variant="outlined"
-                className={classes.editBtn}
-                onClick={() => setEditOpen(true)}
-              >
-                Edit
-              </Button>
-            )}
           </div>
         ) : (
           <EditGroupName setEditOpen={setEditOpen} />
+        )}
+        {isGroupAdmin && !editOpen && (
+          <div className={classes.btnGroup}>
+            <Button
+              color="primary"
+              size="small"
+              startIcon={<EditOutlinedIcon />}
+              variant="outlined"
+              className={classes.editBtn}
+              onClick={() => setEditOpen(true)}
+            >
+              Edit
+            </Button>
+
+            <DeleteDialog handleDelete={handleGroupDelete} type="group" />
+          </div>
         )}
         <Typography variant="subtitle1" color="secondary">
           Admin: <strong>{adminUser.username}</strong> | Created:{' '}
@@ -133,7 +172,7 @@ const GroupInfo = ({ userData, loadingUsers }) => {
                     {isGroupAdmin && (
                       <ListItemSecondaryAction>
                         <DeleteDialog
-                          handleRemove={() => handleRemoveUser(u.id)}
+                          handleDelete={() => handleRemoveUser(u.id)}
                           username={u.username}
                         />
                       </ListItemSecondaryAction>

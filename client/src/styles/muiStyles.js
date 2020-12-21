@@ -360,8 +360,12 @@ export const useGroupInfoStyles = makeStyles(
       marginBottom: '0.5em',
       display: 'flex',
     },
+    btnGroup: {
+      display: 'flex',
+      marginBottom: '0.5em',
+    },
     editBtn: {
-      marginLeft: '0.8em',
+      marginRight: '0.7em',
     },
     membersListWrapper: {
       margin: '0 auto',
