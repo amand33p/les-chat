@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
 import FilterBar from '../../components/FilterBar';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { getErrorMsg } from '../../utils/helperFuncs';
 
 import {
@@ -26,7 +27,7 @@ const Users = () => {
   });
 
   if (loadingUsers || !userData) {
-    return <div>loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (

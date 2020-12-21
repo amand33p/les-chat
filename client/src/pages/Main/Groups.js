@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import { GET_GROUPS } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
 import FilterBar from '../../components/FilterBar';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { getErrorMsg } from '../../utils/helperFuncs';
 
 import {
@@ -27,7 +28,7 @@ const Groups = () => {
   });
 
   if (loadingGroups || !groupData) {
-    return <div>loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (

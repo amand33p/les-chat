@@ -14,6 +14,7 @@ import { useAuthContext } from '../../context/auth';
 import MessageBubble from './MessageBubble';
 import ConversationHeader from './ConversationHeader';
 import SendMessage from './SendMessage';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import {
   sameDay,
   formatToYesterDay,
@@ -195,13 +196,15 @@ const Conversation = () => {
     return (
       <div className={classes.root}>
         <div className={classes.noMessages}>
-          <div className={classes.selectChatText}>
-            {!isMobile ? (
+          {!isMobile ? (
+            <div className={classes.selectChatText}>
               <Typography>Select a chat to start messaging</Typography>
-            ) : (
-              <div>Loading...</div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div style={{ margin: 'auto' }}>
+              <LoadingSpinner />
+            </div>
+          )}
         </div>
       </div>
     );
@@ -213,7 +216,7 @@ const Conversation = () => {
     <div className={classes.root}>
       <ConversationHeader />
       {(loadingPrivate || loadingGroup || loadingGlobal) && (
-        <div>loading...</div>
+        <LoadingSpinner size={80} marginTop={200} />
       )}
       {messages.length > 0 ? (
         <div className={classes.conversationWrapper}>

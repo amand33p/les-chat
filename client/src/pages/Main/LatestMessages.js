@@ -6,6 +6,7 @@ import {
 } from '../../graphql/queries';
 import LatestMessage from './LatestMessage';
 import { useStateContext } from '../../context/state';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { getErrorMsg } from '../../utils/helperFuncs';
 
 import { ListItem, ListItemAvatar, Avatar, Divider } from '@material-ui/core';
@@ -36,7 +37,7 @@ const LatestMessages = () => {
   );
 
   if (loadingUsers || loadingGroups || loadingGlobal || !userData) {
-    return <div>loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (

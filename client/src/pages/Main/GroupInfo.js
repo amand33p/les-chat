@@ -5,6 +5,7 @@ import { REMOVE_GROUP_USER } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
 import DeleteDialog from '../../components/DeleteDialog';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import EditGroupName from './EditGroupName';
 import { formatDateInWords, getErrorMsg } from '../../utils/helperFuncs';
 
@@ -96,7 +97,7 @@ const GroupInfo = ({ userData, loadingUsers }) => {
         </Typography>
       </div>
       {loadingUsers ? (
-        <div>loading...</div>
+        <LoadingSpinner />
       ) : (
         <div className={classes.membersListWrapper}>
           <Typography
