@@ -3,6 +3,8 @@ import { useMutation } from '@apollo/client';
 import { ADD_GROUP_USER } from '../../graphql/mutations';
 import { GET_GROUPS } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
+import ErrorMessage from '../../components/ErrorMessage';
+import { getErrorMsg } from '../../utils/helperFuncs';
 
 import {
   TextField,
@@ -19,10 +21,11 @@ import { useAddGroupMembersStyles } from '../../styles/muiStyles';
 const AddGroupMembers = ({ userData, closeModal }) => {
   const classes = useAddGroupMembersStyles();
   const [usersToAdd, setUsersToAdd] = useState([]);
-  const { selectedChat, updateMembers } = useStateContext();
+  const [errorMsg, setErrorMsg] = useState(null);
+  const { selectedChat, updateMembers, notify } = useStateContext();
   const [addRemoveUser, { loading: addingUser }] = useMutation(ADD_GROUP_USER, {
     onError: (err) => {
-      console.log(err);
+      setErrorMsg(getErrorMsg(err));
     },
   });
 
@@ -32,7 +35,6 @@ const AddGroupMembers = ({ userData, closeModal }) => {
 
   const handleAddUser = (e) => {
     e.preventDefault();
-
     addRemoveUser({
       variables: {
         conversationId: selectedChat.chatData.id,
@@ -59,12 +61,17 @@ const AddGroupMembers = ({ userData, closeModal }) => {
           updateMembers(returnedData);
         }
         closeModal();
+        notify('New members(s) added to the group!');
       },
     });
   };
 
   return (
     <form onSubmit={handleAddUser}>
+      <ErrorMessage
+        errorMsg={errorMsg}
+        clearErrorMsg={() => setErrorMsg(null)}
+      />
       <Autocomplete
         multiple
         filterSelectedOptions

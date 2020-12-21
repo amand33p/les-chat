@@ -6,7 +6,7 @@ import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
 import DeleteDialog from '../../components/DeleteDialog';
 import EditGroupName from './EditGroupName';
-import { formatDateInWords } from '../../utils/helperFuncs';
+import { formatDateInWords, getErrorMsg } from '../../utils/helperFuncs';
 
 import {
   Typography,
@@ -23,12 +23,12 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 const GroupInfo = ({ userData, loadingUsers }) => {
   const classes = useGroupInfoStyles();
-  const { selectedChat, updateMembers } = useStateContext();
+  const { selectedChat, updateMembers, notify } = useStateContext();
   const { user } = useAuthContext();
   const [editOpen, setEditOpen] = useState(false);
   const [removeUser] = useMutation(REMOVE_GROUP_USER, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
@@ -58,6 +58,7 @@ const GroupInfo = ({ userData, loadingUsers }) => {
         if (selectedChat.chatData.id === returnedData.groupId) {
           updateMembers(returnedData);
         }
+        notify('Group member removed!');
       },
     });
   };

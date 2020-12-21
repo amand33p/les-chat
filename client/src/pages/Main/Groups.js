@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import { GET_GROUPS } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
 import FilterBar from '../../components/FilterBar';
+import { getErrorMsg } from '../../utils/helperFuncs';
 
 import {
   ListItem,
@@ -17,11 +18,11 @@ import GroupIcon from '@material-ui/icons/Group';
 
 const Groups = () => {
   const classes = useChatListStyles();
-  const { selectedChat, selectChat } = useStateContext();
+  const { selectedChat, selectChat, notify } = useStateContext();
   const [filterValue, setFilterValue] = useState('');
   const { data: groupData, loading: loadingGroups } = useQuery(GET_GROUPS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
 

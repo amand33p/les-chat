@@ -5,8 +5,10 @@ import { GET_GROUPS, GET_ALL_USERS } from '../../graphql/queries';
 import { CREATE_GROUP } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import EmojiPicker from '../../components/EmojiPicker';
+import ErrorMessage from '../../components/ErrorMessage';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { getErrorMsg } from '../../utils/helperFuncs';
 
 import {
   TextField,
@@ -31,21 +33,21 @@ const validationSchema = yup.object({
 
 const CreateGroup = ({ closeModal }) => {
   const classes = useCreateGroupStyles();
-  const { selectChat } = useStateContext();
+  const { selectChat, notify } = useStateContext();
   const { register, handleSubmit, errors, setValue, getValues } = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
   const [participants, setParticipants] = useState([]);
-
+  const [errorMsg, setErrorMsg] = useState(null);
   const { data: userData } = useQuery(GET_ALL_USERS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
   const [createNewGroup, { loading }] = useMutation(CREATE_GROUP, {
     onError: (err) => {
-      console.log(err);
+      setErrorMsg(getErrorMsg(err));
     },
   });
 
@@ -73,12 +75,17 @@ const CreateGroup = ({ closeModal }) => {
 
         selectChat(returnedData, 'group');
         closeModal();
+        notify('New group created!');
       },
     });
   };
 
   return (
     <form onSubmit={handleSubmit(handleCreateGroup)}>
+      <ErrorMessage
+        errorMsg={errorMsg}
+        clearErrorMsg={() => setErrorMsg(null)}
+      />
       <TextField
         inputRef={register}
         name="name"

@@ -7,6 +7,7 @@ import {
 } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import EmojiPicker from '../../components/EmojiPicker';
+import { getErrorMsg } from '../../utils/helperFuncs';
 
 import { Button, TextField, InputAdornment } from '@material-ui/core';
 import { useConversationPageStyles } from '../../styles/muiStyles';
@@ -14,14 +15,14 @@ import SendIcon from '@material-ui/icons/Send';
 
 const SendMessage = () => {
   const classes = useConversationPageStyles();
-  const { selectedChat } = useStateContext();
+  const { selectedChat, notify } = useStateContext();
   const [messageBody, setMessageBody] = useState('');
 
   const [submitPrivateMsg, { loading: loadingPrivate }] = useMutation(
     SEND_PRIVATE_MSG,
     {
       onError: (err) => {
-        console.log(err);
+        notify(getErrorMsg(err), 'error');
       },
     }
   );
@@ -29,7 +30,7 @@ const SendMessage = () => {
     SEND_GROUP_MSG,
     {
       onError: (err) => {
-        console.log(err);
+        notify(getErrorMsg(err), 'error');
       },
     }
   );
@@ -37,7 +38,7 @@ const SendMessage = () => {
     SEND_GLOBAL_MSG,
     {
       onError: (err) => {
-        console.log(err);
+        notify(getErrorMsg(err), 'error');
       },
     }
   );

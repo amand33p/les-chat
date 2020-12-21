@@ -6,7 +6,7 @@ import GroupInfo from './GroupInfo';
 import AddGroupMembers from './AddGroupMembers';
 import { useAuthContext } from '../../context/auth';
 import { useStateContext } from '../../context/state';
-import { truncateString } from '../../utils/helperFuncs';
+import { truncateString, getErrorMsg } from '../../utils/helperFuncs';
 
 import {
   Typography,
@@ -28,12 +28,12 @@ const ConversationHeader = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { user } = useAuthContext();
-  const { unselectChat, selectedChat } = useStateContext();
+  const { unselectChat, selectedChat, notify } = useStateContext();
   const [infoModal, setInfoModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const { data: userData, loading: loadingUsers } = useQuery(GET_ALL_USERS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
@@ -97,6 +97,7 @@ const ConversationHeader = () => {
           <Button
             className={classes.headerTitle}
             onClick={() => setInfoModal(true)}
+            size="small"
           >
             {conversationDetails()}
           </Button>

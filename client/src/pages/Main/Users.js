@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
 import FilterBar from '../../components/FilterBar';
+import { getErrorMsg } from '../../utils/helperFuncs';
 
 import {
   ListItem,
@@ -17,10 +18,10 @@ import { useChatListStyles } from '../../styles/muiStyles';
 const Users = () => {
   const classes = useChatListStyles();
   const [filterValue, setFilterValue] = useState('');
-  const { selectedChat, selectChat } = useStateContext();
+  const { selectedChat, selectChat, notify } = useStateContext();
   const { data: userData, loading: loadingUsers } = useQuery(GET_ALL_USERS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
 

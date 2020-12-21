@@ -6,6 +6,7 @@ import {
 } from '../../graphql/queries';
 import LatestMessage from './LatestMessage';
 import { useStateContext } from '../../context/state';
+import { getErrorMsg } from '../../utils/helperFuncs';
 
 import { ListItem, ListItemAvatar, Avatar, Divider } from '@material-ui/core';
 import { useChatListStyles } from '../../styles/muiStyles';
@@ -14,22 +15,22 @@ import GroupIcon from '@material-ui/icons/Group';
 
 const LatestMessages = () => {
   const classes = useChatListStyles();
-  const { selectedChat, selectChat } = useStateContext();
+  const { selectedChat, selectChat, notify } = useStateContext();
   const { data: userData, loading: loadingUsers } = useQuery(GET_ALL_USERS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
   const { data: groupData, loading: loadingGroups } = useQuery(GET_GROUPS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
   const { data: globalData, loading: loadingGlobal } = useQuery(
     GET_GLOBAL_GROUP,
     {
       onError: (err) => {
-        console.log(err);
+        notify(getErrorMsg(err), 'error');
       },
     }
   );

@@ -9,13 +9,16 @@ import {
   GET_GLOBAL_GROUP,
 } from '../../graphql/queries';
 import { NEW_MESSAGE } from '../../graphql/subscriptions';
-
 import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
 import MessageBubble from './MessageBubble';
 import ConversationHeader from './ConversationHeader';
 import SendMessage from './SendMessage';
-import { sameDay, formatToYesterDay } from '../../utils/helperFuncs';
+import {
+  sameDay,
+  formatToYesterDay,
+  getErrorMsg,
+} from '../../utils/helperFuncs';
 
 import { Typography, useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
@@ -26,7 +29,7 @@ const Conversation = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const messagesEndRef = useRef(null);
-  const { selectedChat } = useStateContext();
+  const { selectedChat, notify } = useStateContext();
   const { user } = useAuthContext();
   const [messages, setMessages] = useState(null);
 
@@ -35,7 +38,7 @@ const Conversation = () => {
     { data: privateData, loading: loadingPrivate },
   ] = useLazyQuery(GET_PRIVATE_MSGS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
   const [
@@ -43,7 +46,7 @@ const Conversation = () => {
     { data: groupData, loading: loadingGroup },
   ] = useLazyQuery(GET_GROUP_MSGS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
   const [
@@ -51,14 +54,13 @@ const Conversation = () => {
     { data: globalData, loading: loadingGlobal },
   ] = useLazyQuery(GET_GLOBAL_MSGS, {
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
   const { error: subscriptionError } = useSubscription(NEW_MESSAGE, {
     onSubscriptionData: ({ client, subscriptionData }) => {
       const newMessage = subscriptionData.data.newMessage;
-
       let getMsgQuery,
         getMsgVariables,
         getMsgQueryName,
@@ -140,14 +142,15 @@ const Conversation = () => {
       }
     },
     onError: (err) => {
-      console.log(err);
+      notify(getErrorMsg(err), 'error');
     },
   });
 
   useEffect(() => {
     if (subscriptionError) {
-      console.log(subscriptionError);
+      notify(getErrorMsg(subscriptionError), 'error');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscriptionError]);
 
   useEffect(() => {

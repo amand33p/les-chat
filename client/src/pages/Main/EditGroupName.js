@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { GET_GROUPS } from '../../graphql/queries';
 import { EDIT_GROUP_NAME } from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import EmojiPicker from '../../components/EmojiPicker';
+import ErrorMessage from '../../components/ErrorMessage';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { getErrorMsg } from '../../utils/helperFuncs';
 
 import { TextField, Button, InputAdornment } from '@material-ui/core';
 import { useGroupInfoStyles } from '../../styles/muiStyles';
@@ -20,7 +23,7 @@ const validationSchema = yup.object({
 
 const EditGroupName = ({ setEditOpen }) => {
   const classes = useGroupInfoStyles();
-  const { selectedChat, updateName } = useStateContext();
+  const { selectedChat, updateName, notify } = useStateContext();
   const { register, handleSubmit, errors, setValue, getValues } = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
@@ -28,9 +31,10 @@ const EditGroupName = ({ setEditOpen }) => {
       name: selectedChat.chatData.name,
     },
   });
+  const [errorMsg, setErrorMsg] = useState(null);
   const [updateGroupName] = useMutation(EDIT_GROUP_NAME, {
     onError: (err) => {
-      console.log(err);
+      setErrorMsg(getErrorMsg(err));
     },
   });
 
@@ -56,16 +60,21 @@ const EditGroupName = ({ setEditOpen }) => {
           data: { getGroups: updatedGroups },
         });
 
-        setEditOpen(false);
         if (selectedChat.chatData.id === returnedData.groupId) {
           updateName(returnedData);
         }
+        setEditOpen(false);
+        notify('Group name updated!');
       },
     });
   };
 
   return (
     <form onSubmit={handleSubmit(handleEditName)}>
+      <ErrorMessage
+        errorMsg={errorMsg}
+        clearErrorMsg={() => setErrorMsg(null)}
+      />
       <TextField
         inputRef={register}
         name="name"
