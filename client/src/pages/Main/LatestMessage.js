@@ -14,14 +14,17 @@ const LatestMessage = ({ body, type }) => {
             ? truncateString(body.username, 12)
             : truncateString(body.name, 12)}
         </Typography>
-        <Typography variant="caption" className={classes.greyText}>
-          {formatRecentDate(body.latestMessage.createdAt)}
-        </Typography>
+        {body.latestMessage && (
+          <Typography variant="caption" className={classes.greyText}>
+            {formatRecentDate(body.latestMessage.createdAt)}
+          </Typography>
+        )}
       </div>
-
-      <Typography variant="subtitle2" className={classes.greyText}>
-        {truncateString(body.latestMessage.body, 30)}
-      </Typography>
+      {body.latestMessage && (
+        <Typography variant="subtitle2" className={classes.greyText}>
+          {truncateString(body.latestMessage.body, 30)}
+        </Typography>
+      )}
     </div>
   );
 };

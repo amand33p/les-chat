@@ -44,7 +44,7 @@ const Users = () => {
             color="secondary"
             style={{ padding: '0.5em', textAlign: 'center' }}
           >
-            No users found. :(
+            No other users found. :(
           </Typography>
         )}
         {userData &&
