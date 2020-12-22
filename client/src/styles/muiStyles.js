@@ -59,8 +59,10 @@ export const useTabBarStyles = makeStyles(
       borderBottom: '1px solid #d3d3d390',
     },
     tab: {
-      minWidth: 50,
-      minHeight: 56,
+      [theme.breakpoints.up('sm')]: {
+        minWidth: 50,
+        minHeight: 56,
+      },
     },
   }),
   { index: 1 }
@@ -105,12 +107,11 @@ export const useNavStyles = makeStyles(
       alignItems: 'center',
     },
     lastBtn: {
-      marginLeft: '0.2em',
+      marginLeft: '1em',
     },
     userInfo: {
       display: 'flex',
       alignItems: 'center',
-      borderRight: `1px solid ${theme.palette.primary.main}50`,
       paddingRight: '0.8em',
     },
     avatar: {

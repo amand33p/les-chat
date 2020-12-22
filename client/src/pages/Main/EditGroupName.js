@@ -32,11 +32,14 @@ const EditGroupName = ({ setEditOpen }) => {
     },
   });
   const [errorMsg, setErrorMsg] = useState(null);
-  const [updateGroupName] = useMutation(EDIT_GROUP_NAME, {
-    onError: (err) => {
-      setErrorMsg(getErrorMsg(err));
-    },
-  });
+  const [updateGroupName, { loading: updatingName }] = useMutation(
+    EDIT_GROUP_NAME,
+    {
+      onError: (err) => {
+        setErrorMsg(getErrorMsg(err));
+      },
+    }
+  );
 
   const handleEmojiAdd = (emoji) => {
     setValue('name', getValues('name').concat(emoji), { shouldDirty: true });
@@ -103,7 +106,13 @@ const EditGroupName = ({ setEditOpen }) => {
         >
           Cancel
         </Button>
-        <Button type="submit" size="small" variant="contained" color="primary">
+        <Button
+          type="submit"
+          size="small"
+          variant="contained"
+          color="primary"
+          disabled={updatingName}
+        >
           Update Group Name
         </Button>
       </div>

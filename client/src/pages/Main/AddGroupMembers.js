@@ -23,7 +23,7 @@ const AddGroupMembers = ({ userData, closeModal }) => {
   const [usersToAdd, setUsersToAdd] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
   const { selectedChat, updateMembers, notify } = useStateContext();
-  const [addRemoveUser, { loading: addingUser }] = useMutation(ADD_GROUP_USER, {
+  const [addUser, { loading: addingUser }] = useMutation(ADD_GROUP_USER, {
     onError: (err) => {
       setErrorMsg(getErrorMsg(err));
     },
@@ -35,7 +35,7 @@ const AddGroupMembers = ({ userData, closeModal }) => {
 
   const handleAddUser = (e) => {
     e.preventDefault();
-    addRemoveUser({
+    addUser({
       variables: {
         conversationId: selectedChat.chatData.id,
         participants: usersToAdd,

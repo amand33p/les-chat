@@ -5,6 +5,10 @@ import CreateGroup from '../pages/Main/CreateGroup';
 
 import { Button, Typography, Avatar } from '@material-ui/core';
 import { useNavStyles } from '../styles/muiStyles';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const UserButtonsDesktop = ({ user, handleLogout, isMobile }) => {
   const [createGroupModal, setCreateGroupModal] = useState(false);
@@ -31,7 +35,13 @@ const UserButtonsDesktop = ({ user, handleLogout, isMobile }) => {
             modalOpen={createGroupModal}
             setModalOpen={setCreateGroupModal}
             triggerButton={
-              <Button color="primary" onClick={() => setCreateGroupModal(true)}>
+              <Button
+                color="primary"
+                variant="contained"
+                size="small"
+                onClick={() => setCreateGroupModal(true)}
+                startIcon={<GroupAddIcon />}
+              >
                 Create Group
               </Button>
             }
@@ -41,22 +51,35 @@ const UserButtonsDesktop = ({ user, handleLogout, isMobile }) => {
           />
           <Button
             color="primary"
+            variant="contained"
+            size="small"
             className={classes.lastBtn}
             onClick={handleLogout}
+            startIcon={<PowerSettingsNewIcon />}
           >
             Logout
           </Button>
         </div>
       ) : (
         <div>
-          <Button color="primary" component={RouterLink} to="/login">
+          <Button
+            color="primary"
+            variant="contained"
+            size="small"
+            component={RouterLink}
+            to="/login"
+            startIcon={<ExitToAppIcon />}
+          >
             Login
           </Button>
           <Button
             color="primary"
+            variant="contained"
+            size="small"
             className={classes.lastBtn}
             component={RouterLink}
             to="/register"
+            startIcon={<PersonAddIcon />}
           >
             Register
           </Button>
