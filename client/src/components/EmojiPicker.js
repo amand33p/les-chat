@@ -27,7 +27,7 @@ const EmojiPicker = ({ handleEmojiAdd, isModal }) => {
         }}
         transformOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: isModal ? 'right' : 'left',
         }}
         elevation={1}
       >

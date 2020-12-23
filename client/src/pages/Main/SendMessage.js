@@ -94,8 +94,7 @@ const SendMessage = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <div className={classes.sendMsgBtns}>
-                <EmojiPicker handleEmojiAdd={handleEmojiAdd} />
+              <div>
                 {messageBody.trim() !== '' && (
                   <IconButton
                     size="small"
@@ -106,6 +105,13 @@ const SendMessage = () => {
                     <SendIcon fontSize="large" />
                   </IconButton>
                 )}
+              </div>
+            </InputAdornment>
+          ),
+          startAdornment: (
+            <InputAdornment position="start">
+              <div>
+                <EmojiPicker handleEmojiAdd={handleEmojiAdd} />
               </div>
             </InputAdornment>
           ),

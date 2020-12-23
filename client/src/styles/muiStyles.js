@@ -349,10 +349,6 @@ export const useConversationPageStyles = makeStyles(
         margin: 0,
       },
     },
-    sendMsgBtns: {
-      display: 'flex',
-      alignItems: 'center',
-    },
   }),
   { index: 1 }
 );
