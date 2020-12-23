@@ -23,9 +23,12 @@ const httpLink = new HttpLink({
 const wsLink = new WebSocketLink({
   uri: `wss://${backendUrl}/graphql`,
   options: {
+    lazy: true,
     reconnect: true,
-    connectionParams: {
-      Authorization: storage.loadUser()?.token,
+    connectionParams: () => {
+      return {
+        Authorization: storage.loadUser()?.token,
+      };
     },
   },
 });
