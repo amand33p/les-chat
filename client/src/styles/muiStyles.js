@@ -201,6 +201,13 @@ export const useChatListStyles = makeStyles(
     greyText: {
       color: '#555555',
     },
+    infoText: {
+      padding: '0.5em',
+      textAlign: 'center',
+    },
+    searchWrapper: {
+      padding: '0.3em 0.4em',
+    },
   }),
   { index: 1 }
 );
@@ -272,7 +279,6 @@ export const useConversationPageStyles = makeStyles(
       display: 'flex',
     },
     msgTime: {
-      marginLeft: '1.5em',
       fontSize: '0.6em',
     },
     sentMsg: {
@@ -284,6 +290,7 @@ export const useConversationPageStyles = makeStyles(
       maxWidth: '90%',
       display: 'flex',
       alignItems: 'flex-end',
+      flexWrap: 'wrap',
     },
     receivedMsg: {
       padding: '0.4em 1em',
@@ -293,9 +300,11 @@ export const useConversationPageStyles = makeStyles(
       maxWidth: '90%',
       display: 'flex',
       alignItems: 'flex-end',
+      flexWrap: 'wrap',
     },
     msgText: {
       wordWrap: 'anywhere',
+      marginRight: '0.6em',
     },
     conversationHeader: {
       display: 'flex',
@@ -339,6 +348,10 @@ export const useConversationPageStyles = makeStyles(
       [theme.breakpoints.down('sm')]: {
         margin: 0,
       },
+    },
+    sendMsgBtns: {
+      display: 'flex',
+      alignItems: 'center',
     },
   }),
   { index: 1 }

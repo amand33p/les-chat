@@ -33,20 +33,23 @@ const Users = () => {
   return (
     <div className={classes.root}>
       <div className={classes.list}>
-        <FilterBar
-          filterValue={filterValue}
-          setFilterValue={setFilterValue}
-          placeholder="Search users"
-        />
+        <div className={classes.searchWrapper}>
+          <FilterBar
+            filterValue={filterValue}
+            setFilterValue={setFilterValue}
+            placeholder="Search users"
+          />
+        </div>
         {userData && userData.getAllUsers.length === 0 && (
           <Typography
             variant="subtitle1"
             color="secondary"
-            style={{ padding: '0.5em', textAlign: 'center' }}
+            className={classes.infoText}
           >
             No other users found. :(
           </Typography>
         )}
+        <Divider />
         {userData &&
           userData.getAllUsers
             .filter((user) =>

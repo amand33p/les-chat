@@ -12,7 +12,7 @@ const EmojiPicker = ({ handleEmojiAdd, isModal }) => {
     <div>
       <IconButton
         size="small"
-        color="secondary"
+        color={anchorEl ? 'primary' : 'default'}
         onClick={(e) => setAnchorEl(e.currentTarget)}
       >
         <InsertEmoticonIcon fontSize={isModal ? 'default' : 'large'} />

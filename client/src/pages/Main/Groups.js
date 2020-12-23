@@ -34,20 +34,23 @@ const Groups = () => {
   return (
     <div className={classes.root}>
       <div className={classes.list}>
-        <FilterBar
-          filterValue={filterValue}
-          setFilterValue={setFilterValue}
-          placeholder="Search groups"
-        />
+        <div className={classes.searchWrapper}>
+          <FilterBar
+            filterValue={filterValue}
+            setFilterValue={setFilterValue}
+            placeholder="Search groups"
+          />
+        </div>
         {groupData && groupData.getGroups.length === 0 && (
           <Typography
             variant="subtitle1"
             color="secondary"
-            style={{ padding: '0.5em', textAlign: 'center' }}
+            className={classes.infoText}
           >
             You've not been added to any groups.
           </Typography>
         )}
+        <Divider />
         {groupData &&
           groupData.getGroups
             .filter((group) =>

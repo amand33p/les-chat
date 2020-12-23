@@ -9,7 +9,7 @@ import { useStateContext } from '../../context/state';
 import EmojiPicker from '../../components/EmojiPicker';
 import { getErrorMsg } from '../../utils/helperFuncs';
 
-import { Button, TextField, InputAdornment } from '@material-ui/core';
+import { IconButton, TextField, InputAdornment } from '@material-ui/core';
 import { useConversationPageStyles } from '../../styles/muiStyles';
 import SendIcon from '@material-ui/icons/Send';
 
@@ -94,21 +94,23 @@ const SendMessage = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <EmojiPicker handleEmojiAdd={handleEmojiAdd} />
+              <div className={classes.sendMsgBtns}>
+                <EmojiPicker handleEmojiAdd={handleEmojiAdd} />
+                {messageBody.trim() !== '' && (
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    type="submit"
+                    disabled={loadingPrivate || loadingGroup || loadingGlobal}
+                  >
+                    <SendIcon fontSize="large" />
+                  </IconButton>
+                )}
+              </div>
             </InputAdornment>
           ),
         }}
       />
-
-      <Button
-        size="small"
-        color="primary"
-        variant="contained"
-        type="submit"
-        disabled={loadingPrivate || loadingGroup || loadingGlobal}
-      >
-        <SendIcon />
-      </Button>
     </form>
   );
 };
