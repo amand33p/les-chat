@@ -335,7 +335,7 @@ module.exports = {
         }
 
         groupConversation.participants = groupConversation.participants.filter(
-          (p) => p !== loggedUser.id.toString()
+          (p) => p !== loggedUser.id
         );
 
         const savedConversation = await groupConversation.save();
