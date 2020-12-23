@@ -167,7 +167,7 @@ module.exports = {
         }
 
         if (groupConversation.admin === userId) {
-          throw new UserInputError("You can't remove admin.");
+          throw new UserInputError("You can't remove the admin.");
         }
 
         const userToAdd = await User.findOne({ where: { id: userId } });
@@ -307,6 +307,42 @@ module.exports = {
         await Conversation.destroy({ where: { id: conversationId } });
         await Message.destroy({ where: { conversationId } });
         return conversationId;
+      } catch (err) {
+        throw new UserInputError(err);
+      }
+    },
+    leaveGroup: async (_, args, context) => {
+      const loggedUser = authChecker(context);
+      const { conversationId } = args;
+
+      try {
+        const groupConversation = await Conversation.findOne({
+          where: { id: conversationId },
+        });
+
+        if (!groupConversation || groupConversation.type !== 'group') {
+          throw new UserInputError(
+            `Invalid conversation ID, or conversation isn't of group type.`
+          );
+        }
+
+        if (groupConversation.admin === loggedUser.id) {
+          throw new UserInputError("Admin can't leave the group.");
+        }
+
+        if (!groupConversation.participants.includes(loggedUser.id)) {
+          throw new UserInputError("You're not a member of the group.");
+        }
+
+        groupConversation.participants = groupConversation.participants.filter(
+          (p) => p !== loggedUser.id.toString()
+        );
+
+        const savedConversation = await groupConversation.save();
+        return {
+          groupId: savedConversation.id,
+          participants: savedConversation.participants,
+        };
       } catch (err) {
         throw new UserInputError(err);
       }
