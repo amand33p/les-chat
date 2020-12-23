@@ -159,7 +159,6 @@ const Conversation = () => {
     if (selectedChat.chatType === 'private') {
       fetchPrivateMsgs({
         variables: { userId: selectedChat.chatData.id },
-        update: () => {},
       });
     } else if (selectedChat.chatType === 'group') {
       fetchGroupMsgs({
@@ -193,19 +192,13 @@ const Conversation = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
-  if (!messages || !selectedChat)
+  if (!selectedChat && !isMobile)
     return (
       <div className={classes.root}>
         <div className={classes.noMessages}>
-          {!isMobile ? (
-            <div className={classes.selectChatText}>
-              <Typography>Select a chat to start messaging</Typography>
-            </div>
-          ) : (
-            <div style={{ margin: 'auto' }}>
-              <LoadingSpinner />
-            </div>
-          )}
+          <div className={classes.selectChatText}>
+            <Typography>Select a chat to start messaging</Typography>
+          </div>
         </div>
       </div>
     );
@@ -219,7 +212,7 @@ const Conversation = () => {
       {(loadingPrivate || loadingGroup || loadingGlobal) && (
         <LoadingSpinner size={80} marginTop={200} />
       )}
-      {messages.length > 0 ? (
+      {messages && messages.length > 0 ? (
         <div className={classes.conversationWrapper}>
           {messages.map((message, index) => {
             const isSameDay =
