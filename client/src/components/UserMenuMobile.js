@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import DialogBox from './DialogBox';
 import CreateGroup from '../pages/Main/CreateGroup';
+import DarkModeSwitch from './DarkModeSwitch';
 
 import { IconButton, Menu, MenuItem, Avatar } from '@material-ui/core';
 import { useMenuStyles } from '../styles/muiStyles';
@@ -38,6 +39,7 @@ const MobileUserMenu = ({ user, handleLogout, isMobile }) => {
 
   return (
     <div>
+      <DarkModeSwitch />
       {user ? (
         <IconButton onClick={handleOpenMenu} className={classes.userBtnMob}>
           <Avatar

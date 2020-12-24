@@ -5,7 +5,7 @@ const customTheme = (darkMode) =>
     palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
-        main: '#ff4081',
+        main: darkMode ? '#ff548e' : '#ff4081',
       },
       secondary: {
         main: darkMode ? '#ffcedf' : '#930034',

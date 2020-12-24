@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import DialogBox from './DialogBox';
 import CreateGroup from '../pages/Main/CreateGroup';
+import DarkModeSwitch from './DarkModeSwitch';
 
 import { Button, Typography, Avatar } from '@material-ui/core';
 import { useNavStyles } from '../styles/muiStyles';
@@ -59,6 +60,7 @@ const UserButtonsDesktop = ({ user, handleLogout, isMobile }) => {
           >
             Logout
           </Button>
+          <DarkModeSwitch />
         </div>
       ) : (
         <div>
@@ -83,6 +85,7 @@ const UserButtonsDesktop = ({ user, handleLogout, isMobile }) => {
           >
             Register
           </Button>
+          <DarkModeSwitch />
         </div>
       )}
     </div>

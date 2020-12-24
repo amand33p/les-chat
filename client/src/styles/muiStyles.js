@@ -33,8 +33,14 @@ export const useMainPageStyles = makeStyles(
     },
     leftPanel: {
       width: '40%',
-      borderRight: '1px solid #d3d3d390',
-      borderLeft: '1px solid #d3d3d390',
+      borderRight:
+        theme.palette.type === 'dark'
+          ? '1px solid #d3d3d315'
+          : '1px solid #d3d3d395',
+      borderLeft:
+        theme.palette.type === 'dark'
+          ? '1px solid #d3d3d315'
+          : '1px solid #d3d3d395',
     },
     leftPanelContent: {
       maxHeight: 'calc(100vH - 111px)',
@@ -51,12 +57,14 @@ export const useTabBarStyles = makeStyles(
       [theme.breakpoints.down('sm')]: {
         position: 'sticky',
         top: '51px',
-        backgroundColor: '#fff',
         zIndex: 10,
       },
     },
     tabs: {
-      borderBottom: '1px solid #d3d3d390',
+      borderBottom:
+        theme.palette.type === 'dark'
+          ? '1px solid #d3d3d320'
+          : '1px solid #d3d3d395',
     },
     tab: {
       [theme.breakpoints.up('sm')]: {
@@ -137,6 +145,11 @@ export const useMenuStyles = makeStyles(
     userBtnMob: {
       padding: '0.35em',
     },
+    iconBtn: {
+      [theme.breakpoints.down('sm')]: {
+        padding: '0.1em',
+      },
+    },
     menuIcon: {
       marginRight: '8px',
     },
@@ -199,7 +212,7 @@ export const useChatListStyles = makeStyles(
       alignItems: 'center',
     },
     greyText: {
-      color: '#555555',
+      color: theme.palette.type === 'dark' ? '#fff' : '#555555',
     },
     infoText: {
       padding: '0.5em',
@@ -216,7 +229,10 @@ export const useConversationPageStyles = makeStyles(
   (theme) => ({
     root: {
       width: '100%',
-      borderRight: '1px solid #d3d3d390',
+      borderRight:
+        theme.palette.type === 'dark'
+          ? '1px solid #d3d3d315'
+          : '1px solid #d3d3d395',
       display: 'flex',
       flexDirection: 'column',
       [theme.breakpoints.down('sm')]: {
@@ -253,7 +269,10 @@ export const useConversationPageStyles = makeStyles(
     },
     infoText: {
       margin: 'auto auto 1em auto',
-      backgroundColor: `${theme.palette.primary.main}18`,
+      backgroundColor:
+        theme.palette.type === 'dark'
+          ? theme.palette.secondary.main
+          : `${theme.palette.primary.main}18`,
       color: '#333',
       padding: '0.4em 0.8em',
       borderRadius: 8,
@@ -261,7 +280,10 @@ export const useConversationPageStyles = makeStyles(
     },
     selectChatText: {
       margin: 'auto',
-      backgroundColor: `${theme.palette.primary.main}18`,
+      backgroundColor:
+        theme.palette.type === 'dark'
+          ? theme.palette.secondary.main
+          : `${theme.palette.primary.main}18`,
       color: '#333',
       padding: '0.4em 0.8em',
       borderRadius: 8,
@@ -302,6 +324,7 @@ export const useConversationPageStyles = makeStyles(
       display: 'flex',
       alignItems: 'flex-end',
       flexWrap: 'wrap',
+      color: '#333',
     },
     msgText: {
       wordWrap: 'anywhere',
@@ -312,7 +335,10 @@ export const useConversationPageStyles = makeStyles(
       padding: '0.5em 1em',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderBottom: '1px solid #d3d3d390',
+      borderBottom:
+        theme.palette.type === 'dark'
+          ? '1px solid #d3d3d320'
+          : '1px solid #d3d3d395',
       [theme.breakpoints.down('sm')]: {
         padding: '0.5em 0.2em',
         borderBottom: `3px solid ${theme.palette.primary.main}98`,

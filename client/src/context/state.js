@@ -1,14 +1,18 @@
+import { useEffect } from 'react';
 import { useReducer, createContext, useContext } from 'react';
+import storage from '../utils/localStorage';
 
 const StateContext = createContext({
   selectedChat: null,
   notification: null,
+  darkMode: false,
   selectChat: (chatData, chatType) => {},
   updateMembers: (updatedData) => {},
   updateName: (updatedData) => {},
   unselectChat: () => {},
   notify: (message, severity, duration) => {},
   clearNotif: () => {},
+  toggleDarkMode: () => {},
 });
 
 const stateReducer = (state, action) => {
@@ -44,6 +48,11 @@ const stateReducer = (state, action) => {
         ...state,
         notification: null,
       };
+    case 'TOGGLE_DARK_MODE':
+      return {
+        ...state,
+        darkMode: !state.darkMode,
+      };
     default:
       return state;
   }
@@ -53,7 +62,18 @@ export const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(stateReducer, {
     selectedChat: null,
     notification: null,
+    darkMode: false,
   });
+
+  useEffect(() => {
+    const loadedDarkMode = storage.loadDarkMode();
+    if (loadedDarkMode === true) {
+      dispatch({
+        type: 'TOGGLE_DARK_MODE',
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const selectChat = (chatData, chatType) => {
     dispatch({
@@ -109,17 +129,26 @@ export const StateProvider = ({ children }) => {
     });
   };
 
+  const toggleDarkMode = () => {
+    dispatch({
+      type: 'TOGGLE_DARK_MODE',
+    });
+    storage.saveDarkMode(!state.darkMode);
+  };
+
   return (
     <StateContext.Provider
       value={{
         selectedChat: state.selectedChat,
         notification: state.notification,
+        darkMode: state.darkMode,
         selectChat,
         updateMembers,
         updateName,
         unselectChat,
         notify,
         clearNotif,
+        toggleDarkMode,
       }}
     >
       {children}
