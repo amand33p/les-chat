@@ -58,27 +58,21 @@ const SendMessage = () => {
     if (selectedChat.chatType === 'private') {
       submitPrivateMsg({
         variables: { receiverId: selectedChat.chatData.id, body: messageBody },
-        update: () => {
-          clearInput();
-        },
       });
+      clearInput();
     } else if (selectedChat.chatType === 'group') {
       submitGroupMsg({
         variables: {
           conversationId: selectedChat.chatData.id,
           body: messageBody,
         },
-        update: () => {
-          clearInput();
-        },
       });
+      clearInput();
     } else {
       submitGlobalMsg({
         variables: { body: messageBody },
-        update: () => {
-          clearInput();
-        },
       });
+      clearInput();
     }
   };
 
