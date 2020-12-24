@@ -91,3 +91,9 @@ export const DELETE_GROUP = gql`
     deleteGroup(conversationId: $conversationId)
   }
 `;
+
+export const LEAVE_GROUP = gql`
+  mutation leaveGroup($conversationId: ID!) {
+    leaveGroup(conversationId: $conversationId)
+  }
+`;

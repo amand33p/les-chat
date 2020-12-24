@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { GET_GROUPS } from '../../graphql/queries';
-import { REMOVE_GROUP_USER, DELETE_GROUP } from '../../graphql/mutations';
+import {
+  REMOVE_GROUP_USER,
+  DELETE_GROUP,
+  LEAVE_GROUP,
+} from '../../graphql/mutations';
 import { useStateContext } from '../../context/state';
 import { useAuthContext } from '../../context/auth';
 import DeleteDialog from '../../components/DeleteDialog';
@@ -38,6 +42,11 @@ const GroupInfo = ({ userData, loadingUsers, closeModal }) => {
     },
   });
   const [removeUser] = useMutation(REMOVE_GROUP_USER, {
+    onError: (err) => {
+      notify(getErrorMsg(err), 'error');
+    },
+  });
+  const [leaveGroup] = useMutation(LEAVE_GROUP, {
     onError: (err) => {
       notify(getErrorMsg(err), 'error');
     },
@@ -99,6 +108,33 @@ const GroupInfo = ({ userData, loadingUsers, closeModal }) => {
     });
   };
 
+  const handleGroupLeave = () => {
+    leaveGroup({
+      variables: {
+        conversationId: selectedChat.chatData.id,
+      },
+      update: (proxy, { data }) => {
+        const returnedData = data.leaveGroup;
+        const dataInCache = proxy.readQuery({
+          query: GET_GROUPS,
+        });
+
+        const updatedGroups = dataInCache.getGroups.filter(
+          (g) => g.id !== returnedData
+        );
+
+        proxy.writeQuery({
+          query: GET_GROUPS,
+          data: { getGroups: updatedGroups },
+        });
+
+        closeModal();
+        unselectChat();
+        notify('Left the group!');
+      },
+    });
+  };
+
   const { name, participants, adminUser, createdAt } = selectedChat.chatData;
   const isGroupAdmin = user.id === selectedChat.chatData.admin;
 
@@ -126,14 +162,17 @@ const GroupInfo = ({ userData, loadingUsers, closeModal }) => {
             >
               Edit
             </Button>
-
             <DeleteDialog handleDelete={handleGroupDelete} type="group" />
           </div>
         )}
+
         <Typography variant="subtitle1" color="secondary">
           Admin: <strong>{adminUser.username}</strong> | Created:{' '}
           <strong>{formatDateInWords(createdAt)}</strong>
         </Typography>
+        {!isGroupAdmin && (
+          <DeleteDialog handleDelete={handleGroupLeave} type="leave" />
+        )}
       </div>
       {loadingUsers ? (
         <LoadingSpinner />

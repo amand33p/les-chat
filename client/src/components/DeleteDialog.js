@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const DeleteDialog = ({ handleDelete, username, type }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -40,6 +41,16 @@ const DeleteDialog = ({ handleDelete, username, type }) => {
         >
           Delete
         </Button>
+      ) : type === 'leave' ? (
+        <Button
+          color="primary"
+          size="small"
+          startIcon={<ExitToAppIcon />}
+          variant="outlined"
+          onClick={handleModalOpen}
+        >
+          Leave
+        </Button>
       ) : (
         <IconButton color="primary" size="small" onClick={handleModalOpen}>
           <CancelOutlinedIcon />
@@ -47,12 +58,18 @@ const DeleteDialog = ({ handleDelete, username, type }) => {
       )}
       <Dialog open={modalOpen} onClose={handleModalClose}>
         <DialogTitle>
-          {type === 'group' ? 'Confirm Delete Group' : 'Confirm Remove User'}
+          {type === 'group'
+            ? 'Confirm Delete Group'
+            : type === 'leave'
+            ? 'Confirm Leave Group'
+            : 'Confirm Remove User'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
             {type === 'group'
               ? `Are you sure you want to delete your group?`
+              : type === 'leave'
+              ? `Are you sure you want to leave the group?`
               : `Are you sure you want to remove ${username} from your group?`}
           </DialogContentText>
         </DialogContent>
@@ -61,7 +78,11 @@ const DeleteDialog = ({ handleDelete, username, type }) => {
             Cancel
           </Button>
           <Button onClick={handleDeleteClick} color="primary">
-            {type === 'group' ? 'Delete' : 'Remove'}
+            {type === 'group'
+              ? 'Delete'
+              : type === 'leave'
+              ? 'Leave'
+              : 'Remove'}
           </Button>
         </DialogActions>
       </Dialog>

@@ -338,11 +338,8 @@ module.exports = {
           (p) => p !== loggedUser.id
         );
 
-        const savedConversation = await groupConversation.save();
-        return {
-          groupId: savedConversation.id,
-          participants: savedConversation.participants,
-        };
+        await groupConversation.save();
+        return conversationId;
       } catch (err) {
         throw new UserInputError(err);
       }
