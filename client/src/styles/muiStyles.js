@@ -280,6 +280,7 @@ export const useConversationPageStyles = makeStyles(
     },
     msgTime: {
       fontSize: '0.6em',
+      marginTop: '0.3em',
     },
     sentMsg: {
       padding: '0.4em 1em',
@@ -287,7 +288,7 @@ export const useConversationPageStyles = makeStyles(
       color: '#fff',
       borderRadius: 10,
       marginLeft: 'auto',
-      maxWidth: '90%',
+      maxWidth: '88%',
       display: 'flex',
       alignItems: 'flex-end',
       flexWrap: 'wrap',
@@ -297,14 +298,14 @@ export const useConversationPageStyles = makeStyles(
       backgroundColor: '#e3e3e3',
       borderRadius: 10,
       marginRight: 'auto',
-      maxWidth: '90%',
+      maxWidth: '88%',
       display: 'flex',
       alignItems: 'flex-end',
       flexWrap: 'wrap',
     },
     msgText: {
       wordWrap: 'anywhere',
-      marginRight: '0.6em',
+      marginRight: '0.5em',
     },
     conversationHeader: {
       display: 'flex',
