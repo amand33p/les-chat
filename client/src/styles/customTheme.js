@@ -38,7 +38,7 @@ const customTheme = (darkMode) =>
       },
       MuiAvatar: {
         colorDefault: {
-          backgroundColor: '#d3d3d399',
+          backgroundColor: '#d3d3d3',
           color: '#ff4081',
         },
       },

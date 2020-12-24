@@ -317,14 +317,13 @@ export const useConversationPageStyles = makeStyles(
     },
     receivedMsg: {
       padding: '0.4em 1em',
-      backgroundColor: '#e3e3e3',
+      backgroundColor: theme.palette.type === 'dark' ? '#555' : '#e3e3e3',
       borderRadius: 10,
       marginRight: 'auto',
       maxWidth: '88%',
       display: 'flex',
       alignItems: 'flex-end',
       flexWrap: 'wrap',
-      color: '#333',
     },
     msgText: {
       wordWrap: 'anywhere',
