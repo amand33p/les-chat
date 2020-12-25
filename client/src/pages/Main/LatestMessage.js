@@ -11,8 +11,8 @@ const LatestMessage = ({ body, type }) => {
       <div className={classes.nameAndDate}>
         <Typography variant="subtitle1" noWrap>
           {type === 'user'
-            ? truncateString(body.username, 12)
-            : truncateString(body.name, 12)}
+            ? truncateString(body.username, 14)
+            : truncateString(body.name, 14)}
         </Typography>
         {body.latestMessage && (
           <Typography variant="caption" className={classes.greyText}>
@@ -22,7 +22,7 @@ const LatestMessage = ({ body, type }) => {
       </div>
       {body.latestMessage && (
         <Typography variant="subtitle2" className={classes.greyText}>
-          {truncateString(body.latestMessage.body, 30)}
+          {truncateString(body.latestMessage.body, 35)}
         </Typography>
       )}
     </div>

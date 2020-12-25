@@ -4,7 +4,7 @@ import { GET_GROUPS } from '../../graphql/queries';
 import { useStateContext } from '../../context/state';
 import FilterBar from '../../components/FilterBar';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { getErrorMsg } from '../../utils/helperFuncs';
+import { getErrorMsg, truncateString } from '../../utils/helperFuncs';
 
 import {
   ListItem,
@@ -72,7 +72,7 @@ const Groups = () => {
                       <GroupIcon color="primary" />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary={group.name} />
+                  <ListItemText primary={truncateString(group.name, 25)} />
                 </ListItem>
                 <Divider />
               </div>

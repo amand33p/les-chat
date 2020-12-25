@@ -13,6 +13,7 @@ import {
   Link,
   Button,
   useMediaQuery,
+  Container,
 } from '@material-ui/core';
 import { useNavStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
@@ -43,47 +44,49 @@ const NavBar = () => {
       className={classes.appBar}
     >
       <Toolbar variant="dense" disableGutters={isMobile}>
-        <div className={classes.leftPortion}>
-          <div className={classes.logoWrapper}>
-            <Button
-              className={classes.logoBtn}
-              component={RouterLink}
-              to="/"
-              color="primary"
-            >
-              <img
-                src={ChatIcon}
-                alt="leschat-logo"
-                className={classes.svgImage}
-              />
-              LesChat!
-            </Button>
-            {!isMobile && (
-              <Typography variant="caption" color="secondary">
-                Made with{' '}
-                <FavoriteIcon style={{ fontSize: 10, color: '#f4649f' }} /> by
-                <Link
-                  href={'https://github.com/amand33p'}
-                  color="inherit"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <strong>{` amand33p`}</strong>
-                </Link>
-              </Typography>
-            )}
+        <Container style={{ display: 'flex' }} disableGutters>
+          <div className={classes.leftPortion}>
+            <div className={classes.logoWrapper}>
+              <Button
+                className={classes.logoBtn}
+                component={RouterLink}
+                to="/"
+                color="primary"
+              >
+                <img
+                  src={ChatIcon}
+                  alt="leschat-logo"
+                  className={classes.svgImage}
+                />
+                LesChat!
+              </Button>
+              {!isMobile && (
+                <Typography variant="caption" color="secondary">
+                  Made with{' '}
+                  <FavoriteIcon style={{ fontSize: 10, color: '#f4649f' }} /> by
+                  <Link
+                    href={'https://github.com/amand33p'}
+                    color="inherit"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <strong>{` amand33p`}</strong>
+                  </Link>
+                </Typography>
+              )}
+            </div>
           </div>
-        </div>
-        <UserButtonsDesktop
-          user={user}
-          handleLogout={handleLogout}
-          isMobile={isMobile}
-        />
-        <UserMenuMobile
-          user={user}
-          handleLogout={handleLogout}
-          isMobile={isMobile}
-        />
+          <UserButtonsDesktop
+            user={user}
+            handleLogout={handleLogout}
+            isMobile={isMobile}
+          />
+          <UserMenuMobile
+            user={user}
+            handleLogout={handleLogout}
+            isMobile={isMobile}
+          />
+        </Container>
       </Toolbar>
     </AppBar>
   );
