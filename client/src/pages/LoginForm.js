@@ -70,6 +70,7 @@ const LoginForm = () => {
         <form onSubmit={handleSubmit(onLogin)} className={classes.form}>
           <div className={classes.inputField}>
             <TextField
+              required
               fullWidth
               inputRef={register}
               name="username"

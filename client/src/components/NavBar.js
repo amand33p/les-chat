@@ -44,7 +44,7 @@ const NavBar = () => {
       className={classes.appBar}
     >
       <Toolbar variant="dense" disableGutters={isMobile}>
-        <Container style={{ display: 'flex' }} disableGutters>
+        <Container style={{ display: 'flex' }}>
           <div className={classes.leftPortion}>
             <div className={classes.logoWrapper}>
               <Button

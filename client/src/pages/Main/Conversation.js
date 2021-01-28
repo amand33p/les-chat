@@ -206,13 +206,27 @@ const Conversation = () => {
   const isGroupGlobalChat =
     selectedChat.chatType === 'public' || selectedChat.chatType === 'group';
 
-  return (
-    <div className={classes.root}>
-      <ConversationHeader />
-      {(loadingPrivate || loadingGroup || loadingGlobal) && (
-        <LoadingSpinner size={80} marginTop={200} />
-      )}
-      {messages && messages.length > 0 ? (
+  const dataToDisplay = () => {
+    if (loadingPrivate || loadingGroup || loadingGlobal || !messages) {
+      return (
+        <div className={classes.conversationWrapper}>
+          <LoadingSpinner size={80} marginTop={200} />
+        </div>
+      );
+    } else if (messages.length === 0) {
+      return (
+        <div className={classes.noMessages}>
+          <div className={classes.infoText}>
+            <Typography>
+              {selectedChat.chatType === 'private'
+                ? `You're connected with ${selectedChat.chatData.username}. Start chatting now!`
+                : 'Be the first one to message in the group.'}
+            </Typography>
+          </div>
+        </div>
+      );
+    } else {
+      return (
         <div className={classes.conversationWrapper}>
           {messages.map((message, index) => {
             const isSameDay =
@@ -255,17 +269,14 @@ const Conversation = () => {
           })}
           <div ref={messagesEndRef} />
         </div>
-      ) : (
-        <div className={classes.noMessages}>
-          <div className={classes.infoText}>
-            <Typography>
-              {selectedChat.chatType === 'private'
-                ? `You're connected with ${selectedChat.chatData.username}. Start chatting now!`
-                : 'Be the first one to message in the group.'}
-            </Typography>
-          </div>
-        </div>
-      )}
+      );
+    }
+  };
+
+  return (
+    <div className={classes.root}>
+      <ConversationHeader />
+      {dataToDisplay()}
       <SendMessage />
     </div>
   );
