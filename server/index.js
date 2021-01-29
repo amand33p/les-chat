@@ -1,8 +1,10 @@
 const { ApolloServer } = require('apollo-server');
-const { sequelize } = require('./models');
+const connectToDB = require('./db');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
 const { PORT } = require('./utils/config');
+
+connectToDB();
 
 const server = new ApolloServer({
   typeDefs,
@@ -13,9 +15,4 @@ const server = new ApolloServer({
 server.listen({ port: PORT }).then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`);
   console.log(`Subscriptions ready at ${subscriptionsUrl}`);
-
-  sequelize
-    .authenticate()
-    .then(() => console.log('PSQL connected!'))
-    .catch((err) => console.log(err));
 });
