@@ -7,6 +7,7 @@ import { REGISTER_USER } from '../graphql/mutations';
 import { useAuthContext } from '../context/auth';
 import { useStateContext } from '../context/state';
 import ErrorMessage from '../components/ErrorMessage';
+import DemoCredsBox from '../components/DemoCredsBox';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { getErrorMsg } from '../utils/helperFuncs';
@@ -205,6 +206,7 @@ const RegisterForm = () => {
           errorMsg={errorMsg}
           clearErrorMsg={() => setErrorMsg(null)}
         />
+        <DemoCredsBox />
       </div>
     </Container>
   );
