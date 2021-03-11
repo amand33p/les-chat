@@ -89,6 +89,8 @@ Open client/src/backendUrls.js & change the "backendUrls" object to:
 }
 ```
 
+Run client development server:
+
 ```
 cd client
 npm install
@@ -97,12 +99,14 @@ npm start
 
 #### Server:
 
-Open server/config/config.json & update the development keys values to match your local PostgreSQL credentials.
+Open server/config/config.json & update the development keys' values to match your local PostgreSQL credentials.
 
 Install 'sequelize-cli' & 'nodemon' as global packages, if you haven't yet.
 
-Run this command to migrate the SQL table to your local PSQL:
+Run this command to migrate the SQL table to your own local PSQL:
 `sequelize db:migrate`
+
+Run backend development server:
 
 ```
 cd server
