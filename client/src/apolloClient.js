@@ -3,7 +3,8 @@ import { setContext } from 'apollo-link-context';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import storage from './utils/localStorage';
-import backendUrl from './backendUrl';
+import backendUrls from './backendUrls';
+const { http, ws } = backendUrls;
 
 const authLink = setContext((_, { headers }) => {
   const loggedUser = storage.loadUser();
@@ -17,11 +18,11 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: `https://${backendUrl}`,
+  uri: http,
 });
 
 const wsLink = new WebSocketLink({
-  uri: `wss://${backendUrl}/graphql`,
+  uri: ws,
   options: {
     lazy: true,
     reconnect: true,

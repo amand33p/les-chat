@@ -65,3 +65,47 @@ Real-time chat app made with PERN + GraphQL - features private, global & group m
 ![Mobile-3](https://github.com/amand33p/les-chat-pern-gql/blob/main/screenshots/mobile-3.jpg)
 ![Mobile-4](https://github.com/amand33p/les-chat-pern-gql/blob/main/screenshots/mobile-4.jpg)
 ![Mobile-5](https://github.com/amand33p/les-chat-pern-gql/blob/main/screenshots/mobile-5.jpg)
+
+## Usage
+
+#### Env variable:
+
+Create a .env file in server directory and add the following:
+
+```
+PORT = 4000
+JWT_SECRET = "Your JWT secret"
+
+```
+
+#### Client:
+
+Open client/src/backendUrls.js & change the "backendUrls" object to:
+
+```
+{
+  http: "http://localhost:4000",
+  ws: "ws://localhost:4000/graphql"
+}
+```
+
+```
+cd client
+npm install
+npm start
+```
+
+#### Server:
+
+Open server/config/config.json & update the development keys values to match your local PostgreSQL credentials.
+
+Install 'sequelize-cli' & 'nodemon' as global packages, if you haven't yet.
+
+Run this command to migrate the SQL table to your local PSQL:
+`sequelize db:migrate`
+
+```
+cd server
+npm install
+npm run dev
+```
